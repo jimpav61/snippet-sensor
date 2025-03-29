@@ -5,11 +5,20 @@ import ArticleCard from '@/components/learning-center/ArticleCard';
 import ResourceCategorySection from '@/components/learning-center/ResourceCategorySection';
 import FeaturedResource from '@/components/learning-center/FeaturedResource';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { BookOpen, FileText, ChevronRight } from 'lucide-react';
+import ResourceCard from '@/components/learning-center/ResourceCard';
 
 const LearningCenterPage = () => {
+  const navigate = useNavigate();
+  
+  const handleTabChange = (value: string) => {
+    if (value === "tools") {
+      navigate("/aeo/learning/tools");
+    }
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -44,7 +53,7 @@ const LearningCenterPage = () => {
           <div className="max-w-7xl mx-auto">
             <h2 className="heading-md mb-8">Resources & Articles</h2>
             
-            <Tabs defaultValue="articles" className="w-full">
+            <Tabs defaultValue="articles" className="w-full" onValueChange={handleTabChange}>
               <TabsList className="mb-8">
                 <TabsTrigger value="articles">Articles</TabsTrigger>
                 <TabsTrigger value="guides">Guides</TabsTrigger>
@@ -238,52 +247,41 @@ const LearningCenterPage = () => {
               </TabsContent>
               
               <TabsContent value="tools">
-                <ResourceCategorySection 
-                  title="Essential AEO Tools & Resources"
-                  resources={[
-                    {
-                      title: "AEO Analyzer Tool Guide",
-                      description: "Learn how to use our AEO Analyzer tool to identify optimization opportunities in your content. This step-by-step guide covers content analysis, competitive benchmarking, and implementing the tool's recommendations effectively.",
-                      category: "Tool Guide",
-                      readTime: "5 min read",
-                      slug: "aeo-analyzer-guide"
-                    },
-                    {
-                      title: "Free Schema Generator for AEO",
-                      description: "Generate structured data markup with our free tool to improve your AI visibility. This guide walks you through selecting the right schema types for your content and implementing the generated code properly on your website.",
-                      category: "Tool",
-                      readTime: "3 min read",
-                      slug: "schema-generator-tool"
-                    },
-                    {
-                      title: "Content Evaluation Checklist",
-                      description: "A downloadable checklist to evaluate your content's readiness for AI search engines. Covers all essential elements from content structure and formatting to technical implementation and performance measurement.",
-                      category: "Checklist",
-                      readTime: "2 min read",
-                      slug: "content-evaluation-checklist"
-                    }
-                  ]}
-                />
-                
-                <ResourceCategorySection 
-                  title="Advanced AEO Toolkits"
-                  resources={[
-                    {
-                      title: "AI Content Opportunity Analyzer",
-                      description: "Our premium tool helps identify gaps in your content strategy based on what AI engines are looking for in your industry. Learn how to interpret the data and create high-performing content that addresses identified opportunities.",
-                      category: "Premium Tool",
-                      readTime: "8 min read",
-                      slug: "content-opportunity-analyzer"
-                    },
-                    {
-                      title: "Structured Data Validator & Enhancer",
-                      description: "This advanced tool not only validates your structured data implementation but also suggests enhancements based on AI engine preferences. Includes industry-specific recommendations for maximum visibility.",
-                      category: "Technical Tool",
-                      readTime: "6 min read",
-                      slug: "structured-data-validator"
-                    }
-                  ]}
-                />
+                <div className="mb-6 flex justify-between items-center">
+                  <h3 className="heading-sm">Available Tools</h3>
+                  <Button asChild variant="outline">
+                    <Link to="/aeo/learning/tools">
+                      View All Tools <ChevronRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <ResourceCard 
+                    title="AEO Analyzer Tool"
+                    description="Interactive tool to analyze your AI content and get recommendations for optimization"
+                    category="Content Analysis"
+                    readTime="Interactive"
+                    slug="aeo-analyzer"
+                    type="tool"
+                    relatedGuide="aeo-analyzer-guide"
+                  />
+                  <ResourceCard 
+                    title="Prompt Optimization Tool"
+                    description="Tool to improve your AI prompts for better responses and clearer understanding"
+                    category="Prompting"
+                    readTime="Interactive"
+                    slug="prompt-optimizer"
+                    type="tool"
+                  />
+                  <ResourceCard 
+                    title="Schema Generator"
+                    description="Generate structured data schemas that help AI systems understand your content"
+                    category="Technical SEO"
+                    readTime="Interactive"
+                    slug="schema-generator"
+                    type="tool"
+                  />
+                </div>
               </TabsContent>
             </Tabs>
           </div>
