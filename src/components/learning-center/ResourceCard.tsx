@@ -39,7 +39,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
     // Ensure we're using the correct type in the URL path
     switch (type) {
       case 'tool':
-        return `/aeo/learning/tool/${slug}`;
+        return `/aeo/learning/tools/${slug}`;
       case 'case-study':
         return `/aeo/learning/case-study/${slug}`;
       case 'guide':
