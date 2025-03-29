@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/layout/Header';
@@ -202,7 +201,7 @@ const AEOServicePage = () => {
                     <h3 className="font-semibold text-xl mb-2">The Changing Search Landscape</h3>
                     <p className="text-gray-600 text-sm">Last 5 years of search behavior data</p>
                   </div>
-                  
+                
                   <div className="relative h-60 w-full mb-6">
                     <div className="absolute bottom-0 left-0 w-full h-full flex items-end">
                       <div className="w-1/5 h-[30%] bg-gray-200 rounded-t"></div>
@@ -221,11 +220,11 @@ const AEOServicePage = () => {
                     </div>
                     
                     <div className="absolute bottom-[-24px] left-0 w-full flex justify-between text-xs text-gray-500">
-                      <span>2019</span>
                       <span>2020</span>
                       <span>2021</span>
                       <span>2022</span>
                       <span>2023</span>
+                      <span>2024</span>
                     </div>
                   </div>
                   
