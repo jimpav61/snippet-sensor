@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface FeaturedResourceProps {
   title: string;
@@ -41,9 +42,11 @@ const FeaturedResource: React.FC<FeaturedResourceProps> = ({
           </CardHeader>
           <CardContent>
             <p className="text-gray-600 mb-6">{description}</p>
-            <Button className="bg-aeo hover:bg-aeo-600">
-              <BookOpen className="mr-2 h-4 w-4" />
-              Read Full Guide
+            <Button className="bg-aeo hover:bg-aeo-600" asChild>
+              <Link to="/aeo/guide">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Read Full Guide
+              </Link>
             </Button>
           </CardContent>
         </div>
