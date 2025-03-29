@@ -28,9 +28,9 @@ const LearningCenterPage = () => {
           <div className="max-w-7xl mx-auto">
             <h2 className="heading-md mb-8">Featured Resources</h2>
             <FeaturedResource
-              title="The Complete Guide to AI Engine Optimization in 2025"
-              description="Learn how to optimize your content for AI-powered search platforms with our comprehensive guide covering all the essential strategies and techniques for the upcoming year."
-              imageUrl="/lovable-uploads/9d1300e9-9493-45f4-853f-2adf478f7b25.png"
+              title="The Complete Guide to AI Engine Optimization in 2023"
+              description="Learn how to optimize your content for AI-powered search platforms with our comprehensive guide covering all the essential strategies and techniques."
+              imageUrl="/placeholder.svg"
               category="Guide"
               readTime="15 min read"
             />
@@ -56,42 +56,42 @@ const LearningCenterPage = () => {
                     title="Understanding AI Snippets and How to Optimize For Them"
                     description="Learn how AI platforms select content for featured snippets and optimize your content to increase visibility."
                     category="AEO Strategy"
-                    date="May 25, 2025"
+                    date="June 15, 2023"
                     readTime="8 min read"
                   />
                   <ArticleCard 
                     title="The Importance of Structured Data for AEO"
                     description="Discover how implementing structured data can significantly improve your content's performance in AI search results."
                     category="Technical SEO"
-                    date="April 18, 2025"
+                    date="May 28, 2023"
                     readTime="6 min read"
                   />
                   <ArticleCard 
                     title="How AI Engines Evaluate Content Quality"
                     description="An in-depth analysis of the factors AI engines use to determine content quality and relevance."
                     category="Content Strategy"
-                    date="March 12, 2025"
+                    date="April 12, 2023"
                     readTime="10 min read"
                   />
                   <ArticleCard 
                     title="AEO vs SEO: Key Differences and Strategies"
                     description="Compare traditional SEO with AI Engine Optimization and learn when to apply each approach."
                     category="Strategy"
-                    date="February 15, 2025"
+                    date="March 5, 2023"
                     readTime="7 min read"
                   />
                   <ArticleCard 
                     title="Optimizing E-commerce Sites for AI Search"
                     description="Specialized strategies for online stores to perform better in AI-powered search results."
                     category="E-commerce"
-                    date="January 28, 2025"
+                    date="February 18, 2023"
                     readTime="9 min read"
                   />
                   <ArticleCard 
                     title="The Future of Search: AI Trends to Watch"
                     description="Stay ahead of the curve with insights into emerging AI search technologies and what they mean for content creators."
                     category="Trends"
-                    date="January 5, 2025"
+                    date="January 22, 2023"
                     readTime="5 min read"
                   />
                 </div>
