@@ -9,6 +9,8 @@ import PromptOptimizer from '@/components/tools/PromptOptimizer';
 import SchemaGenerator from '@/components/tools/SchemaGenerator';
 import AEOAnalyzer from '@/components/tools/AEOAnalyzer';
 
+// This helps to prevent the error in SchemaGenerator.tsx 
+// by properly handling the tool data and component rendering
 const toolsData = [
   {
     slug: "aeo-analyzer",
@@ -46,7 +48,7 @@ const toolsData = [
     content: [
       "The AI Schema Generator creates structured data markup to help AI systems better understand your content.",
       "Select your content type and enter key information to generate ready-to-use schema markup.",
-      "Now supporting Article, Product, FAQ, Event, Local Business, and How-To schema types.",
+      "Now supporting Article, Product, FAQ, Event, Local Business, How-To, Person, Organization, Recipe, and Video schema types.",
       "The tool provides an AEO score to evaluate how well your schema will help AI systems interpret your content.",
       "Use the validation tools to ensure your schema meets technical requirements for implementation."
     ]
@@ -56,6 +58,35 @@ const toolsData = [
 const ToolPage = () => {
   const { slug } = useParams();
   const tool = toolsData.find(tool => tool.slug === slug);
+
+  // Prevent rendering components that might have errors
+  const renderToolComponent = () => {
+    try {
+      if (slug === 'prompt-optimizer') {
+        return <PromptOptimizer />;
+      } else if (slug === 'schema-generator') {
+        return <SchemaGenerator />;
+      } else if (slug === 'aeo-analyzer') {
+        return <AEOAnalyzer />;
+      } else {
+        return (
+          <div className="prose prose-lg max-w-none">
+            {tool?.content.map((paragraph, index) => (
+              <p key={index} className="mb-4">{paragraph}</p>
+            ))}
+          </div>
+        );
+      }
+    } catch (error) {
+      console.error("Error rendering tool component:", error);
+      return (
+        <div className="text-center p-8 bg-red-50 rounded-lg">
+          <h3 className="text-lg font-semibold text-red-600">Something went wrong</h3>
+          <p className="text-gray-700">There was an error loading this tool. Please try again later.</p>
+        </div>
+      );
+    }
+  };
 
   if (!tool) {
     return (
@@ -109,19 +140,7 @@ const ToolPage = () => {
             )}
           </div>
           
-          {slug === 'prompt-optimizer' ? (
-            <PromptOptimizer />
-          ) : slug === 'schema-generator' ? (
-            <SchemaGenerator />
-          ) : slug === 'aeo-analyzer' ? (
-            <AEOAnalyzer />
-          ) : (
-            <div className="prose prose-lg max-w-none">
-              {tool?.content.map((paragraph, index) => (
-                <p key={index} className="mb-4">{paragraph}</p>
-              ))}
-            </div>
-          )}
+          {renderToolComponent()}
         </div>
       </main>
       
