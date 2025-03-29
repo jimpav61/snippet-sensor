@@ -8,7 +8,7 @@ import FeaturedResource from '@/components/learning-center/FeaturedResource';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { BookOpen, FileText } from 'lucide-react';
+import { BookOpen, FileText, ChevronRight } from 'lucide-react';
 
 const LearningCenterPage = () => {
   return (
@@ -99,8 +99,11 @@ const LearningCenterPage = () => {
                   />
                 </div>
                 <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50">
-                    View All Articles
+                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
+                    <Link to="/aeo/learning/articles">
+                      View All Articles
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
                   </Button>
                 </div>
               </TabsContent>
@@ -167,8 +170,11 @@ const LearningCenterPage = () => {
                 />
                 
                 <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50">
-                    View All Guides
+                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
+                    <Link to="/aeo/learning/guides">
+                      View All Guides
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
                   </Button>
                 </div>
               </TabsContent>
@@ -229,8 +235,11 @@ const LearningCenterPage = () => {
                 />
                 
                 <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50">
-                    View All Case Studies
+                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
+                    <Link to="/aeo/learning/case-studies">
+                      View All Case Studies
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
                   </Button>
                 </div>
               </TabsContent>
@@ -279,8 +288,11 @@ const LearningCenterPage = () => {
                 />
                 
                 <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50">
-                    View All Tools
+                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
+                    <Link to="/aeo/learning/tools">
+                      View All Tools
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
                   </Button>
                 </div>
               </TabsContent>

@@ -12,6 +12,10 @@ import AEOAdminPage from "./pages/AEOAdminPage";
 import DashboardPage from "./pages/DashboardPage";
 import LearningCenterPage from "./pages/LearningCenterPage";
 import AEOGuidePage from "./pages/AEOGuidePage";
+import ArticlesPage from "./pages/ArticlesPage";
+import GuidesPage from "./pages/GuidesPage";
+import CaseStudiesPage from "./pages/CaseStudiesPage";
+import ToolsPage from "./pages/ToolsPage";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +31,10 @@ const App = () => (
           <Route path="/aeo/analyze" element={<AEOAnalyzePage />} />
           <Route path="/aeo/admin" element={<AEOAdminPage />} />
           <Route path="/aeo/learning" element={<LearningCenterPage />} />
+          <Route path="/aeo/learning/articles" element={<ArticlesPage />} />
+          <Route path="/aeo/learning/guides" element={<GuidesPage />} />
+          <Route path="/aeo/learning/case-studies" element={<CaseStudiesPage />} />
+          <Route path="/aeo/learning/tools" element={<ToolsPage />} />
           <Route path="/aeo/guide" element={<AEOGuidePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
