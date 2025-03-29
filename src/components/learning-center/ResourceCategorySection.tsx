@@ -1,8 +1,5 @@
 
 import React from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import ResourceCard from './ResourceCard';
 
 interface Resource {
@@ -10,7 +7,7 @@ interface Resource {
   description: string;
   category: string;
   readTime: string;
-  slug?: string;
+  slug: string; // Making slug required instead of optional
 }
 
 interface ResourceCategorySectionProps {

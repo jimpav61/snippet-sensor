@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -61,6 +60,7 @@ const LearningCenterPage = () => {
                     category="AEO Strategy"
                     date="June 15, 2023"
                     readTime="8 min read"
+                    slug="understanding-ai-snippets"
                   />
                   <ArticleCard 
                     title="The Importance of Structured Data for AEO"
@@ -68,6 +68,7 @@ const LearningCenterPage = () => {
                     category="Technical SEO"
                     date="May 28, 2023"
                     readTime="6 min read"
+                    slug="structured-data-importance"
                   />
                   <ArticleCard 
                     title="How AI Engines Evaluate Content Quality"
@@ -75,6 +76,7 @@ const LearningCenterPage = () => {
                     category="Content Strategy"
                     date="April 12, 2023"
                     readTime="10 min read"
+                    slug="ai-content-evaluation"
                   />
                   <ArticleCard 
                     title="AEO vs SEO: Key Differences and Strategies"
@@ -82,6 +84,7 @@ const LearningCenterPage = () => {
                     category="Strategy"
                     date="March 5, 2023"
                     readTime="7 min read"
+                    slug="aeo-vs-seo"
                   />
                   <ArticleCard 
                     title="Optimizing E-commerce Sites for AI Search"
@@ -89,6 +92,7 @@ const LearningCenterPage = () => {
                     category="E-commerce"
                     date="February 18, 2023"
                     readTime="9 min read"
+                    slug="ecommerce-ai-optimization"
                   />
                   <ArticleCard 
                     title="The Future of Search: AI Trends to Watch"
@@ -96,15 +100,8 @@ const LearningCenterPage = () => {
                     category="Trends"
                     date="January 22, 2023"
                     readTime="5 min read"
+                    slug="future-ai-search-trends"
                   />
-                </div>
-                <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
-                    <Link to="/aeo/learning/articles">
-                      View All Articles
-                      <ChevronRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
                 </div>
               </TabsContent>
               
@@ -116,25 +113,29 @@ const LearningCenterPage = () => {
                       title: "Beginner's Guide to AEO",
                       description: "Start your journey into AI Engine Optimization with this comprehensive guide covering fundamental concepts, basic implementation strategies, and common pitfalls to avoid as you begin optimizing for AI search.",
                       category: "Beginner",
-                      readTime: "12 min read"
+                      readTime: "12 min read",
+                      slug: "beginners-guide-to-aeo"
                     },
                     {
                       title: "Advanced AEO Techniques",
                       description: "Take your optimization to the next level with advanced strategies including entity optimization, natural language processing alignment, and semantic content structuring for experienced marketers looking to maximize AI visibility.",
                       category: "Advanced",
-                      readTime: "20 min read"
+                      readTime: "20 min read",
+                      slug: "advanced-aeo-techniques"
                     },
                     {
                       title: "Creating AI-Friendly Content",
                       description: "Learn how to structure and format your content for maximum visibility in AI search results. This guide covers question-answering formats, entity relationships, and content organization principles that AI engines prioritize.",
                       category: "Content",
-                      readTime: "15 min read"
+                      readTime: "15 min read",
+                      slug: "ai-friendly-content-creation"
                     },
                     {
                       title: "Technical Guide to Schema.org for AEO",
                       description: "Implement structured data with this technical guide to boost your visibility in AI search. Covers JSON-LD implementation, key schema types for different industries, and validation techniques to ensure proper integration.",
                       category: "Technical",
-                      readTime: "18 min read"
+                      readTime: "18 min read",
+                      slug: "schema-implementation-guide"
                     }
                   ]}
                 />
@@ -146,37 +147,32 @@ const LearningCenterPage = () => {
                       title: "AEO for E-commerce Websites",
                       description: "Specialized optimization techniques for online retailers, including product description optimization, review integration, and AI-friendly navigation structures that improve conversion rates and visibility.",
                       category: "E-commerce",
-                      readTime: "16 min read"
+                      readTime: "16 min read",
+                      slug: "ecommerce-aeo-guide"
                     },
                     {
                       title: "AEO for B2B Companies",
                       description: "B2B businesses have unique AEO needs. This guide covers targeting decision-makers, optimizing for complex purchase journeys, and structuring content for AI-powered business research tools.",
                       category: "B2B",
-                      readTime: "14 min read"
+                      readTime: "14 min read",
+                      slug: "b2b-aeo-guide"
                     },
                     {
                       title: "AEO for Local Businesses",
                       description: "Local businesses can leverage AI search to attract nearby customers. Learn location-based optimization techniques, local entity strategies, and how to structure business information for AI local search.",
                       category: "Local",
-                      readTime: "10 min read"
+                      readTime: "10 min read",
+                      slug: "local-business-aeo-guide"
                     },
                     {
                       title: "AEO for Content Publishers",
                       description: "News outlets, blogs, and content publishers need specialized approaches to AEO. This guide covers freshness signals, authority building, and content formatting that works best for AI news aggregation.",
                       category: "Publishing",
-                      readTime: "17 min read"
+                      readTime: "17 min read",
+                      slug: "publisher-aeo-guide"
                     }
                   ]}
                 />
-                
-                <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
-                    <Link to="/aeo/learning/guides">
-                      View All Guides
-                      <ChevronRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
               </TabsContent>
               
               <TabsContent value="case-studies">
@@ -187,13 +183,15 @@ const LearningCenterPage = () => {
                       title: "How FashionRetailer.com Increased Traffic 300% with AEO",
                       description: "This online clothing retailer implemented comprehensive AEO strategies including product schema markup, question-answering content formats, and AI-friendly navigation, resulting in a 300% traffic increase from AI platforms within 4 months.",
                       category: "E-commerce",
-                      readTime: "10 min read"
+                      readTime: "10 min read",
+                      slug: "fashion-retailer-case-study"
                     },
                     {
                       title: "ElectronicsStore Increases Conversion Rate by 45% Through AEO",
                       description: "By restructuring product pages to answer common customer questions and implementing enhanced technical specifications in structured data, this electronics retailer saw conversions jump dramatically from AI-referred traffic.",
                       category: "E-commerce",
-                      readTime: "12 min read"
+                      readTime: "12 min read",
+                      slug: "electronics-store-case-study"
                     }
                   ]}
                 />
@@ -205,13 +203,15 @@ const LearningCenterPage = () => {
                       title: "SaaS Company Boosts Leads by 200% with AI Optimization",
                       description: "This software-as-a-service provider reorganized their content library around user questions and implemented comprehensive AI-friendly documentation, resulting in significantly higher qualified lead generation from AI search platforms.",
                       category: "SaaS",
-                      readTime: "8 min read"
+                      readTime: "8 min read",
+                      slug: "saas-aeo-case-study"
                     },
                     {
                       title: "Manufacturing Firm Captures Market Share Through AEO",
                       description: "By creating comprehensive, structured content addressing industry-specific questions and implementing technical schema markup, this B2B manufacturer became the go-to information source for AI-powered business research.",
                       category: "Manufacturing",
-                      readTime: "11 min read"
+                      readTime: "11 min read",
+                      slug: "manufacturing-aeo-case-study"
                     }
                   ]}
                 />
@@ -223,25 +223,18 @@ const LearningCenterPage = () => {
                       title: "Local Service Business Outranks National Chains with AEO",
                       description: "A small local home services company implemented hyperlocal content strategies and structured data markup, allowing them to capture prominent visibility in AI search results over much larger national competitors.",
                       category: "Local Business",
-                      readTime: "7 min read"
+                      readTime: "7 min read",
+                      slug: "local-service-case-study"
                     },
                     {
                       title: "Restaurant Increases Reservations 85% Through AI Visibility",
                       description: "By restructuring their menu items with comprehensive structured data and creating content that specifically addressed local dining questions, this restaurant dramatically increased its visibility in AI recommendation platforms.",
                       category: "Hospitality",
-                      readTime: "9 min read"
+                      readTime: "9 min read",
+                      slug: "restaurant-case-study"
                     }
                   ]}
                 />
-                
-                <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
-                    <Link to="/aeo/learning/case-studies">
-                      View All Case Studies
-                      <ChevronRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
               </TabsContent>
               
               <TabsContent value="tools">
@@ -252,19 +245,22 @@ const LearningCenterPage = () => {
                       title: "AEO Analyzer Tool Guide",
                       description: "Learn how to use our AEO Analyzer tool to identify optimization opportunities in your content. This step-by-step guide covers content analysis, competitive benchmarking, and implementing the tool's recommendations effectively.",
                       category: "Tool Guide",
-                      readTime: "5 min read"
+                      readTime: "5 min read",
+                      slug: "aeo-analyzer-guide"
                     },
                     {
                       title: "Free Schema Generator for AEO",
                       description: "Generate structured data markup with our free tool to improve your AI visibility. This guide walks you through selecting the right schema types for your content and implementing the generated code properly on your website.",
                       category: "Tool",
-                      readTime: "3 min read"
+                      readTime: "3 min read",
+                      slug: "schema-generator-tool"
                     },
                     {
                       title: "Content Evaluation Checklist",
                       description: "A downloadable checklist to evaluate your content's readiness for AI search engines. Covers all essential elements from content structure and formatting to technical implementation and performance measurement.",
                       category: "Checklist",
-                      readTime: "2 min read"
+                      readTime: "2 min read",
+                      slug: "content-evaluation-checklist"
                     }
                   ]}
                 />
@@ -276,25 +272,18 @@ const LearningCenterPage = () => {
                       title: "AI Content Opportunity Analyzer",
                       description: "Our premium tool helps identify gaps in your content strategy based on what AI engines are looking for in your industry. Learn how to interpret the data and create high-performing content that addresses identified opportunities.",
                       category: "Premium Tool",
-                      readTime: "8 min read"
+                      readTime: "8 min read",
+                      slug: "content-opportunity-analyzer"
                     },
                     {
                       title: "Structured Data Validator & Enhancer",
                       description: "This advanced tool not only validates your structured data implementation but also suggests enhancements based on AI engine preferences. Includes industry-specific recommendations for maximum visibility.",
                       category: "Technical Tool",
-                      readTime: "6 min read"
+                      readTime: "6 min read",
+                      slug: "structured-data-validator"
                     }
                   ]}
                 />
-                
-                <div className="mt-8 text-center">
-                  <Button variant="outline" className="border-aeo text-aeo hover:bg-aeo-50" asChild>
-                    <Link to="/aeo/learning/tools">
-                      View All Tools
-                      <ChevronRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
               </TabsContent>
             </Tabs>
           </div>
