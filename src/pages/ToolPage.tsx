@@ -1,8 +1,9 @@
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, BookOpen } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
 // Updated tools data without fashion retailer tool
@@ -13,11 +14,12 @@ const toolsData = [
     description: "Interactive tool to analyze your AI content and get recommendations for optimization",
     category: "Content Analysis",
     readTime: "Interactive",
+    relatedGuide: "aeo-analyzer-guide",
     content: [
       "This interactive tool allows you to analyze your AI content and get actionable recommendations.",
       "Upload your content or enter a URL to get started with a comprehensive analysis.",
       "The analyzer will evaluate your content against key AI optimization factors and provide specific improvement suggestions.",
-      "Please note this is a placeholder. In a production environment, this would be a fully interactive tool with analysis capabilities."
+      "Please note this is a placeholder. In a production environment, this would be a fully interactive tool."
     ]
   },
   {
@@ -92,6 +94,16 @@ const ToolPage = () => {
             
             <h1 className="heading-xl mb-6">{tool.title}</h1>
             <p className="text-lg text-gray-700 mb-8">{tool.description}</p>
+            
+            {tool.relatedGuide && (
+              <Link 
+                to={`/aeo/learning/guide/${tool.relatedGuide}`} 
+                className="inline-flex items-center text-aeo-600 hover:text-aeo-700 mb-6"
+              >
+                <BookOpen className="h-4 w-4 mr-2" />
+                View guide for this tool
+              </Link>
+            )}
           </div>
           
           <div className="prose prose-lg max-w-none">

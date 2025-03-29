@@ -1,21 +1,19 @@
-
 export const guidesData = [
   {
     id: 1,
-    slug: "beginners-guide-to-aeo",
-    title: "Beginner's Guide to AEO",
-    description: "Start your journey into AI Engine Optimization with this comprehensive guide covering fundamental concepts, basic implementation strategies, and common pitfalls to avoid as you begin optimizing for AI search.",
-    category: "Beginner",
-    readTime: "12 min read",
+    slug: "aeo-analyzer-guide",
+    title: "How to Use the AEO Analyzer Tool",
+    description: "Learn how to use our AEO Analyzer tool to optimize your content for AI search engines",
+    category: "Tools",
+    readTime: "5 min read",
     content: [
-      "Welcome to the world of AI Engine Optimization (AEO)! As artificial intelligence increasingly mediates how people discover and consume information online, understanding how to optimize your content for AI systems has become essential for digital visibility.",
-      "At its core, AEO involves creating content and structuring information in ways that are easily understood and valued by AI systems. Unlike traditional SEO, which focused primarily on keywords and backlinks, AEO emphasizes context, relationships between information, and demonstrating expertise on topics.",
-      "AI engines differ from traditional search engines in several key ways. They understand natural language queries, interpret user intent more accurately, and aim to directly answer questions rather than simply matching keywords to documents. This fundamental shift requires a new approach to content optimization.",
-      "For businesses and content creators new to AEO, the first step is understanding how AI engines evaluate content. These systems look for signals of expertise, authoritativeness, and trustworthiness in content. They also assess comprehensiveness, relevance to user queries, and the logical structure of information.",
-      "Content structure is particularly important for AEO success. AI engines prefer content with clear hierarchical organization, explicit sections addressing specific subtopics, and direct answers to common questions. This structured approach makes it easier for AI systems to parse and extract relevant information from your content.",
-      "Implementing basic structured data markup is an essential early step in AEO. Using schema.org vocabulary to provide explicit information about your content, products, services, and organization helps AI engines accurately categorize and understand your offerings. For beginners, focusing on core schema types like Organization, LocalBusiness, Product, and Article provides a solid foundation.",
-      "When creating content for AI engines, focus on addressing user questions comprehensively. Research the specific questions your target audience is asking about topics in your expertise area. Structure your content to directly answer these questions while providing sufficient context and supporting information.",
-      "Common AEO pitfalls for beginners include focusing too narrowly on keywords rather than topics, creating shallow content that lacks substantive value, and neglecting to update content as information evolves. Avoiding these mistakes while implementing the fundamentals of AEO will set you on the path to success in AI-mediated discovery."
+      "The AEO Analyzer Tool is an essential resource for anyone looking to optimize their content for AI-powered search engines.",
+      "This guide will walk you through the process of using the tool effectively to analyze your content and improve its performance in AI search results.",
+      "To get started with the AEO Analyzer Tool, first navigate to the Tools section in our Learning Center and select the AEO Analyzer.",
+      "The tool allows you to input your content or URL and receive detailed analysis on how well it's optimized for AI engines.",
+      "Key metrics include semantic relevance, topic comprehensiveness, and structural clarity – all critical factors in AI engine optimization.",
+      "After analyzing your content, the tool provides actionable recommendations to improve your content's performance with AI search algorithms.",
+      "Remember to implement the suggested changes and re-analyze your content to track improvements over time."
     ]
   },
   {

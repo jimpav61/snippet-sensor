@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, FileText } from 'lucide-react';
+import { BookOpen, FileText, Link as LinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ResourceCardProps {
@@ -11,6 +11,7 @@ interface ResourceCardProps {
   readTime: string;
   slug?: string;
   type?: 'guide' | 'case-study' | 'tool';
+  relatedGuide?: string;
 }
 
 const ResourceCard: React.FC<ResourceCardProps> = ({
@@ -20,6 +21,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   readTime,
   slug,
   type = 'guide',
+  relatedGuide
 }) => {
   const getIcon = () => {
     switch (type) {
@@ -61,8 +63,18 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       <CardContent>
         <p className="text-muted-foreground line-clamp-3 text-sm">{description}</p>
       </CardContent>
-      <CardFooter className="text-xs text-muted-foreground pt-2 flex justify-end">
+      <CardFooter className="text-xs text-muted-foreground pt-2 flex justify-between">
         <span>{readTime}</span>
+        {relatedGuide && type === 'tool' && (
+          <Link 
+            to={`/aeo/learning/guide/${relatedGuide}`} 
+            className="text-aeo-600 hover:text-aeo-700 inline-flex items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <BookOpen className="h-3 w-3 mr-1" />
+            <span>Guide</span>
+          </Link>
+        )}
       </CardFooter>
     </>
   );

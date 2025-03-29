@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -15,7 +16,8 @@ const toolsData = [
     description: "Interactive tool to analyze your AI content and get recommendations for optimization",
     category: "Content Analysis",
     readTime: "Interactive",
-    type: "tool"
+    type: "tool",
+    relatedGuide: "aeo-analyzer-guide"
   },
   {
     id: 2,
@@ -74,6 +76,7 @@ const ToolsPage = () => {
                   readTime={tool.readTime}
                   slug={tool.slug}
                   type="tool"
+                  relatedGuide={tool.relatedGuide}
                 />
               ))}
             </div>
