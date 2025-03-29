@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
@@ -12,7 +11,6 @@ const AEOLearnMorePage = () => {
       <Header />
       
       <main className="flex-grow">
-        {/* Hero Section */}
         <section className="bg-gradient-to-r from-aeo-600 to-aeo-400 py-16 lg:py-24 px-4 sm:px-6 lg:px-8 text-white">
           <div className="max-w-7xl mx-auto">
             <div className="max-w-3xl">
@@ -28,7 +26,7 @@ const AEOLearnMorePage = () => {
                   asChild 
                   variant="outline" 
                   size="lg" 
-                  className="text-black border-white bg-white/30 hover:bg-white/50 hover:text-black"
+                  className="text-aeo-600 border-white bg-white/30 hover:bg-white/50 hover:text-aeo-700"
                 >
                   <Link to="/aeo/guide">Explore Full AEO Guide</Link>
                 </Button>
@@ -37,7 +35,6 @@ const AEOLearnMorePage = () => {
           </div>
         </section>
         
-        {/* The AEO Revolution Section */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -81,7 +78,6 @@ const AEOLearnMorePage = () => {
           </div>
         </section>
         
-        {/* Why AEO Matters Section */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -177,7 +173,6 @@ const AEOLearnMorePage = () => {
           </div>
         </section>
         
-        {/* How AEO Works Section */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
@@ -236,7 +231,6 @@ const AEOLearnMorePage = () => {
           </div>
         </section>
         
-        {/* CTA Section */}
         <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="heading-lg mb-6">Ready to Optimize Your Content for AI?</h2>
