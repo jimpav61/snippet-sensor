@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Copy, Code, FileJson, Check, ExternalLink, Zap } from 'lucide-react';
+import { Copy, Code, FileJson, Check, ExternalLink, Zap, HelpCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { 
   Form, 
@@ -18,6 +18,7 @@ import {
   FormLabel, 
   FormMessage 
 } from '@/components/ui/form';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -32,6 +33,22 @@ const schemaFormSchema = z.object({
   price: z.string().optional(),
   currency: z.string().optional(),
   availability: z.string().optional(),
+  location: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  organizationName: z.string().optional(),
+  streetAddress: z.string().optional(),
+  addressLocality: z.string().optional(),
+  addressRegion: z.string().optional(),
+  postalCode: z.string().optional(),
+  telephone: z.string().optional(),
+  email: z.string().email("Must be a valid email").or(z.literal("")).optional(),
+  steps: z.array(
+    z.object({
+      name: z.string().min(2, "Step name must be at least 2 characters"),
+      text: z.string().min(5, "Step text must be at least 5 characters"),
+    })
+  ).optional(),
   questions: z.array(
     z.object({
       question: z.string().min(5, "Question must be at least 5 characters"),
@@ -45,12 +62,19 @@ interface FAQItem {
   answer: string;
 }
 
+interface HowToStep {
+  name: string;
+  text: string;
+}
+
 const SchemaGenerator = () => {
   const [generatedSchema, setGeneratedSchema] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [faqItems, setFaqItems] = useState<FAQItem[]>([{ question: '', answer: '' }]);
+  const [howToSteps, setHowToSteps] = useState<HowToStep[]>([{ name: '', text: '' }]);
   const [copied, setCopied] = useState(false);
   const [aeoScore, setAeoScore] = useState(0);
+  const [tooltipContent, setTooltipContent] = useState('');
   
   const form = useForm<z.infer<typeof schemaFormSchema>>({
     resolver: zodResolver(schemaFormSchema),
@@ -64,6 +88,17 @@ const SchemaGenerator = () => {
       price: '',
       currency: 'USD',
       availability: 'InStock',
+      location: '',
+      startDate: '',
+      endDate: '',
+      organizationName: '',
+      streetAddress: '',
+      addressLocality: '',
+      addressRegion: '',
+      postalCode: '',
+      telephone: '',
+      email: '',
+      steps: [{ name: '', text: '' }],
       questions: [{ question: '', answer: '' }],
     },
   });
@@ -86,9 +121,26 @@ const SchemaGenerator = () => {
     setFaqItems(updatedItems);
   };
 
+  const addHowToStep = () => {
+    setHowToSteps([...howToSteps, { name: '', text: '' }]);
+  };
+  
+  const removeHowToStep = (index: number) => {
+    const updatedSteps = [...howToSteps];
+    updatedSteps.splice(index, 1);
+    setHowToSteps(updatedSteps);
+  };
+  
+  const updateHowToStep = (index: number, field: 'name' | 'text', value: string) => {
+    const updatedSteps = [...howToSteps];
+    updatedSteps[index][field] = value;
+    setHowToSteps(updatedSteps);
+  };
+
   const clearFields = () => {
     form.reset();
     setFaqItems([{ question: '', answer: '' }]);
+    setHowToSteps([{ name: '', text: '' }]);
     setGeneratedSchema('');
     setAeoScore(0);
   };
@@ -153,6 +205,66 @@ const SchemaGenerator = () => {
           "mainEntity": mainEntity
         };
         score = calculateAeoScore('faq', data, faqItems);
+      } else if (data.contentType === 'event') {
+        schema = {
+          "@context": "https://schema.org",
+          "@type": "Event",
+          "name": data.name,
+          "description": data.description,
+          "startDate": data.startDate,
+          "endDate": data.endDate,
+          "location": {
+            "@type": "Place",
+            "name": data.location,
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": data.streetAddress,
+              "addressLocality": data.addressLocality,
+              "addressRegion": data.addressRegion,
+              "postalCode": data.postalCode
+            }
+          },
+          "organizer": {
+            "@type": "Organization",
+            "name": data.organizationName
+          },
+          "url": data.url
+        };
+        score = calculateAeoScore('event', data);
+      } else if (data.contentType === 'local-business') {
+        schema = {
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": data.name,
+          "description": data.description,
+          "url": data.url,
+          "telephone": data.telephone,
+          "email": data.email,
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": data.streetAddress,
+            "addressLocality": data.addressLocality,
+            "addressRegion": data.addressRegion,
+            "postalCode": data.postalCode
+          }
+        };
+        score = calculateAeoScore('local-business', data);
+      } else if (data.contentType === 'how-to') {
+        const steps = howToSteps.map((step, index) => ({
+          "@type": "HowToStep",
+          "position": index + 1,
+          "name": step.name,
+          "text": step.text
+        }));
+
+        schema = {
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": data.name,
+          "description": data.description,
+          "step": steps
+        };
+        score = calculateAeoScore('how-to', data, undefined, howToSteps);
       }
       
       setGeneratedSchema(JSON.stringify(schema, null, 2));
@@ -162,7 +274,12 @@ const SchemaGenerator = () => {
     }, 1000);
   };
 
-  const calculateAeoScore = (type: string, data: any, faqItems?: FAQItem[]) => {
+  const calculateAeoScore = (
+    type: string, 
+    data: any, 
+    faqItems?: FAQItem[], 
+    howToSteps?: HowToStep[]
+  ) => {
     let score = 60;
     
     if (data.name && data.name.length > 5) score += 5;
@@ -183,6 +300,23 @@ const SchemaGenerator = () => {
           item.question.length > 10 && item.answer.length > 20
         );
         score += Math.min(validPairs.length * 5, 15);
+      }
+    } else if (type === 'event') {
+      if (data.startDate) score += 5;
+      if (data.endDate) score += 3;
+      if (data.location) score += 5;
+      if (data.streetAddress && data.addressLocality) score += 7;
+    } else if (type === 'local-business') {
+      if (data.telephone) score += 5;
+      if (data.email) score += 3;
+      if (data.streetAddress && data.addressLocality) score += 7;
+      if (data.addressRegion && data.postalCode) score += 5;
+    } else if (type === 'how-to') {
+      if (howToSteps && howToSteps.length > 0) {
+        const validSteps = howToSteps.filter(step => 
+          step.name.length > 5 && step.text.length > 10
+        );
+        score += Math.min(validSteps.length * 5, 15);
       }
     }
     
@@ -208,6 +342,57 @@ const SchemaGenerator = () => {
   
   const openRichResultsTest = () => {
     window.open('https://search.google.com/test/rich-results', '_blank');
+  };
+
+  const getFieldTooltip = (fieldName: string) => {
+    const tooltips: Record<string, string> = {
+      name: "The main title of your content (required)",
+      description: "A summary of what your content is about (recommended)",
+      url: "The URL where this content can be found (recommended)",
+      author: "The person who created this content (improves AI recognition)",
+      datePublished: "When this content was first published (improves AI recognition)",
+      price: "The cost of your product (required for Product schema)",
+      location: "Where the event takes place (required for Event schema)",
+      steps: "Step-by-step instructions (required for HowTo schema)",
+      questions: "Questions and answers (required for FAQ schema)"
+    };
+    
+    return tooltips[fieldName] || "";
+  };
+
+  const renderFieldWithTooltip = (fieldName: string, component: React.ReactNode) => {
+    const tooltipText = getFieldTooltip(fieldName);
+    
+    if (!tooltipText) return component;
+    
+    return (
+      <div className="flex items-start gap-1">
+        {component}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger className="mt-1">
+              <HelpCircle className="h-4 w-4 text-gray-400" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="max-w-xs">{tooltipText}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    );
+  };
+
+  const getSchemaDescription = (type: string) => {
+    const descriptions: Record<string, string> = {
+      article: "Perfect for blog posts, news articles, and other informational content",
+      product: "Ideal for e-commerce products, services, or other offerings",
+      faq: "Best for FAQ pages or content sections that answer common questions",
+      event: "For conferences, workshops, webinars, and other events",
+      'local-business': "For brick-and-mortar businesses with physical locations",
+      'how-to': "For instructional content, tutorials, and other step-by-step guides"
+    };
+    
+    return descriptions[type] || "";
   };
 
   return (
@@ -242,7 +427,23 @@ const SchemaGenerator = () => {
                         <FormItem>
                           <FormLabel>Content Type</FormLabel>
                           <Select 
-                            onValueChange={field.onChange} 
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              
+                              // When changing content type, reset form but keep the content type
+                              const currentType = value;
+                              form.reset({ 
+                                ...form.getValues(),
+                                contentType: currentType 
+                              });
+                              
+                              if (value === 'faq') {
+                                setFaqItems([{ question: '', answer: '' }]);
+                              }
+                              if (value === 'how-to') {
+                                setHowToSteps([{ name: '', text: '' }]);
+                              }
+                            }} 
                             defaultValue={field.value}
                           >
                             <FormControl>
@@ -254,72 +455,34 @@ const SchemaGenerator = () => {
                               <SelectItem value="article">Article</SelectItem>
                               <SelectItem value="product">Product</SelectItem>
                               <SelectItem value="faq">FAQ Page</SelectItem>
+                              <SelectItem value="event">Event</SelectItem>
+                              <SelectItem value="local-business">Local Business</SelectItem>
+                              <SelectItem value="how-to">How-To Guide</SelectItem>
                             </SelectContent>
                           </Select>
+                          {contentType && (
+                            <FormDescription>
+                              {getSchemaDescription(contentType)}
+                            </FormDescription>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name/Title</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter name or title" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="description"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Description</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="Enter description"
-                              className="min-h-[80px]"
-                              {...field} 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="url"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>URL</FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="https://example.com/your-content" 
-                              {...field} 
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    {contentType === 'article' && (
+                    {contentType && (
                       <>
                         <FormField
                           control={form.control}
-                          name="author"
+                          name="name"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Author</FormLabel>
+                              <FormLabel>
+                                {contentType === 'article' ? 'Headline' : 
+                                 contentType === 'how-to' ? 'Title' : 'Name'}
+                              </FormLabel>
                               <FormControl>
-                                <Input placeholder="Author name" {...field} />
+                                <Input placeholder="Enter name or title" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -328,30 +491,16 @@ const SchemaGenerator = () => {
                         
                         <FormField
                           control={form.control}
-                          name="datePublished"
+                          name="description"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Date Published</FormLabel>
+                              <FormLabel>Description</FormLabel>
                               <FormControl>
-                                <Input type="date" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </>
-                    )}
-                    
-                    {contentType === 'product' && (
-                      <>
-                        <FormField
-                          control={form.control}
-                          name="price"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Price</FormLabel>
-                              <FormControl>
-                                <Input placeholder="29.99" {...field} />
+                                <Textarea 
+                                  placeholder="Enter description"
+                                  className="min-h-[80px]"
+                                  {...field} 
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -360,108 +509,448 @@ const SchemaGenerator = () => {
                         
                         <FormField
                           control={form.control}
-                          name="currency"
+                          name="url"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Currency</FormLabel>
-                              <Select 
-                                onValueChange={field.onChange} 
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select currency" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="USD">USD</SelectItem>
-                                  <SelectItem value="EUR">EUR</SelectItem>
-                                  <SelectItem value="GBP">GBP</SelectItem>
-                                </SelectContent>
-                              </Select>
+                              <FormLabel>URL</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder="https://example.com/your-content" 
+                                  {...field} 
+                                />
+                              </FormControl>
                               <FormMessage />
                             </FormItem>
                           )}
                         />
                         
-                        <FormField
-                          control={form.control}
-                          name="availability"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Availability</FormLabel>
-                              <Select 
-                                onValueChange={field.onChange} 
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select availability" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="InStock">In Stock</SelectItem>
-                                  <SelectItem value="OutOfStock">Out of Stock</SelectItem>
-                                  <SelectItem value="PreOrder">Pre-Order</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </>
-                    )}
-                    
-                    {contentType === 'faq' && (
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-medium">FAQ Items</h4>
-                          <Button 
-                            type="button" 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={addFaqItem}
-                          >
-                            Add Question
-                          </Button>
-                        </div>
-                        
-                        {faqItems.map((item, index) => (
-                          <div key={index} className="space-y-3 p-3 border rounded-md">
-                            <div className="flex justify-between items-center">
-                              <h5 className="text-sm font-medium">Question {index + 1}</h5>
-                              {index > 0 && (
-                                <Button 
-                                  type="button" 
-                                  variant="ghost" 
-                                  size="sm"
-                                  onClick={() => removeFaqItem(index)}
-                                >
-                                  Remove
-                                </Button>
+                        {(contentType === 'article') && (
+                          <>
+                            <FormField
+                              control={form.control}
+                              name="author"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Author</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="Author name" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
                               )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="datePublished"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Date Published</FormLabel>
+                                  <FormControl>
+                                    <Input type="date" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </>
+                        )}
+                        
+                        {contentType === 'product' && (
+                          <>
+                            <FormField
+                              control={form.control}
+                              name="price"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Price</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="29.99" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="currency"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Currency</FormLabel>
+                                  <Select 
+                                    onValueChange={field.onChange} 
+                                    defaultValue={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select currency" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="USD">USD</SelectItem>
+                                      <SelectItem value="EUR">EUR</SelectItem>
+                                      <SelectItem value="GBP">GBP</SelectItem>
+                                      <SelectItem value="CAD">CAD</SelectItem>
+                                      <SelectItem value="AUD">AUD</SelectItem>
+                                      <SelectItem value="JPY">JPY</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="availability"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Availability</FormLabel>
+                                  <Select 
+                                    onValueChange={field.onChange} 
+                                    defaultValue={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select availability" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="InStock">In Stock</SelectItem>
+                                      <SelectItem value="OutOfStock">Out of Stock</SelectItem>
+                                      <SelectItem value="PreOrder">Pre-Order</SelectItem>
+                                      <SelectItem value="Discontinued">Discontinued</SelectItem>
+                                      <SelectItem value="BackOrder">Back Order</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </>
+                        )}
+                        
+                        {contentType === 'event' && (
+                          <>
+                            <FormField
+                              control={form.control}
+                              name="startDate"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Start Date & Time</FormLabel>
+                                  <FormControl>
+                                    <Input type="datetime-local" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="endDate"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>End Date & Time</FormLabel>
+                                  <FormControl>
+                                    <Input type="datetime-local" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <FormField
+                              control={form.control}
+                              name="location"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Location Name</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="Event venue name" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="organizationName"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Organizer Name</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="Name of hosting organization" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+
+                            <div className="space-y-4 p-3 border rounded-md">
+                              <h5 className="text-sm font-medium">Address Information</h5>
+                              
+                              <FormField
+                                control={form.control}
+                                name="streetAddress"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Street Address</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="123 Main St" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              
+                              <FormField
+                                control={form.control}
+                                name="addressLocality"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>City</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="City" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              
+                              <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                  control={form.control}
+                                  name="addressRegion"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>State/Region</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="CA" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                
+                                <FormField
+                                  control={form.control}
+                                  name="postalCode"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Postal Code</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="90210" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        
+                        {contentType === 'local-business' && (
+                          <>
+                            <FormField
+                              control={form.control}
+                              name="telephone"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Telephone</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="+1 555-123-4567" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Email</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="contact@business.com" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <div className="space-y-4 p-3 border rounded-md">
+                              <h5 className="text-sm font-medium">Address Information</h5>
+                              
+                              <FormField
+                                control={form.control}
+                                name="streetAddress"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Street Address</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="123 Main St" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              
+                              <FormField
+                                control={form.control}
+                                name="addressLocality"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>City</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="City" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              
+                              <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                  control={form.control}
+                                  name="addressRegion"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>State/Region</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="CA" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                
+                                <FormField
+                                  control={form.control}
+                                  name="postalCode"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Postal Code</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="90210" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
+                        
+                        {contentType === 'faq' && (
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-sm font-medium">FAQ Items</h4>
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={addFaqItem}
+                              >
+                                Add Question
+                              </Button>
                             </div>
                             
-                            <div className="space-y-2">
-                              <Label>Question</Label>
-                              <Input 
-                                placeholder="Enter question"
-                                value={item.question}
-                                onChange={(e) => updateFaqItem(index, 'question', e.target.value)}
-                              />
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <Label>Answer</Label>
-                              <Textarea 
-                                placeholder="Enter answer"
-                                value={item.answer}
-                                onChange={(e) => updateFaqItem(index, 'answer', e.target.value)}
-                              />
-                            </div>
+                            {faqItems.map((item, index) => (
+                              <div key={index} className="space-y-3 p-3 border rounded-md">
+                                <div className="flex justify-between items-center">
+                                  <h5 className="text-sm font-medium">Question {index + 1}</h5>
+                                  {index > 0 && (
+                                    <Button 
+                                      type="button" 
+                                      variant="ghost" 
+                                      size="sm"
+                                      onClick={() => removeFaqItem(index)}
+                                    >
+                                      Remove
+                                    </Button>
+                                  )}
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  <Label>Question</Label>
+                                  <Input 
+                                    placeholder="Enter question"
+                                    value={item.question}
+                                    onChange={(e) => updateFaqItem(index, 'question', e.target.value)}
+                                  />
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  <Label>Answer</Label>
+                                  <Textarea 
+                                    placeholder="Enter answer"
+                                    value={item.answer}
+                                    onChange={(e) => updateFaqItem(index, 'answer', e.target.value)}
+                                  />
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
+                        )}
+                        
+                        {contentType === 'how-to' && (
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <h4 className="text-sm font-medium">Steps</h4>
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={addHowToStep}
+                              >
+                                Add Step
+                              </Button>
+                            </div>
+                            
+                            {howToSteps.map((step, index) => (
+                              <div key={index} className="space-y-3 p-3 border rounded-md">
+                                <div className="flex justify-between items-center">
+                                  <h5 className="text-sm font-medium">Step {index + 1}</h5>
+                                  {index > 0 && (
+                                    <Button 
+                                      type="button" 
+                                      variant="ghost" 
+                                      size="sm"
+                                      onClick={() => removeHowToStep(index)}
+                                    >
+                                      Remove
+                                    </Button>
+                                  )}
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  <Label>Step Name</Label>
+                                  <Input 
+                                    placeholder="Brief name for this step"
+                                    value={step.name}
+                                    onChange={(e) => updateHowToStep(index, 'name', e.target.value)}
+                                  />
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  <Label>Step Instructions</Label>
+                                  <Textarea 
+                                    placeholder="Detailed instructions for this step"
+                                    value={step.text}
+                                    onChange={(e) => updateHowToStep(index, 'text', e.target.value)}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </>
                     )}
                     
                     <div className="flex justify-between pt-4">
@@ -549,6 +1038,16 @@ const SchemaGenerator = () => {
                           <ExternalLink className="h-4 w-4" />
                         </Button>
                       </div>
+                    </div>
+                    
+                    <div className="p-3 border border-dashed rounded-md">
+                      <h4 className="text-sm font-medium mb-2">Implementation Guide</h4>
+                      <p className="text-sm mb-2">Add this schema to the <code>&lt;head&gt;</code> section of your HTML:</p>
+                      <pre className="bg-slate-100 p-2 rounded text-xs overflow-auto">
+{`<script type="application/ld+json">
+${generatedSchema}
+</script>`}
+                      </pre>
                     </div>
                   </div>
                 )}
@@ -676,6 +1175,122 @@ const SchemaGenerator = () => {
     "price": "99.99",
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock"
+  }
+}`)}
+                >
+                  <Copy className="mr-2 h-3 w-3" />
+                  Copy Example
+                </Button>
+              </div>
+
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">HowTo Schema</h3>
+                <pre className="bg-slate-100 p-4 rounded-md overflow-auto text-sm">
+                  {`{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Implement Schema Markup",
+  "description": "A step-by-step guide to implementing structured data on your website.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Choose Schema Type",
+      "text": "Determine which schema type best matches your content."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Generate Markup",
+      "text": "Use our schema generator to create the appropriate JSON-LD markup."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Add to Website",
+      "text": "Paste the generated schema into the <head> section of your webpage."
+    }
+  ]
+}`}
+                </pre>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-2"
+                  onClick={() => copyToClipboard(`{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Implement Schema Markup",
+  "description": "A step-by-step guide to implementing structured data on your website.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Choose Schema Type",
+      "text": "Determine which schema type best matches your content."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Generate Markup",
+      "text": "Use our schema generator to create the appropriate JSON-LD markup."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Add to Website",
+      "text": "Paste the generated schema into the <head> section of your webpage."
+    }
+  ]
+}`)}
+                >
+                  <Copy className="mr-2 h-3 w-3" />
+                  Copy Example
+                </Button>
+              </div>
+
+              <Separator />
+              
+              <div>
+                <h3 className="text-lg font-medium mb-2">Local Business Schema</h3>
+                <pre className="bg-slate-100 p-4 rounded-md overflow-auto text-sm">
+                  {`{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Digital Marketing Experts",
+  "description": "Professional SEO and AEO services for local businesses.",
+  "url": "https://example.com",
+  "telephone": "+1-555-123-4567",
+  "email": "info@example.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Main Street",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "postalCode": "94105"
+  }
+}`}
+                </pre>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="mt-2"
+                  onClick={() => copyToClipboard(`{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Digital Marketing Experts",
+  "description": "Professional SEO and AEO services for local businesses.",
+  "url": "https://example.com",
+  "telephone": "+1-555-123-4567",
+  "email": "info@example.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Main Street",
+    "addressLocality": "San Francisco",
+    "addressRegion": "CA",
+    "postalCode": "94105"
   }
 }`)}
                 >

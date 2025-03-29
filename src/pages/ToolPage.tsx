@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -45,6 +46,7 @@ const toolsData = [
     content: [
       "The AI Schema Generator creates structured data markup to help AI systems better understand your content.",
       "Select your content type and enter key information to generate ready-to-use schema markup.",
+      "Now supporting Article, Product, FAQ, Event, Local Business, and How-To schema types.",
       "The tool provides an AEO score to evaluate how well your schema will help AI systems interpret your content.",
       "Use the validation tools to ensure your schema meets technical requirements for implementation."
     ]
