@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -55,42 +56,42 @@ const LearningCenterPage = () => {
                     title="Understanding AI Snippets and How to Optimize For Them"
                     description="Learn how AI platforms select content for featured snippets and optimize your content to increase visibility."
                     category="AEO Strategy"
-                    date="June 15, 2023"
+                    date="May 25, 2025"
                     readTime="8 min read"
                   />
                   <ArticleCard 
                     title="The Importance of Structured Data for AEO"
                     description="Discover how implementing structured data can significantly improve your content's performance in AI search results."
                     category="Technical SEO"
-                    date="May 28, 2023"
+                    date="April 18, 2025"
                     readTime="6 min read"
                   />
                   <ArticleCard 
                     title="How AI Engines Evaluate Content Quality"
                     description="An in-depth analysis of the factors AI engines use to determine content quality and relevance."
                     category="Content Strategy"
-                    date="April 12, 2023"
+                    date="March 12, 2025"
                     readTime="10 min read"
                   />
                   <ArticleCard 
                     title="AEO vs SEO: Key Differences and Strategies"
                     description="Compare traditional SEO with AI Engine Optimization and learn when to apply each approach."
                     category="Strategy"
-                    date="March 5, 2023"
+                    date="February 15, 2025"
                     readTime="7 min read"
                   />
                   <ArticleCard 
                     title="Optimizing E-commerce Sites for AI Search"
                     description="Specialized strategies for online stores to perform better in AI-powered search results."
                     category="E-commerce"
-                    date="February 18, 2023"
+                    date="January 28, 2025"
                     readTime="9 min read"
                   />
                   <ArticleCard 
                     title="The Future of Search: AI Trends to Watch"
                     description="Stay ahead of the curve with insights into emerging AI search technologies and what they mean for content creators."
                     category="Trends"
-                    date="January 22, 2023"
+                    date="January 5, 2025"
                     readTime="5 min read"
                   />
                 </div>
