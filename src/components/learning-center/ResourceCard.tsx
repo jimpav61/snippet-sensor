@@ -36,6 +36,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   const getLink = () => {
     if (!slug) return '';
     
+    // Ensure we're using the correct type in the URL path
     switch (type) {
       case 'tool':
         return `/aeo/learning/tool/${slug}`;
