@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Link2, FileText, ArrowRight, Info, Lightbulb, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -206,7 +206,7 @@ const AEOAnalyzer = () => {
               </ul>
               <p>
                 For a more comprehensive analysis with detailed recommendations, use our 
-                <Link href="/aeo/analyze" className="text-aeo-600 hover:underline ml-1">full analysis tool</Link>.
+                <Link to="/aeo/analyze" className="text-aeo-600 hover:underline ml-1">full analysis tool</Link>.
               </p>
             </TabsContent>
             
