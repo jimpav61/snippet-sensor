@@ -1,9 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, BookOpen } from 'lucide-react';
+import { ChevronLeft, BookOpen, AlertTriangle } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import PromptOptimizer from '@/components/tools/PromptOptimizer';
 import SchemaGenerator from '@/components/tools/SchemaGenerator';
@@ -58,14 +58,33 @@ const toolsData = [
 const ToolPage = () => {
   const { slug } = useParams();
   const tool = toolsData.find(tool => tool.slug === slug);
+  const [hasError, setHasError] = useState(false);
 
-  // Prevent rendering components that might have errors
+  // Enhanced error handling for schema generator
   const renderToolComponent = () => {
     try {
       if (slug === 'prompt-optimizer') {
         return <PromptOptimizer />;
       } else if (slug === 'schema-generator') {
-        return <SchemaGenerator />;
+        try {
+          return <SchemaGenerator />;
+        } catch (schemaError) {
+          console.error("Schema Generator Error:", schemaError);
+          setHasError(true);
+          return (
+            <div className="text-center p-8 bg-red-50 rounded-lg">
+              <div className="flex justify-center mb-4">
+                <AlertTriangle className="h-12 w-12 text-red-500" />
+              </div>
+              <h3 className="text-lg font-semibold text-red-600">Schema Generator Error</h3>
+              <p className="text-gray-700 mb-4">There was a specific error with the Schema Generator tool. Our team has been notified.</p>
+              <p className="text-sm text-gray-600 mb-6">Error details: Property 'image' reference issue in schema type</p>
+              <Button variant="outline" asChild>
+                <Link to="/aeo/learning/tools">Return to Tools</Link>
+              </Button>
+            </div>
+          );
+        }
       } else if (slug === 'aeo-analyzer') {
         return <AEOAnalyzer />;
       } else {
