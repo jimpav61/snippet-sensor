@@ -7,6 +7,7 @@ import { ChevronLeft, BookOpen } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import PromptOptimizer from '@/components/tools/PromptOptimizer';
 import SchemaGenerator from '@/components/tools/SchemaGenerator';
+import AEOAnalyzer from '@/components/tools/AEOAnalyzer';
 
 // Updated tools data without fashion retailer tool
 const toolsData = [
@@ -110,6 +111,8 @@ const ToolPage = () => {
             <PromptOptimizer />
           ) : slug === 'schema-generator' ? (
             <SchemaGenerator />
+          ) : slug === 'aeo-analyzer' ? (
+            <AEOAnalyzer />
           ) : (
             <div className="prose prose-lg max-w-none">
               {tool.content.map((paragraph, index) => (
