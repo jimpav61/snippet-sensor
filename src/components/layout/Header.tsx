@@ -1,9 +1,17 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+  const path = location.pathname;
+
+  // Determine which nav item should be active
+  const isHome = path === '/';
+  const isAEO = path.includes('/aeo') && !path.includes('/aeo/admin');
+  const isDashboard = path.includes('/dashboard');
+  
   return (
     <header className="w-full py-4 px-4 sm:px-6 lg:px-8 border-b bg-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -14,9 +22,24 @@ const Header = () => {
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-gray-600 hover:text-aeo-500 font-medium">Home</Link>
-          <Link to="/aeo" className="text-aeo-500 font-medium">AEO Service</Link>
-          <Link to="/dashboard" className="text-gray-600 hover:text-aeo-500 font-medium">Dashboard</Link>
+          <Link 
+            to="/" 
+            className={`font-medium ${isHome ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
+          >
+            Home
+          </Link>
+          <Link 
+            to="/aeo" 
+            className={`font-medium ${isAEO ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
+          >
+            AEO Service
+          </Link>
+          <Link 
+            to="/dashboard" 
+            className={`font-medium ${isDashboard ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
+          >
+            Dashboard
+          </Link>
         </nav>
         
         <div className="flex items-center space-x-4">
