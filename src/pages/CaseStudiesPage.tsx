@@ -2,17 +2,27 @@
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import ResourceCard from '@/components/learning-center/ResourceCard';
+import ResourceCategorySection from '@/components/learning-center/ResourceCategorySection';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { guidesData } from '@/data/guidesData'; // Using guides data for now, replace with case studies data
+import { caseStudiesData } from '@/data/caseStudiesData';
 
 const CaseStudiesPage = () => {
-  // Filter or transform guides data to show as case studies
-  const caseStudiesData = guidesData.slice(0, 6).map(guide => ({
-    ...guide,
-    category: 'Case Study'
+  // Group case studies by industry category
+  const groupedByIndustry = caseStudiesData.reduce((acc, caseStudy) => {
+    const { category } = caseStudy;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(caseStudy);
+    return acc;
+  }, {} as Record<string, typeof caseStudiesData>);
+
+  // Convert to array of category sections
+  const industrySections = Object.entries(groupedByIndustry).map(([industry, studies]) => ({
+    title: `${industry} Industry`,
+    resources: studies
   }));
 
   return (
@@ -33,27 +43,22 @@ const CaseStudiesPage = () => {
             </div>
             <h1 className="heading-xl mb-2">Case Studies</h1>
             <p className="text-lg max-w-3xl">
-              Real-world examples of how organizations improved their AI-enabled applications through AEO.
+              Real-world examples of how organizations across different industries improved their AI-enabled applications through AEO methodologies.
             </p>
           </div>
         </section>
         
-        {/* Case Studies Grid */}
+        {/* Case Studies by Industry */}
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {caseStudiesData.map((caseStudy) => (
-                <ResourceCard 
-                  key={caseStudy.id}
-                  title={caseStudy.title}
-                  description={caseStudy.description}
-                  category={caseStudy.category}
-                  readTime={caseStudy.readTime}
-                  slug={caseStudy.slug}
-                  type="case-study"
-                />
-              ))}
-            </div>
+            {industrySections.map((section, index) => (
+              <ResourceCategorySection
+                key={index}
+                title={section.title}
+                resources={section.resources}
+                type="case-study"
+              />
+            ))}
           </div>
         </section>
       </main>
