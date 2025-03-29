@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, FileText } from 'lucide-react';
@@ -36,16 +35,13 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   const getLink = () => {
     if (!slug) return '';
     
-    // Ensure we're using the correct type in the URL path
-    switch (type) {
-      case 'tool':
-        return `/aeo/learning/tools/${slug}`;
-      case 'case-study':
-        return `/aeo/learning/case-study/${slug}`;
-      case 'guide':
-      default:
-        return `/aeo/learning/guide/${slug}`;
+    if (type === 'tool') {
+      return `/aeo/learning/tools/${slug}`;
     }
+    if (type === 'case-study') {
+      return `/aeo/learning/case-study/${slug}`;
+    }
+    return `/aeo/learning/guide/${slug}`;
   };
 
   const cardContent = (
