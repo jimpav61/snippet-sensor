@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -28,9 +27,9 @@ const LearningCenterPage = () => {
           <div className="max-w-7xl mx-auto">
             <h2 className="heading-md mb-8">Featured Resources</h2>
             <FeaturedResource
-              title="The Complete Guide to AI Engine Optimization in 2023"
-              description="Learn how to optimize your content for AI-powered search platforms with our comprehensive guide covering all the essential strategies and techniques."
-              imageUrl="/placeholder.svg"
+              title="The Complete Guide to AI Engine Optimization in 2025"
+              description="Learn how to optimize your content for AI-powered search platforms with our comprehensive guide covering all the essential strategies and techniques for the upcoming year."
+              imageUrl="/lovable-uploads/9d1300e9-9493-45f4-853f-2adf478f7b25.png"
               category="Guide"
               readTime="15 min read"
             />
