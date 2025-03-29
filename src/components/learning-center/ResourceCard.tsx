@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, FileText, Link as LinkIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface ResourceCardProps {
   title: string;
@@ -23,6 +23,8 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   type = 'guide',
   relatedGuide
 }) => {
+  const navigate = useNavigate();
+  
   const getIcon = () => {
     switch (type) {
       case 'tool':
@@ -46,6 +48,12 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       case 'guide':
       default:
         return `/aeo/learning/guide/${slug}`;
+    }
+  };
+
+  const handleCardClick = () => {
+    if (slug) {
+      navigate(getLink());
     }
   };
 
@@ -83,7 +91,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
     return (
       <Card 
         className="h-full hover:shadow-lg transition-shadow duration-300 hover:border-aeo-200 cursor-pointer"
-        onClick={() => window.location.href = getLink()}
+        onClick={handleCardClick}
       >
         {cardContent}
       </Card>
