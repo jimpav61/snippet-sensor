@@ -71,7 +71,7 @@ const HowItWorksSection = () => {
           </div>
           
           <div>
-            <div className="aeo-card p-6 h-full">
+            <div className="aeo-card p-6 h-full relative">
               <div className="absolute top-4 right-4 h-8 w-8 rounded-full bg-aeo-500 flex items-center justify-center text-white font-bold">
                 4
               </div>
