@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -15,9 +14,7 @@ const LearningCenterPage = () => {
   const navigate = useNavigate();
   
   const handleTabChange = (value: string) => {
-    if (value === "tools") {
-      navigate("/aeo/learning/tools");
-    } else if (value === "guides") {
+    if (value === "guides") {
       navigate("/aeo/learning/guides");
     } else if (value === "case-studies") {
       navigate("/aeo/learning/case-studies");
@@ -65,7 +62,6 @@ const LearningCenterPage = () => {
                 <TabsTrigger value="articles">Articles</TabsTrigger>
                 <TabsTrigger value="guides">Guides</TabsTrigger>
                 <TabsTrigger value="case-studies">Case Studies</TabsTrigger>
-                <TabsTrigger value="tools">Tools</TabsTrigger>
               </TabsList>
               
               <TabsContent value="articles">
@@ -251,44 +247,6 @@ const LearningCenterPage = () => {
                     }
                   ]}
                 />
-              </TabsContent>
-              
-              <TabsContent value="tools">
-                <div className="mb-6 flex justify-between items-center">
-                  <h3 className="heading-sm">Available Tools</h3>
-                  <Button asChild variant="outline">
-                    <Link to="/aeo/learning/tools">
-                      View All Tools <ChevronRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <ResourceCard 
-                    title="AEO Analyzer Tool"
-                    description="Interactive tool to analyze your AI content and get recommendations for optimization"
-                    category="Content Analysis"
-                    readTime="Interactive"
-                    slug="aeo-analyzer"
-                    type="tool"
-                    relatedGuide="aeo-analyzer-guide"
-                  />
-                  <ResourceCard 
-                    title="Prompt Optimization Tool"
-                    description="Tool to improve your AI prompts for better responses and clearer understanding"
-                    category="Prompting"
-                    readTime="Interactive"
-                    slug="prompt-optimizer"
-                    type="tool"
-                  />
-                  <ResourceCard 
-                    title="Schema Generator"
-                    description="Generate structured data schemas that help AI systems understand your content"
-                    category="Technical SEO"
-                    readTime="Interactive"
-                    slug="schema-generator"
-                    type="tool"
-                  />
-                </div>
               </TabsContent>
             </Tabs>
           </div>
