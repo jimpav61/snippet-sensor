@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import { generateAEOReport } from '@/utils/pdfGenerator';
 
 interface ScoreProps {
   keywordRelevance: number;
@@ -22,6 +23,15 @@ const ScoreCard: React.FC<ScoreProps> = ({
   analysisSource,
   onDownloadReport
 }) => {
+  const downloadPdfReport = () => {
+    const doc = generateAEOReport(
+      { keywordRelevance, readability, snippetOptimization, structuredData, finalScore },
+      analysisSource
+    );
+    doc.save('aeo-analysis-report.pdf');
+    onDownloadReport(); // Call the original handler to show toast notification
+  };
+
   return (
     <div className="aeo-card p-6 md:p-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -32,7 +42,7 @@ const ScoreCard: React.FC<ScoreProps> = ({
           </p>
         </div>
         <Button 
-          onClick={onDownloadReport} 
+          onClick={downloadPdfReport} 
           variant="outline" 
           className="mt-4 md:mt-0"
         >

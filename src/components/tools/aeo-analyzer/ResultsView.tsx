@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import ScoreItem from './ScoreItem';
+import { generateAEOReport } from '@/utils/pdfGenerator';
 
 interface ResultsViewProps {
   scores: {
@@ -15,14 +16,22 @@ interface ResultsViewProps {
   handleDownloadReport: () => void;
   handleFullAnalysis: () => void;
   resetAnalysis: () => void;
+  analysisSource?: string;
 }
 
 const ResultsView: React.FC<ResultsViewProps> = ({ 
   scores, 
   handleDownloadReport, 
   handleFullAnalysis, 
-  resetAnalysis 
+  resetAnalysis,
+  analysisSource = 'Content analysis'
 }) => {
+  const downloadPdfReport = () => {
+    const doc = generateAEOReport(scores, analysisSource);
+    doc.save('aeo-analysis-report.pdf');
+    handleDownloadReport(); // Call the original handler to show toast notification
+  };
+
   return (
     <div className="space-y-6">
       <div className="p-6 bg-gray-50 rounded-lg border border-gray-100 mb-6">
@@ -49,7 +58,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Score Breakdown</h3>
           <Button 
-            onClick={handleDownloadReport} 
+            onClick={downloadPdfReport} 
             variant="outline" 
             size="sm"
           >
