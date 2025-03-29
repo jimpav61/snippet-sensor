@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -16,6 +17,12 @@ const LearningCenterPage = () => {
   const handleTabChange = (value: string) => {
     if (value === "tools") {
       navigate("/aeo/learning/tools");
+    } else if (value === "guides") {
+      navigate("/aeo/learning/guides");
+    } else if (value === "case-studies") {
+      navigate("/aeo/learning/case-studies");
+    } else if (value === "articles") {
+      navigate("/aeo/learning/articles");
     }
   };
   
