@@ -6,16 +6,48 @@ import ResourceCard from '@/components/learning-center/ResourceCard';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { guidesData } from '@/data/guidesData'; // Using guides data for now, replace with tools data
+
+// Create dedicated tools data
+const toolsData = [
+  {
+    id: 1,
+    slug: "aeo-analyzer",
+    title: "AEO Analyzer Tool",
+    description: "Interactive tool to analyze your AI content and get recommendations for optimization",
+    category: "Content Analysis",
+    readTime: "Interactive",
+    type: "tool"
+  },
+  {
+    id: 2,
+    slug: "prompt-optimizer",
+    title: "Prompt Optimization Tool",
+    description: "Tool to improve your AI prompts for better responses and clearer understanding",
+    category: "Prompting",
+    readTime: "Interactive",
+    type: "tool"
+  },
+  {
+    id: 3,
+    slug: "schema-generator",
+    title: "AI Schema Generator",
+    description: "Generate structured data schemas that help AI systems understand your content",
+    category: "Technical SEO",
+    readTime: "Interactive",
+    type: "tool"
+  },
+  {
+    id: 4,
+    slug: "fashion-retailer-case-study",
+    title: "Fashion Retailer Analysis Tool",
+    description: "Interactive tool for analyzing the fashion retail case study data",
+    category: "Retail",
+    readTime: "Interactive",
+    type: "tool"
+  }
+];
 
 const ToolsPage = () => {
-  // Filter or transform guides data to show as tools
-  const toolsData = guidesData.slice(0, 4).map(guide => ({
-    ...guide,
-    category: 'Tool',
-    title: `AEO ${guide.title} Tool`
-  }));
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
