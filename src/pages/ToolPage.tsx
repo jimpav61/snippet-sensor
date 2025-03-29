@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -9,7 +8,6 @@ import PromptOptimizer from '@/components/tools/PromptOptimizer';
 import SchemaGenerator from '@/components/tools/SchemaGenerator';
 import AEOAnalyzer from '@/components/tools/AEOAnalyzer';
 
-// Updated tools data without fashion retailer tool
 const toolsData = [
   {
     slug: "aeo-analyzer",
@@ -43,10 +41,12 @@ const toolsData = [
     description: "Generate structured data schemas that help AI systems understand your content",
     category: "Technical SEO",
     readTime: "Interactive",
+    relatedGuide: "schema-guide",
     content: [
       "The AI Schema Generator creates structured data markup to help AI systems better understand your content.",
       "Select your content type and enter key information to generate ready-to-use schema markup.",
-      "Preview how AI systems will interpret your content with the generated schema applied."
+      "The tool provides an AEO score to evaluate how well your schema will help AI systems interpret your content.",
+      "Use the validation tools to ensure your schema meets technical requirements for implementation."
     ]
   }
 ];
@@ -88,15 +88,15 @@ const ToolPage = () => {
             
             <div className="flex items-center gap-2 mb-4">
               <span className="text-sm font-medium text-aeo-500 bg-aeo-50 px-3 py-1 rounded-full">
-                {tool.category}
+                {tool?.category}
               </span>
-              <span className="text-sm text-gray-500">{tool.readTime}</span>
+              <span className="text-sm text-gray-500">{tool?.readTime}</span>
             </div>
             
-            <h1 className="heading-xl mb-6">{tool.title}</h1>
-            <p className="text-lg text-gray-700 mb-8">{tool.description}</p>
+            <h1 className="heading-xl mb-6">{tool?.title}</h1>
+            <p className="text-lg text-gray-700 mb-8">{tool?.description}</p>
             
-            {tool.relatedGuide && (
+            {tool?.relatedGuide && (
               <Link 
                 to={`/aeo/learning/guide/${tool.relatedGuide}`} 
                 className="inline-flex items-center text-aeo-600 hover:text-aeo-700 mb-6"
@@ -115,7 +115,7 @@ const ToolPage = () => {
             <AEOAnalyzer />
           ) : (
             <div className="prose prose-lg max-w-none">
-              {tool.content.map((paragraph, index) => (
+              {tool?.content.map((paragraph, index) => (
                 <p key={index} className="mb-4">{paragraph}</p>
               ))}
             </div>
