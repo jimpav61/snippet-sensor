@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, FileText, Link as LinkIcon } from 'lucide-react';
+import { BookOpen, FileText } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface ResourceCardProps {
@@ -77,7 +77,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
           <Link 
             to={`/aeo/learning/guide/${relatedGuide}`} 
             className="text-aeo-600 hover:text-aeo-700 inline-flex items-center"
-            onClick={(e) => e.stopPropagation()} // This prevents the parent card's click event from firing
+            onClick={(e) => e.stopPropagation()} 
           >
             <BookOpen className="h-3 w-3 mr-1" />
             <span>Guide</span>
