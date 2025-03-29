@@ -43,9 +43,8 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       case 'case-study':
         return `/aeo/learning/case-study/${slug}`;
       case 'guide':
-        return `/aeo/learning/guide/${slug}`;
       default:
-        return `/aeo/learning/${type}/${slug}`;
+        return `/aeo/learning/guide/${slug}`;
     }
   };
 
