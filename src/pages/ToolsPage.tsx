@@ -2,12 +2,20 @@
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import ResourceCategorySection from '@/components/learning-center/ResourceCategorySection';
+import ResourceCard from '@/components/learning-center/ResourceCard';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { guidesData } from '@/data/guidesData'; // Using guides data for now, replace with tools data
 
 const ToolsPage = () => {
+  // Filter or transform guides data to show as tools
+  const toolsData = guidesData.slice(0, 4).map(guide => ({
+    ...guide,
+    category: 'Tool',
+    title: `AEO ${guide.title} Tool`
+  }));
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -26,103 +34,27 @@ const ToolsPage = () => {
             </div>
             <h1 className="heading-xl mb-2">AEO Tools</h1>
             <p className="text-lg max-w-3xl">
-              Explore our suite of tools and resources designed to help you implement effective AI Engine Optimization strategies.
+              Discover helpful tools and resources to enhance your AI Engine Optimization efforts.
             </p>
           </div>
         </section>
         
-        {/* Tools Sections */}
+        {/* Tools Grid */}
         <section className="py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto space-y-16">
-            <ResourceCategorySection 
-              title="Essential AEO Tools & Resources"
-              resources={[
-                {
-                  title: "AEO Analyzer Tool Guide",
-                  description: "Learn how to use our AEO Analyzer tool to identify optimization opportunities in your content. This step-by-step guide covers content analysis, competitive benchmarking, and implementing the tool's recommendations effectively.",
-                  category: "Tool Guide",
-                  readTime: "5 min read"
-                },
-                {
-                  title: "Free Schema Generator for AEO",
-                  description: "Generate structured data markup with our free tool to improve your AI visibility. This guide walks you through selecting the right schema types for your content and implementing the generated code properly on your website.",
-                  category: "Tool",
-                  readTime: "3 min read"
-                },
-                {
-                  title: "Content Evaluation Checklist",
-                  description: "A downloadable checklist to evaluate your content's readiness for AI search engines. Covers all essential elements from content structure and formatting to technical implementation and performance measurement.",
-                  category: "Checklist",
-                  readTime: "2 min read"
-                },
-                {
-                  title: "AEO Audit Template",
-                  description: "A comprehensive template for conducting a full AEO audit of your website. This downloadable resource provides a structured framework for evaluating your current optimization status and identifying improvement opportunities.",
-                  category: "Template",
-                  readTime: "4 min read"
-                }
-              ]}
-            />
-            
-            <ResourceCategorySection 
-              title="Advanced AEO Toolkits"
-              resources={[
-                {
-                  title: "AI Content Opportunity Analyzer",
-                  description: "Our premium tool helps identify gaps in your content strategy based on what AI engines are looking for in your industry. Learn how to interpret the data and create high-performing content that addresses identified opportunities.",
-                  category: "Premium Tool",
-                  readTime: "8 min read"
-                },
-                {
-                  title: "Structured Data Validator & Enhancer",
-                  description: "This advanced tool not only validates your structured data implementation but also suggests enhancements based on AI engine preferences. Includes industry-specific recommendations for maximum visibility.",
-                  category: "Technical Tool",
-                  readTime: "6 min read"
-                },
-                {
-                  title: "Entity Relationship Mapper",
-                  description: "Visualize and optimize the entity relationships in your content with this specialized tool. Helps you create more contextually rich content that AI engines can better understand and prioritize in search results.",
-                  category: "Advanced Tool",
-                  readTime: "7 min read"
-                },
-                {
-                  title: "AI Search Simulator",
-                  description: "Test how your content might perform in AI search results with this simulation tool. Provides insights into potential visibility and suggested optimizations based on simulated AI search patterns.",
-                  category: "Testing Tool",
-                  readTime: "5 min read"
-                }
-              ]}
-            />
-            
-            <ResourceCategorySection 
-              title="Industry-Specific Tools"
-              resources={[
-                {
-                  title: "E-commerce Product Schema Generator",
-                  description: "Specialized schema markup generator for e-commerce product pages. Creates comprehensive product structured data that helps AI engines better understand and feature your products in relevant searches.",
-                  category: "E-commerce",
-                  readTime: "4 min read"
-                },
-                {
-                  title: "Local Business AEO Toolkit",
-                  description: "A collection of tools specifically designed for local businesses looking to improve their visibility in AI-powered local search. Includes local entity optimization and geo-specific content recommendations.",
-                  category: "Local Business",
-                  readTime: "6 min read"
-                },
-                {
-                  title: "Content Publisher AEO Assistant",
-                  description: "Designed for news sites, blogs, and media outlets, this tool helps optimize article content for AI distribution channels, including recommendations for structure, headings, and entity inclusion.",
-                  category: "Publishing",
-                  readTime: "5 min read"
-                },
-                {
-                  title: "B2B Content Optimizer",
-                  description: "Tailored for B2B companies, this tool analyzes your business content and provides recommendations to improve visibility in AI-powered business research tools and platforms.",
-                  category: "B2B",
-                  readTime: "7 min read"
-                }
-              ]}
-            />
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {toolsData.map((tool) => (
+                <ResourceCard 
+                  key={tool.id}
+                  title={tool.title}
+                  description={tool.description}
+                  category={tool.category}
+                  readTime={tool.readTime}
+                  slug={tool.slug}
+                  type="tool"
+                />
+              ))}
+            </div>
           </div>
         </section>
       </main>

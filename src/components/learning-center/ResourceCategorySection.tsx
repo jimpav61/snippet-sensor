@@ -36,6 +36,7 @@ const ResourceCategorySection: React.FC<ResourceCategorySectionProps> = ({
             category={resource.category}
             readTime={resource.readTime}
             slug={resource.slug}
+            type={type}
           />
         ))}
       </div>

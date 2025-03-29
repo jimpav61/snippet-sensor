@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Tool, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ResourceCardProps {
@@ -10,6 +10,7 @@ interface ResourceCardProps {
   category: string;
   readTime: string;
   slug?: string;
+  type?: 'guide' | 'case-study' | 'tool';
 }
 
 const ResourceCard: React.FC<ResourceCardProps> = ({
@@ -18,7 +19,34 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   category,
   readTime,
   slug,
+  type = 'guide',
 }) => {
+  const getIcon = () => {
+    switch (type) {
+      case 'tool':
+        return <Tool className="text-gray-400 h-4 w-4" />;
+      case 'case-study':
+        return <FileText className="text-gray-400 h-4 w-4" />;
+      case 'guide':
+      default:
+        return <BookOpen className="text-gray-400 h-4 w-4" />;
+    }
+  };
+
+  const getLink = () => {
+    if (!slug) return '';
+    
+    switch (type) {
+      case 'tool':
+        return `/aeo/learning/tool/${slug}`;
+      case 'case-study':
+        return `/aeo/learning/case-study/${slug}`;
+      case 'guide':
+      default:
+        return `/aeo/learning/guide/${slug}`;
+    }
+  };
+
   const cardContent = (
     <>
       <CardHeader className="pb-3">
@@ -26,7 +54,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
           <span className="text-xs font-medium text-aeo-500 bg-aeo-50 px-2 py-1 rounded-full">
             {category}
           </span>
-          <BookOpen className="text-gray-400 h-4 w-4" />
+          {getIcon()}
         </div>
         <CardTitle className="text-lg font-semibold line-clamp-2">{title}</CardTitle>
       </CardHeader>
@@ -41,7 +69,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
 
   if (slug) {
     return (
-      <Link to={`/aeo/learning/guide/${slug}`} className="block h-full">
+      <Link to={getLink()} className="block h-full">
         <Card className="h-full hover:shadow-lg transition-shadow duration-300 hover:border-aeo-200">
           {cardContent}
         </Card>

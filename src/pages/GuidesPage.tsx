@@ -44,6 +44,7 @@ const GuidesPage = () => {
                   category={guide.category}
                   readTime={guide.readTime}
                   slug={guide.slug}
+                  type="guide"
                 />
               ))}
             </div>
