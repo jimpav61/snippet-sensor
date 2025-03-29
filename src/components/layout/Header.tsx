@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
@@ -60,9 +60,17 @@ const Header = () => {
           <Button asChild variant="ghost" className="hidden md:flex">
             <Link to="/login">Login</Link>
           </Button>
-          <Button asChild className="bg-aeo hover:bg-aeo-600">
-            <Link to="/aeo/analyze">Get Your AEO Score</Link>
-          </Button>
+          <div className="relative">
+            <Button asChild className="bg-aeo hover:bg-aeo-600">
+              <Link to="/aeo/analyze">Get Your AEO Score</Link>
+            </Button>
+            <Badge 
+              variant="destructive" 
+              className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs"
+            >
+              4
+            </Badge>
+          </div>
         </div>
       </div>
     </header>
