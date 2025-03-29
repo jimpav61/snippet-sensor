@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Tool, FileText } from 'lucide-react';
+import { BookOpen, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ResourceCardProps {
@@ -24,7 +23,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
   const getIcon = () => {
     switch (type) {
       case 'tool':
-        return <Tool className="text-gray-400 h-4 w-4" />;
+        return <FileText className="text-gray-400 h-4 w-4" />;
       case 'case-study':
         return <FileText className="text-gray-400 h-4 w-4" />;
       case 'guide':
