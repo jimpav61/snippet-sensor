@@ -9,9 +9,10 @@ const Header = () => {
 
   // Determine which nav item should be active
   const isHome = path === '/';
-  const isAEO = path.includes('/aeo') && !path.includes('/aeo/admin') && !path.includes('/aeo/learning');
+  const isAEO = path.includes('/aeo') && !path.includes('/aeo/admin') && !path.includes('/aeo/learning') && !path.includes('/aeo/learning/tools');
   const isDashboard = path.includes('/dashboard');
-  const isLearningCenter = path.includes('/aeo/learning');
+  const isLearningCenter = path.includes('/aeo/learning') && !path.includes('/aeo/learning/tools');
+  const isTools = path.includes('/aeo/learning/tools');
   
   return (
     <header className="w-full py-4 px-4 sm:px-6 lg:px-8 border-b bg-white">
@@ -40,6 +41,12 @@ const Header = () => {
             className={`font-medium ${isLearningCenter ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
           >
             Learning Center
+          </Link>
+          <Link 
+            to="/aeo/learning/tools" 
+            className={`font-medium ${isTools ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
+          >
+            Tools
           </Link>
           <Link 
             to="/dashboard" 
