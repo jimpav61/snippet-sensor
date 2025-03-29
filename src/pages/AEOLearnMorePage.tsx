@@ -23,7 +23,7 @@ const AEOLearnMorePage = () => {
                 <Button asChild size="lg" className="bg-white text-aeo-600 hover:bg-gray-100">
                   <Link to="/aeo/analyze">Try Our Free Analysis</Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-white/10">
+                <Button asChild variant="outline" size="lg" className="text-white border-white hover:bg-white/20">
                   <Link to="/aeo/guide">Read The Full Guide</Link>
                 </Button>
               </div>
