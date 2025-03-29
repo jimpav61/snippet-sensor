@@ -16,6 +16,8 @@ import ArticlesPage from "./pages/ArticlesPage";
 import GuidesPage from "./pages/GuidesPage";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
 import ToolsPage from "./pages/ToolsPage";
+import ArticlePage from "./pages/ArticlePage";
+import GuidePage from "./pages/GuidePage";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +34,9 @@ const App = () => (
           <Route path="/aeo/admin" element={<AEOAdminPage />} />
           <Route path="/aeo/learning" element={<LearningCenterPage />} />
           <Route path="/aeo/learning/articles" element={<ArticlesPage />} />
+          <Route path="/aeo/learning/article/:slug" element={<ArticlePage />} />
           <Route path="/aeo/learning/guides" element={<GuidesPage />} />
+          <Route path="/aeo/learning/guide/:slug" element={<GuidePage />} />
           <Route path="/aeo/learning/case-studies" element={<CaseStudiesPage />} />
           <Route path="/aeo/learning/tools" element={<ToolsPage />} />
           <Route path="/aeo/guide" element={<AEOGuidePage />} />
