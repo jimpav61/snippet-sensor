@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
@@ -27,7 +28,7 @@ const AEOLearnMorePage = () => {
                   asChild 
                   variant="outline" 
                   size="lg" 
-                  className="text-white border-white hover:bg-white/20 hover:text-white"
+                  className="text-white border-white hover:bg-white/30 hover:text-white/90"
                 >
                   <Link to="/aeo/guide">Read The Full Guide</Link>
                 </Button>
@@ -254,7 +255,7 @@ const AEOLearnMorePage = () => {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="border-white text-white hover:bg-white/20 hover:text-white"
+                className="border-white text-white hover:bg-white/30 hover:text-white/90"
               >
                 <Link to="/aeo/learning">Explore Learning Center</Link>
               </Button>
@@ -269,3 +270,4 @@ const AEOLearnMorePage = () => {
 };
 
 export default AEOLearnMorePage;
+
