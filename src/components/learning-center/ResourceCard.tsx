@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, FileText } from 'lucide-react';
+import { BookOpen, FileText, Tool } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ResourceCardProps {
