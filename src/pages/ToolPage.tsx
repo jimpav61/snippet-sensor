@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 
-// Dedicated tools data to match ToolsPage
+// Updated tools data without fashion retailer tool
 const toolsData = [
   {
     slug: "aeo-analyzer",
@@ -44,19 +43,6 @@ const toolsData = [
       "The AI Schema Generator creates structured data markup to help AI systems better understand your content.",
       "Select your content type and enter key information to generate ready-to-use schema markup.",
       "Preview how AI systems will interpret your content with the generated schema applied.",
-      "Please note this is a placeholder. In a production environment, this would be a fully interactive tool."
-    ]
-  },
-  {
-    slug: "fashion-retailer-case-study",
-    title: "Fashion Retailer Analysis Tool",
-    description: "Interactive tool for analyzing the fashion retail case study data",
-    category: "Retail",
-    readTime: "Interactive",
-    content: [
-      "This interactive tool allows you to explore the fashion retailer case study in depth.",
-      "Analyze key metrics and performance indicators from the case study data.",
-      "Compare different AI optimization strategies and their impact on retail performance.",
       "Please note this is a placeholder. In a production environment, this would be a fully interactive tool."
     ]
   }

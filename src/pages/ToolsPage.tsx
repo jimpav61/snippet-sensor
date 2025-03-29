@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Create dedicated tools data
+// Updated tools data without fashion retailer tool
 const toolsData = [
   {
     id: 1,
@@ -33,15 +32,6 @@ const toolsData = [
     title: "AI Schema Generator",
     description: "Generate structured data schemas that help AI systems understand your content",
     category: "Technical SEO",
-    readTime: "Interactive",
-    type: "tool"
-  },
-  {
-    id: 4,
-    slug: "fashion-retailer-case-study",
-    title: "Fashion Retailer Analysis Tool",
-    description: "Interactive tool for analyzing the fashion retail case study data",
-    category: "Retail",
     readTime: "Interactive",
     type: "tool"
   }
