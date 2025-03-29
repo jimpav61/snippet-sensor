@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, FileText } from 'lucide-react';
@@ -44,7 +43,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
       case 'guide':
         return `/aeo/learning/guide/${slug}`;
       default:
-        return `/aeo/learning/guide/${slug}`;
+        return `/aeo/learning/${type}/${slug}`;
     }
   };
 
