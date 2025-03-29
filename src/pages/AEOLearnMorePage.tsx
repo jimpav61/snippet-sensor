@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
@@ -239,10 +238,19 @@ const AEOLearnMorePage = () => {
               Don't get left behind as AI transforms how people discover information online. Start your AEO journey today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-aeo-500 hover:bg-aeo-600">
+              <Button 
+                asChild 
+                size="lg" 
+                className="bg-aeo-500 hover:bg-aeo-600 text-white"
+              >
                 <Link to="/aeo/analyze">Get Your Free AEO Score</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white hover:bg-white/10">
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg" 
+                className="border-aeo-400 text-aeo-400 hover:bg-aeo-400/10"
+              >
                 <Link to="/aeo/learning">Explore Learning Center</Link>
               </Button>
             </div>
