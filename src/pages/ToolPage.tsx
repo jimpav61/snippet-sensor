@@ -5,6 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, BookOpen } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
+import PromptOptimizer from '@/components/tools/PromptOptimizer';
 
 // Updated tools data without fashion retailer tool
 const toolsData = [
@@ -31,8 +32,7 @@ const toolsData = [
     content: [
       "The Prompt Optimization Tool helps you craft more effective prompts for AI systems.",
       "Enter your existing prompt to receive suggestions for clarity, specificity, and context improvements.",
-      "See side-by-side comparisons of optimized vs. original prompts with expected outcome differences.",
-      "Please note this is a placeholder. In a production environment, this would be a fully interactive tool."
+      "See side-by-side comparisons of optimized vs. original prompts with expected outcome differences."
     ]
   },
   {
@@ -76,7 +76,7 @@ const ToolPage = () => {
       <Header />
       
       <main className="flex-grow">
-        <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto px-4 py-12">
           <div className="mb-8">
             <Button variant="ghost" className="p-0 hover:bg-transparent mb-4" asChild>
               <Link to="/aeo/learning/tools">
@@ -106,11 +106,15 @@ const ToolPage = () => {
             )}
           </div>
           
-          <div className="prose prose-lg max-w-none">
-            {tool.content.map((paragraph, index) => (
-              <p key={index} className="mb-4">{paragraph}</p>
-            ))}
-          </div>
+          {slug === 'prompt-optimizer' ? (
+            <PromptOptimizer />
+          ) : (
+            <div className="prose prose-lg max-w-none">
+              {tool.content.map((paragraph, index) => (
+                <p key={index} className="mb-4">{paragraph}</p>
+              ))}
+            </div>
+          )}
         </div>
       </main>
       
