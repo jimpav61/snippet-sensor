@@ -69,7 +69,7 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
           <Link 
             to={`/aeo/learning/guide/${relatedGuide}`} 
             className="text-aeo-600 hover:text-aeo-700 inline-flex items-center"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()} // This prevents the parent card's click event from firing
           >
             <BookOpen className="h-3 w-3 mr-1" />
             <span>Guide</span>
@@ -81,11 +81,12 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
 
   if (slug) {
     return (
-      <Link to={getLink()} className="block h-full">
-        <Card className="h-full hover:shadow-lg transition-shadow duration-300 hover:border-aeo-200">
-          {cardContent}
-        </Card>
-      </Link>
+      <Card 
+        className="h-full hover:shadow-lg transition-shadow duration-300 hover:border-aeo-200 cursor-pointer"
+        onClick={() => window.location.href = getLink()}
+      >
+        {cardContent}
+      </Card>
     );
   }
 
