@@ -28,7 +28,7 @@ const LearningCenterPage = () => {
           <div className="max-w-7xl mx-auto">
             <h2 className="heading-md mb-8">Featured Resources</h2>
             <FeaturedResource
-              title="The Complete Guide to AI Engine Optimization in 2023"
+              title="The Complete Guide to AI Engine Optimization in 2025"
               description="Learn how to optimize your content for AI-powered search platforms with our comprehensive guide covering all the essential strategies and techniques."
               imageUrl="/placeholder.svg"
               category="Guide"
