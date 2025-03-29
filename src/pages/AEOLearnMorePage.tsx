@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
@@ -30,7 +29,7 @@ const AEOLearnMorePage = () => {
                   size="lg" 
                   className="text-white border-white hover:bg-white/30 hover:text-white/90"
                 >
-                  <Link to="/aeo/guide">Read The Full Guide</Link>
+                  <Link to="/aeo/guide">Explore Full AEO Guide</Link>
                 </Button>
               </div>
             </div>
@@ -239,7 +238,7 @@ const AEOLearnMorePage = () => {
         {/* CTA Section */}
         <section className="py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
           <div className="max-w-5xl mx-auto text-center">
-            <h2 className="heading-lg mb-6">Ready to Optimize for the <span className="text-aeo-400">AI-First Future</span>?</h2>
+            <h2 className="heading-lg mb-6">Ready to Optimize Your Content for AI?</h2>
             <p className="text-xl mb-8 max-w-3xl mx-auto">
               Don't get left behind as AI transforms how people discover information online. Start your AEO journey today.
             </p>
@@ -257,7 +256,7 @@ const AEOLearnMorePage = () => {
                 size="lg" 
                 className="border-white text-white hover:bg-white/30 hover:text-white/90"
               >
-                <Link to="/aeo/learning">Explore Learning Center</Link>
+                <Link to="/aeo/learning">Discover Learning Resources</Link>
               </Button>
             </div>
           </div>
@@ -270,4 +269,3 @@ const AEOLearnMorePage = () => {
 };
 
 export default AEOLearnMorePage;
-
