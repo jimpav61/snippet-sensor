@@ -249,7 +249,7 @@ const AEOLearnMorePage = () => {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="border-white text-white hover:bg-white/30 hover:text-white/90"
+                className="border-white text-aeo-600 bg-white/30 hover:bg-white/50 hover:text-aeo-700"
               >
                 <Link to="/aeo/learning">Discover Learning Resources</Link>
               </Button>
