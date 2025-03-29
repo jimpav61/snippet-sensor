@@ -12,6 +12,7 @@ import AEOAdminPage from "./pages/AEOAdminPage";
 import DashboardPage from "./pages/DashboardPage";
 import LearningCenterPage from "./pages/LearningCenterPage";
 import AEOGuidePage from "./pages/AEOGuidePage";
+import AEOLearnMorePage from "./pages/AEOLearnMorePage";
 import ArticlesPage from "./pages/ArticlesPage";
 import GuidesPage from "./pages/GuidesPage";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/aeo" element={<AEOServicePage />} />
           <Route path="/aeo/analyze" element={<AEOAnalyzePage />} />
           <Route path="/aeo/admin" element={<AEOAdminPage />} />
+          <Route path="/aeo/learn-more" element={<AEOLearnMorePage />} />
           <Route path="/aeo/learning" element={<LearningCenterPage />} />
           <Route path="/aeo/learning/articles" element={<ArticlesPage />} />
           <Route path="/aeo/learning/article/:slug" element={<ArticlePage />} />
