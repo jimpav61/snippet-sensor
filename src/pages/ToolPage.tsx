@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft, BookOpen } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import PromptOptimizer from '@/components/tools/PromptOptimizer';
+import SchemaGenerator from '@/components/tools/SchemaGenerator';
 
 // Updated tools data without fashion retailer tool
 const toolsData = [
@@ -44,8 +45,7 @@ const toolsData = [
     content: [
       "The AI Schema Generator creates structured data markup to help AI systems better understand your content.",
       "Select your content type and enter key information to generate ready-to-use schema markup.",
-      "Preview how AI systems will interpret your content with the generated schema applied.",
-      "Please note this is a placeholder. In a production environment, this would be a fully interactive tool."
+      "Preview how AI systems will interpret your content with the generated schema applied."
     ]
   }
 ];
@@ -108,6 +108,8 @@ const ToolPage = () => {
           
           {slug === 'prompt-optimizer' ? (
             <PromptOptimizer />
+          ) : slug === 'schema-generator' ? (
+            <SchemaGenerator />
           ) : (
             <div className="prose prose-lg max-w-none">
               {tool.content.map((paragraph, index) => (
