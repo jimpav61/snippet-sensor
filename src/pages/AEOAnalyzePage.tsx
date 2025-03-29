@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +19,6 @@ const AEOAnalyzePage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
   
-  // Simulated scores (in a real app, these would come from API)
   const scores = {
     keywordRelevance: 78,
     readability: 85,
@@ -39,7 +37,6 @@ const AEOAnalyzePage = () => {
     
     setIsAnalyzing(true);
     
-    // Simulate API call
     setTimeout(() => {
       setIsAnalyzing(false);
       setShowResults(true);
@@ -49,7 +46,6 @@ const AEOAnalyzePage = () => {
   
   const handleDownloadReport = () => {
     toast.success('AEO Report is being generated and will download shortly');
-    // In a real app, this would trigger a PDF download
   };
   
   return (
@@ -194,11 +190,10 @@ const AEOAnalyzePage = () => {
                 <div className="p-6 bg-gray-50 rounded-lg border border-gray-100 mb-6">
                   <div className="flex flex-col items-center">
                     <div 
-                      className="relative h-40 w-40 flex items-center justify-center mb-4"
+                      className="relative h-40 w-40 flex items-center justify-center mb-4 rounded-full"
                       style={{
                         background: `conic-gradient(#F65228 ${scores.finalScore}%, #E5E7EB ${scores.finalScore}% 100%)`
                       }}
-                      className="rounded-full"
                     >
                       <div className="absolute inset-3 bg-white rounded-full flex items-center justify-center">
                         <div className="text-center">
