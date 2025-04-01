@@ -4,6 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock } from 'lucide-react';
 import { toast } from "sonner";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ConsultationFormProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ const timeSlots = [
 ];
 
 const ConsultationForm = ({ isOpen, onClose }: ConsultationFormProps) => {
+  const isMobile = useIsMobile();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [company, setCompany] = useState('');
@@ -69,135 +72,158 @@ const ConsultationForm = ({ isOpen, onClose }: ConsultationFormProps) => {
     return dates;
   };
 
+  const formContent = (
+    <form onSubmit={handleSubmit} className="space-y-4 py-4">
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            Full Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aeo-500"
+            placeholder="Your name"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            Email Address
+          </label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aeo-500"
+            placeholder="you@example.com"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+            Company Name
+          </label>
+          <input
+            id="company"
+            type="text"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aeo-500"
+            placeholder="Your company (optional)"
+          />
+        </div>
+      </div>
+      
+      <div className="border-t border-gray-200 pt-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <Calendar className="w-4 h-4 mr-2 text-aeo-500" /> 
+          Select a Date
+        </label>
+        <div className={`grid ${isMobile ? 'grid-cols-2' : 'grid-cols-3'} gap-2`}>
+          {availableDates().map((availableDate) => (
+            <div key={availableDate}>
+              <input
+                type="radio"
+                id={`date-${availableDate}`}
+                name="date"
+                value={availableDate}
+                className="sr-only"
+                required
+                checked={date === availableDate}
+                onChange={() => setDate(availableDate)}
+              />
+              <label
+                htmlFor={`date-${availableDate}`}
+                className={`block w-full text-center px-3 py-2 border ${
+                  date === availableDate ? 'bg-aeo-50 border-aeo-500 text-aeo-700' : 'border-gray-300'
+                } rounded-md cursor-pointer hover:bg-gray-50 text-sm`}
+              >
+                {availableDate}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <Clock className="w-4 h-4 mr-2 text-aeo-500" /> 
+          Select a Time
+        </label>
+        <div className={`grid ${isMobile ? 'grid-cols-3' : 'grid-cols-4'} gap-2`}>
+          {timeSlots.map((timeSlot) => (
+            <div key={timeSlot}>
+              <input
+                type="radio"
+                id={`time-${timeSlot}`}
+                name="time"
+                value={timeSlot}
+                className="sr-only"
+                required
+                checked={time === timeSlot}
+                onChange={() => setTime(timeSlot)}
+              />
+              <label
+                htmlFor={`time-${timeSlot}`}
+                className={`block w-full text-center px-2 py-2 border ${
+                  time === timeSlot ? 'bg-aeo-50 border-aeo-500 text-aeo-700' : 'border-gray-300'
+                } rounded-md cursor-pointer hover:bg-gray-50 text-sm`}
+              >
+                {timeSlot}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <div className="pt-4">
+        <Button
+          type="submit"
+          className="bg-aeo hover:bg-aeo-600 w-full"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Scheduling..." : "Schedule Consultation"}
+        </Button>
+      </div>
+    </form>
+  );
+
+  // For mobile devices, use a drawer that slides up from the bottom
+  if (isMobile) {
+    return (
+      <Drawer open={isOpen} onOpenChange={(open) => !open && onClose()}>
+        <DrawerContent className="max-h-[90vh] overflow-y-auto">
+          <DrawerHeader>
+            <DrawerTitle>Schedule a Consultation</DrawerTitle>
+            <DrawerDescription>
+              Select your preferred date and time for an AEO consultation.
+            </DrawerDescription>
+          </DrawerHeader>
+          <div className="p-4 pb-8">
+            {formContent}
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
+  // For desktop, use a dialog popup
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl">Schedule a Consultation</DialogTitle>
           <DialogDescription>
             Select your preferred date and time for an AEO consultation.
           </DialogDescription>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aeo-500"
-                placeholder="Your name"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aeo-500"
-                placeholder="you@example.com"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
-                Company Name
-              </label>
-              <input
-                id="company"
-                type="text"
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-aeo-500"
-                placeholder="Your company (optional)"
-              />
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-200 pt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <Calendar className="w-4 h-4 mr-2 text-aeo-500" /> 
-              Select a Date
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {availableDates().map((availableDate) => (
-                <div key={availableDate}>
-                  <input
-                    type="radio"
-                    id={`date-${availableDate}`}
-                    name="date"
-                    value={availableDate}
-                    className="sr-only"
-                    required
-                    checked={date === availableDate}
-                    onChange={() => setDate(availableDate)}
-                  />
-                  <label
-                    htmlFor={`date-${availableDate}`}
-                    className={`block w-full text-center px-3 py-2 border ${
-                      date === availableDate ? 'bg-aeo-50 border-aeo-500 text-aeo-700' : 'border-gray-300'
-                    } rounded-md cursor-pointer hover:bg-gray-50 text-sm`}
-                  >
-                    {availableDate}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <Clock className="w-4 h-4 mr-2 text-aeo-500" /> 
-              Select a Time
-            </label>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {timeSlots.map((timeSlot) => (
-                <div key={timeSlot}>
-                  <input
-                    type="radio"
-                    id={`time-${timeSlot}`}
-                    name="time"
-                    value={timeSlot}
-                    className="sr-only"
-                    required
-                    checked={time === timeSlot}
-                    onChange={() => setTime(timeSlot)}
-                  />
-                  <label
-                    htmlFor={`time-${timeSlot}`}
-                    className={`block w-full text-center px-2 py-2 border ${
-                      time === timeSlot ? 'bg-aeo-50 border-aeo-500 text-aeo-700' : 'border-gray-300'
-                    } rounded-md cursor-pointer hover:bg-gray-50 text-sm`}
-                  >
-                    {timeSlot}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <DialogFooter className="pt-4">
-            <Button
-              type="submit"
-              className="bg-aeo hover:bg-aeo-600 w-full"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Scheduling..." : "Schedule Consultation"}
-            </Button>
-          </DialogFooter>
-        </form>
+        {formContent}
       </DialogContent>
     </Dialog>
   );
