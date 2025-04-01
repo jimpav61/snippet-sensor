@@ -1,12 +1,8 @@
-
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { toast } from "sonner";
-
-// Import the type declarations that augment the schema types
-import '@/types/schema-augmentation';
 
 // Use lazy loading for the SchemaGenerator component
 const LazySchemaGenerator = lazy(() => import('./SchemaGenerator')
