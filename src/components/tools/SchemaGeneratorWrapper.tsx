@@ -21,7 +21,12 @@ const SchemaGeneratorWrapper = () => {
           return { default: null };
         });
         
-        setSchemaGeneratorComponent(() => module.default);
+        // Proceed only if we successfully imported the component
+        if (module && module.default) {
+          setSchemaGeneratorComponent(() => module.default);
+        } else {
+          setHasError(true);
+        }
       } catch (error) {
         console.error("Schema Generator Error:", error);
         setHasError(true);
