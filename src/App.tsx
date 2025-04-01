@@ -21,6 +21,7 @@ import ToolsPage from "./pages/ToolsPage";
 import ArticlePage from "./pages/ArticlePage";
 import GuidePage from "./pages/GuidePage";
 import ToolPage from "./pages/ToolPage";
+import AEOContactPage from "./pages/AEOContactPage";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/aeo/learning/tools" element={<ToolsPage />} />
           <Route path="/aeo/learning/tools/:slug" element={<ToolPage />} />
           <Route path="/aeo/guide" element={<AEOGuidePage />} />
+          <Route path="/aeo/contact" element={<AEOContactPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

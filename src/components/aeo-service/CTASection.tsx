@@ -1,10 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
+import ConsultationForm from './ConsultationForm';
 
 const CTASection = () => {
+  const [showConsultationForm, setShowConsultationForm] = useState(false);
+
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 aeo-gradient">
       <div className="max-w-5xl mx-auto text-center">
@@ -16,11 +19,21 @@ const CTASection = () => {
           <Button asChild size="lg" variant="secondary">
             <Link to="/aeo/analyze">Get Your Free AEO Score</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10">
-            <Link to="/aeo/contact">Schedule a Consultation <Calendar className="ml-2 h-4 w-4" /></Link>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="bg-transparent text-white border-white hover:bg-white/10"
+            onClick={() => setShowConsultationForm(true)}
+          >
+            Schedule a Consultation <Calendar className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>
+      
+      <ConsultationForm 
+        isOpen={showConsultationForm} 
+        onClose={() => setShowConsultationForm(false)} 
+      />
     </section>
   );
 };
