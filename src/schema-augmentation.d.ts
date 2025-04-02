@@ -1,4 +1,3 @@
-
 // Global type augmentation for Schema.org types
 declare namespace Schema {
   interface SchemaBaseType {
@@ -31,6 +30,7 @@ declare namespace Schema {
     dateModified?: string;
     publisher: Organization;
     articleBody?: string;
+    image?: string | ImageObject;
   }
 
   interface Person extends SchemaObject {
@@ -90,11 +90,13 @@ declare namespace Schema {
     "@type": "Question";
     name: string;
     acceptedAnswer: Answer;
+    image?: string | ImageObject;
   }
 
   interface Answer extends SchemaBaseType {
     "@type": "Answer";
     text: string;
+    image?: string | ImageObject;
   }
 
   interface HowTo extends SchemaObject {

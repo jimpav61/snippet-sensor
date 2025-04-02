@@ -12,8 +12,12 @@ interface SchemaBaseType {
 
 // Ensure this gets applied globally
 declare global {
-  // This is intentionally left mostly empty as it's meant to patch existing types
-  // rather than define comprehensive schema types
+  interface SchemaBaseType {
+    "@type": string;
+    name: string;
+    text: string;
+    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
+  }
 }
 
 export {};
