@@ -6,8 +6,8 @@ interface SchemaBaseType {
   "@type": string;
   name: string;
   text: string;
-  // Add the missing image property that's causing the error
-  image?: string;
+  // Add the image property that's causing the error
+  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
 }
 
 // Ensure this gets applied globally
