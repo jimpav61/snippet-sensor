@@ -1,3 +1,4 @@
+
 // Global type augmentation for Schema.org types
 declare namespace Schema {
   interface SchemaBaseType {
