@@ -5,6 +5,8 @@ declare namespace Schema {
     "@type": string;
     [key: string]: any;
     image?: string | ImageObject;
+    name?: string;
+    text?: string;
   }
 
   interface SchemaObject extends SchemaBaseType {
