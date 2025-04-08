@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import AnalyzeForm from '@/components/aeo-analyze/AnalyzeForm';
 import ScoreCard from '@/components/aeo-analyze/ScoreCard';
 import RecommendationsCard from '@/components/aeo-analyze/RecommendationsCard';
+import { supabase } from '@/integrations/supabase/client';
 
 const AEOAnalyzePage = () => {
   const [activeTab, setActiveTab] = useState('url');
@@ -26,9 +27,30 @@ const AEOAnalyzePage = () => {
     "Expand topic coverage to address related subtopics and questions."
   ]);
   
-  const handleAnalysisComplete = (analysisScores: typeof scores) => {
-    setScores(analysisScores);
-    setShowResults(true);
+  const handleAnalysisComplete = async (content: string, contentType: string) => {
+    try {
+      // Call Supabase Edge Function for analysis
+      const { data, error } = await supabase.functions.invoke('analyze-content', {
+        body: {
+          content,
+          contentType
+        }
+      });
+      
+      if (error) {
+        console.error('Error calling analyze-content function:', error);
+        toast.error('Failed to analyze content. Please try again.');
+        return;
+      }
+      
+      setScores(data.scores);
+      setRecommendations(data.recommendations);
+      setShowResults(true);
+      
+    } catch (error) {
+      console.error('Error analyzing content:', error);
+      toast.error('Failed to analyze content. Please try again.');
+    }
   };
   
   const handleDownloadReport = () => {

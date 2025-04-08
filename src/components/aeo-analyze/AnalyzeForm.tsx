@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,16 +7,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ArrowRight, Link2, FileText } from 'lucide-react';
 import { toast } from 'sonner';
-import { analyzeContent } from '@/utils/contentAnalyzer';
 
 interface AnalyzeFormProps {
-  onAnalysisComplete: (scores: {
-    keywordRelevance: number;
-    readability: number;
-    snippetOptimization: number;
-    structuredData: number;
-    finalScore: number;
-  }, recommendations: string[]) => void;
+  onAnalysisComplete: (content: string, contentType: string) => void;
 }
 
 const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
@@ -67,17 +59,15 @@ const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
         contentToAnalyze = content;
       }
       
-      // Analyze the content
+      // Send content to parent component for analysis
       toast.info('Analyzing content...');
-      const { scores, recommendations } = await analyzeContent(contentToAnalyze, contentType);
+      onAnalysisComplete(contentToAnalyze, contentType);
       
       setIsAnalyzing(false);
-      onAnalysisComplete(scores, recommendations);
-      toast.success('Analysis completed successfully!');
     } catch (error) {
-      console.error('Error analyzing content:', error);
+      console.error('Error preparing content:', error);
       setIsAnalyzing(false);
-      toast.error('Failed to analyze content. Please try again.');
+      toast.error('Failed to prepare content for analysis. Please try again.');
     }
   };
 
