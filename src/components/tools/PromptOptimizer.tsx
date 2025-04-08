@@ -17,6 +17,7 @@ const PromptOptimizer = () => {
   };
   
   const handleSavedPromptLoad = (prompt: SavedPrompt) => {
+    setOriginalPrompt(prompt.originalPrompt);
     // When a saved prompt is loaded, switch to the write tab
     setActiveTab('write');
   };
@@ -43,7 +44,7 @@ const PromptOptimizer = () => {
         </TabsList>
         
         <TabsContent value="write" className="space-y-6">
-          <PromptOptimizerContent onSavePrompt={handlePromptSaved} />
+          <PromptOptimizerContent initialPrompt={originalPrompt} onSavePrompt={handlePromptSaved} />
         </TabsContent>
 
         <TabsContent value="saved">
