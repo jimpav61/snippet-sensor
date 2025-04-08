@@ -20,6 +20,15 @@ declare global {
     image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
     [key: string]: any; // Allow any additional properties
   }
+  
+  // Add a specific interface for the type of object causing errors
+  interface SchemaTextType {
+    "@type": string;
+    name: string;
+    text: string;
+    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
+    [key: string]: any;
+  }
 }
 
 // Export an empty object to make this a module

@@ -42,6 +42,7 @@ declare namespace Schema {
     jobTitle?: string;
     email?: string;
     telephone?: string;
+    image?: string | ImageObject;
   }
 
   interface Organization extends SchemaObject {
@@ -49,6 +50,7 @@ declare namespace Schema {
     name: string;
     logo?: ImageObject | string;
     address?: PostalAddress | string;
+    image?: string | ImageObject;
   }
 
   interface PostalAddress extends SchemaBaseType {
@@ -63,12 +65,14 @@ declare namespace Schema {
   interface BreadcrumbList extends SchemaBaseType {
     "@type": "BreadcrumbList";
     itemListElement: ListItem[];
+    image?: string | ImageObject;
   }
 
   interface ListItem extends SchemaBaseType {
     "@type": "ListItem";
     position: number;
     item: SchemaObject;
+    image?: string | ImageObject;
   }
 
   interface WebSite extends SchemaObject {
@@ -76,17 +80,20 @@ declare namespace Schema {
     name: string;
     url: string;
     potentialAction?: SearchAction;
+    image?: string | ImageObject;
   }
 
   interface SearchAction extends SchemaBaseType {
     "@type": "SearchAction";
     target: string;
     "query-input": string;
+    image?: string | ImageObject;
   }
 
   interface FAQPage extends SchemaObject {
     "@type": "FAQPage";
     mainEntity: Question[];
+    image?: string | ImageObject;
   }
 
   interface Question extends SchemaBaseType {
@@ -105,6 +112,7 @@ declare namespace Schema {
   interface HowTo extends SchemaObject {
     "@type": "HowTo";
     step: HowToStep[];
+    image?: string | ImageObject;
   }
 
   interface HowToStep extends SchemaBaseType {
@@ -134,6 +142,7 @@ declare namespace Schema {
     url?: string;
     validFrom?: string;
     priceValidUntil?: string;
+    image?: string | ImageObject;
   }
 
   interface Review extends SchemaObject {
@@ -141,6 +150,7 @@ declare namespace Schema {
     reviewRating: Rating;
     author: Person | Organization | string;
     reviewBody?: string;
+    image?: string | ImageObject;
   }
 
   interface Rating extends SchemaBaseType {
@@ -148,6 +158,7 @@ declare namespace Schema {
     ratingValue: string | number;
     bestRating?: string | number;
     worstRating?: string | number;
+    image?: string | ImageObject;
   }
 
   interface AggregateRating extends SchemaBaseType {
@@ -156,5 +167,6 @@ declare namespace Schema {
     reviewCount: string | number;
     bestRating?: string | number;
     worstRating?: string | number;
+    image?: string | ImageObject;
   }
 }

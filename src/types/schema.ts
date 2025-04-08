@@ -4,6 +4,9 @@
 
 export interface SchemaBaseType {
   "@type": string;
+  name?: string;
+  text?: string;
+  image?: string | ImageObject;
   [key: string]: any;
 }
 
@@ -39,6 +42,7 @@ export interface Person extends SchemaObject {
   jobTitle?: string;
   email?: string;
   telephone?: string;
+  image?: string | ImageObject;
 }
 
 export interface Organization extends SchemaObject {
@@ -46,6 +50,7 @@ export interface Organization extends SchemaObject {
   name: string;
   logo?: ImageObject | string;
   address?: PostalAddress | string;
+  image?: string | ImageObject;
 }
 
 export interface PostalAddress extends SchemaBaseType {
@@ -60,12 +65,14 @@ export interface PostalAddress extends SchemaBaseType {
 export interface BreadcrumbList extends SchemaBaseType {
   "@type": "BreadcrumbList";
   itemListElement: ListItem[];
+  image?: string | ImageObject;
 }
 
 export interface ListItem extends SchemaBaseType {
   "@type": "ListItem";
   position: number;
   item: SchemaObject;
+  image?: string | ImageObject;
 }
 
 export interface WebSite extends SchemaObject {
@@ -73,17 +80,20 @@ export interface WebSite extends SchemaObject {
   name: string;
   url: string;
   potentialAction?: SearchAction;
+  image?: string | ImageObject;
 }
 
 export interface SearchAction extends SchemaBaseType {
   "@type": "SearchAction";
   target: string;
   "query-input": string;
+  image?: string | ImageObject;
 }
 
 export interface FAQPage extends SchemaObject {
   "@type": "FAQPage";
   mainEntity: Question[];
+  image?: string | ImageObject;
 }
 
 export interface Question extends SchemaBaseType {
@@ -102,6 +112,7 @@ export interface Answer extends SchemaBaseType {
 export interface HowTo extends SchemaObject {
   "@type": "HowTo";
   step: HowToStep[];
+  image?: string | ImageObject;
 }
 
 export interface HowToStep extends SchemaBaseType {
@@ -131,6 +142,7 @@ export interface Offer extends SchemaBaseType {
   url?: string;
   validFrom?: string;
   priceValidUntil?: string;
+  image?: string | ImageObject;
 }
 
 export interface Review extends SchemaObject {
@@ -138,6 +150,7 @@ export interface Review extends SchemaObject {
   reviewRating: Rating;
   author: Person | Organization | string;
   reviewBody?: string;
+  image?: string | ImageObject;
 }
 
 export interface Rating extends SchemaBaseType {
@@ -145,6 +158,7 @@ export interface Rating extends SchemaBaseType {
   ratingValue: string | number;
   bestRating?: string | number;
   worstRating?: string | number;
+  image?: string | ImageObject;
 }
 
 export interface AggregateRating extends SchemaBaseType {
@@ -153,4 +167,13 @@ export interface AggregateRating extends SchemaBaseType {
   reviewCount: string | number;
   bestRating?: string | number;
   worstRating?: string | number;
+  image?: string | ImageObject;
+}
+
+// Adding a specific type that matches the error pattern
+export interface SchemaTextType extends SchemaBaseType {
+  "@type": string;
+  name: string;
+  text: string;
+  image?: string | ImageObject;
 }
