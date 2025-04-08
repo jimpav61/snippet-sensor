@@ -19,7 +19,7 @@ const Header = () => {
   // Determine which nav item should be active
   const isHome = path === '/';
   const isAEO = path.includes('/aeo') && !path.includes('/aeo/admin') && !path.includes('/aeo/learning') && !path.includes('/aeo/learning/tools');
-  const isDashboard = path.includes('/dashboard');
+  const isAnalyticsDashboard = path.includes('/analytics-dashboard');
   const isLearningCenter = path.includes('/aeo/learning') && !path.includes('/aeo/learning/tools');
   const isTools = path.includes('/aeo/learning/tools');
   
@@ -59,10 +59,10 @@ const Header = () => {
             Tools
           </Link>
           <Link 
-            to="/dashboard" 
-            className={`font-medium ${isDashboard ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
+            to="/analytics-dashboard" 
+            className={`font-medium ${isAnalyticsDashboard ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
           >
-            Dashboard
+            Analytics Dashboard
           </Link>
         </nav>
         
@@ -107,11 +107,11 @@ const Header = () => {
                     Tools
                   </Link>
                   <Link 
-                    to="/dashboard" 
+                    to="/analytics-dashboard" 
                     onClick={() => setIsOpen(false)}
-                    className={`font-medium ${isDashboard ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
+                    className={`font-medium ${isAnalyticsDashboard ? 'text-aeo-500' : 'text-gray-600 hover:text-aeo-500'}`}
                   >
-                    Dashboard
+                    Analytics Dashboard
                   </Link>
                   <Link 
                     to="/login"

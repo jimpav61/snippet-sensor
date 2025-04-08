@@ -26,6 +26,14 @@ declare global {
     text: string;
     image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
   }
+  
+  // Make sure all objects with these properties will include the image property
+  interface TextContent {
+    "@type": string;
+    name: string;
+    text: string;
+    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
+  }
 }
 
 // Export an empty object to make this a module
