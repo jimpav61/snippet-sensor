@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
 
-export interface InputStateProps {
+export interface UseInputStateProps {
   onSubmit: (contentToAnalyze: string, contentType: string, contentSource: string) => Promise<boolean>;
   isAnalyzing: boolean;
 }
 
-const InputState: React.FC<InputStateProps> = ({ onSubmit, isAnalyzing }) => {
+export const useInputState = ({ onSubmit, isAnalyzing }: UseInputStateProps) => {
   const [activeTab, setActiveTab] = useState('url');
   const [url, setUrl] = useState('');
   const [content, setContent] = useState('');
@@ -42,5 +42,3 @@ const InputState: React.FC<InputStateProps> = ({ onSubmit, isAnalyzing }) => {
     handleAnalyze
   };
 };
-
-export default InputState;

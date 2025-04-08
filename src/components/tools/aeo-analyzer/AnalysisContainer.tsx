@@ -6,7 +6,7 @@ import InputForm from './InputForm';
 import InfoTabs from './InfoTabs';
 import LoadingView from './LoadingView';
 import ResultsView from './ResultsView';
-import InputState from './InputState';
+import { useInputState } from './useInputState';
 import { useAEOAnalysis } from '@/hooks/useAEOAnalysis';
 
 const AnalysisContainer: React.FC = () => {
@@ -25,7 +25,7 @@ const AnalysisContainer: React.FC = () => {
     resetAnalysis
   } = useAEOAnalysis();
 
-  const inputState = InputState({
+  const inputState = useInputState({
     onSubmit: async (contentToAnalyze, contentType, contentSource) => {
       setAnalysisTab('loading');
       const success = await analyzeContent(contentToAnalyze, contentType, contentSource);
