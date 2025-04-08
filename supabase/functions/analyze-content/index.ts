@@ -21,19 +21,41 @@ serve(async (req) => {
 
     // For now, we'll use simulated analysis while we integrate with Groq API
     // In a production environment, this would call the Groq API
+
+    // Generate simulated scores with more variance for demonstration
+    const keywordScore = Math.floor(Math.random() * 20) + 70; // 70-90 range
+    const readabilityScore = Math.floor(Math.random() * 20) + 70;
+    const snippetScore = Math.floor(Math.random() * 20) + 70;
+    const structuredDataScore = Math.floor(Math.random() * 20) + 70;
+
+    // Create properly formatted recommendations
+    const recommendations = [
+      "Improve keyword relevance: Include more semantically related terms and natural language phrases around your topic.",
+      "Enhance content readability: Use shorter paragraphs, more subheadings, and simpler sentence structures.",
+      "Optimize for AI snippets: Include clear answers to common questions related to your topic, using concise formats.",
+      "Add structured data markup: Implement Schema.org markup to provide clear signals to AI systems about your content."
+    ];
+
+    // Select only recommendations relevant to scores below 80
+    const filteredRecommendations = [];
+    if (keywordScore < 80) filteredRecommendations.push(recommendations[0]);
+    if (readabilityScore < 80) filteredRecommendations.push(recommendations[1]);
+    if (snippetScore < 80) filteredRecommendations.push(recommendations[2]);
+    if (structuredDataScore < 80) filteredRecommendations.push(recommendations[3]);
+
+    // If all scores are good, provide a general recommendation
+    const finalRecommendations = filteredRecommendations.length > 0 
+      ? filteredRecommendations 
+      : ["Maintain content quality: Your content is well-optimized. Continue monitoring AI engine updates."];
+
     const analysisResult = {
       scores: {
-        keywordRelevance: Math.floor(Math.random() * 20) + 70, // 70-90 range
-        readability: Math.floor(Math.random() * 20) + 70,
-        snippetOptimization: Math.floor(Math.random() * 20) + 70,
-        structuredData: Math.floor(Math.random() * 20) + 70,
+        keywordRelevance: keywordScore,
+        readability: readabilityScore,
+        snippetOptimization: snippetScore,
+        structuredData: structuredDataScore,
       },
-      recommendations: [
-        "Improve keyword relevance by adding more topic-related terms",
-        "Enhance readability with better paragraph structure",
-        "Add more structured data markup",
-        "Optimize snippets with clear answers to common questions"
-      ],
+      recommendations: finalRecommendations,
       analyzedContent: content // Include the actual analyzed content
     };
 

@@ -24,32 +24,35 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   doc.setTextColor(100);
   doc.text(`Generated on: ${currentDate}`, 105, 30, { align: 'center' });
   
-  // Add analyzed content information
+  // Add analyzed content information with proper handling of long URLs
   doc.setFontSize(11);
   doc.setTextColor(80);
   
   // Format the source text to ensure it fits on the page
-  const maxLineWidth = 170; // Maximum width available for text on the page
-  let sourceText = `Analyzed content: ${source}`;
+  let sourceText = '';
   
-  // Check if the source text is too long and truncate it if needed
-  if (doc.getTextWidth(sourceText) > maxLineWidth) {
-    // If source is a URL, display as much as possible
-    if (source.startsWith('http')) {
-      const urlParts = source.split('/');
-      const domain = urlParts[2] || 'website';
-      sourceText = `Analyzed URL: ${domain}/...`;
-    } else {
-      // For text content, truncate with ellipsis
-      let truncatedSource = source;
-      while (doc.getTextWidth(`Analyzed text: ${truncatedSource}...`) > maxLineWidth && truncatedSource.length > 10) {
-        truncatedSource = truncatedSource.substring(0, truncatedSource.length - 5);
-      }
-      sourceText = `Analyzed text: ${truncatedSource}...`;
-    }
+  // Check if the source is a URL and handle it specially
+  if (source.startsWith('http')) {
+    // For URLs, display the domain and truncate with ellipsis if needed
+    const urlObj = new URL(source);
+    const domain = urlObj.hostname;
+    const path = urlObj.pathname.length > 30 ? urlObj.pathname.substring(0, 30) + '...' : urlObj.pathname;
+    sourceText = `Analyzed URL: ${domain}${path}`;
+  } else {
+    // For text content, truncate with ellipsis if too long
+    sourceText = source.length > 70 
+      ? `Analyzed text: ${source.substring(0, 70)}...` 
+      : `Analyzed content: ${source}`;
   }
   
-  doc.text(sourceText, 105, 38, { align: 'center' });
+  // Ensure the text fits within the page width
+  const maxWidth = 170;
+  if (doc.getTextWidth(sourceText) > maxWidth) {
+    const lines = doc.splitTextToSize(sourceText, maxWidth);
+    doc.text(lines, 20, 38);
+  } else {
+    doc.text(sourceText, 105, 38, { align: 'center' });
+  }
   
   // Add overall score section
   doc.setFillColor(246, 246, 246);
@@ -70,7 +73,7 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   doc.setTextColor(60);
   doc.text('Score Breakdown', 20, 105);
   
-  // Fix column width issues by using auto-adjusting columns
+  // Use auto table with adjusted column widths
   autoTable(doc, {
     startY: 110,
     head: [['Score Category', 'Score', 'Status']],
@@ -86,13 +89,12 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
       textColor: [255, 255, 255],
       fontStyle: 'bold' 
     },
-    // Auto-adjust column widths instead of using fixed widths
-    styles: { overflow: 'linebreak' },
     columnStyles: {
-      0: { halign: 'left' },
-      1: { halign: 'center' },
-      2: { halign: 'center' }
+      0: { cellWidth: 60 },
+      1: { cellWidth: 40, halign: 'center' },
+      2: { cellWidth: 50, halign: 'center' }
     },
+    styles: { overflow: 'linebreak' },
   });
   
   // Add recommendations section

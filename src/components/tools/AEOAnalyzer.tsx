@@ -29,25 +29,6 @@ const AEOAnalyzer = () => {
   });
   const [recommendations, setRecommendations] = useState<string[]>([]);
 
-  const fetchContentFromUrl = async (urlToFetch: string) => {
-    try {
-      return new Promise<string>((resolve) => {
-        setTimeout(() => {
-          const dummyContent = `Content fetched from ${urlToFetch} for analysis.
-          This content would be processed for AI Engine Optimization factors
-          including keyword relevance, readability, snippet optimization, and structured data.`;
-          
-          setAnalyzedContent(urlToFetch);
-          resolve(dummyContent);
-        }, 1000);
-      });
-    } catch (error) {
-      console.error('Error fetching content:', error);
-      toast.error('Failed to fetch content from URL');
-      throw error;
-    }
-  };
-
   const analyzeWithGroq = async (contentToAnalyze: string, contentType: string) => {
     try {
       console.log('Calling Supabase Edge Function for analysis');
@@ -114,8 +95,21 @@ const AEOAnalyzer = () => {
         throw new Error('Invalid response from analysis');
       }
 
+      // Set recommendations to a properly formatted array
+      const formattedRecommendations = data.recommendations.map((rec: string) => {
+        // If recommendation already has a colon, it's already formatted correctly
+        if (rec.includes(':')) return rec;
+        
+        // Extract first few words as the title
+        const words = rec.split(' ');
+        const title = words.slice(0, 3).join(' ');
+        const description = words.slice(3).join(' ');
+        
+        return `${title}: ${description}`;
+      });
+
       setScores(data.scores);
-      setRecommendations(data.recommendations || []);
+      setRecommendations(formattedRecommendations || []);
       setAnalysisComplete(true);
       setAnalysisTab('results');
       toast.success('Analysis completed!');

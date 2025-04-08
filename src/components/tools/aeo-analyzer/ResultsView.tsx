@@ -228,10 +228,10 @@ const ResultsView: React.FC<ResultsViewProps> = ({
               </div>
               <div className="ml-3">
                 <p className="text-gray-800 font-medium">
-                  {recommendation.split(':')[0] || recommendation.substring(0, recommendation.indexOf(' ') > 30 ? 30 : recommendation.indexOf(' '))}
+                  {recommendation.split(':')[0] || recommendation.split(' ').slice(0, 5).join(' ')}
                 </p>
                 <p className="text-gray-600 text-sm">
-                  {recommendation.split(':')[1] || recommendation}
+                  {recommendation.split(':')[1] || ''}
                 </p>
               </div>
             </li>
