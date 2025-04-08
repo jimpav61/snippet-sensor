@@ -17,6 +17,7 @@ const AEOAnalyzer = () => {
   const [contentType, setContentType] = useState('blog');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
+  const [detailedView, setDetailedView] = useState(false);
   const [scores, setScores] = useState({
     keywordRelevance: 78,
     readability: 85,
@@ -123,12 +124,15 @@ const AEOAnalyzer = () => {
   };
 
   const handleFullAnalysis = () => {
-    window.location.href = "/aeo/analyze";
+    // Instead of redirecting, show the detailed view
+    setDetailedView(true);
+    toast.success('Showing detailed analysis');
   };
 
   const resetAnalysis = () => {
     setAnalysisTab('input');
     setAnalysisComplete(false);
+    setDetailedView(false);
   };
 
   return (
@@ -176,6 +180,7 @@ const AEOAnalyzer = () => {
             handleFullAnalysis={handleFullAnalysis}
             resetAnalysis={resetAnalysis}
             analysisSource={activeTab === 'url' ? url : 'Content analysis'}
+            detailedView={detailedView}
           />
         </TabsContent>
       </Tabs>
