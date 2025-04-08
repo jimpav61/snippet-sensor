@@ -52,10 +52,13 @@ const SchemaGeneratorWrapper = () => {
     
     // Set appropriate error message based on the error
     if (error.message && error.message.includes("Property 'image' does not exist")) {
-      setErrorMessage("Schema type issue with 'image' property. Our team is working on a fix.");
+      setErrorMessage("Schema type issue with 'image' property. This is a known issue and will be addressed in the next update.");
     } else {
       setErrorMessage(error.message || "An unexpected error occurred");
     }
+    
+    // Log additional details to help diagnose the issue
+    console.info("If you're facing type errors with schema properties, ensure all schema types are properly defined in schema.ts");
     
     // Prevent the error from bubbling up and crashing the app
     return true;

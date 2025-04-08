@@ -8,7 +8,7 @@ interface SchemaBaseType {
   text?: string;
   // Add the image property that's causing the error
   image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
-  [key: string]: any;
+  [key: string]: any; // Allow any additional properties
 }
 
 // Ensure this gets applied globally
@@ -18,8 +18,9 @@ declare global {
     name?: string;
     text?: string;
     image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
-    [key: string]: any;
+    [key: string]: any; // Allow any additional properties
   }
 }
 
+// Export an empty object to make this a module
 export {};
