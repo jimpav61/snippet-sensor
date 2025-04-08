@@ -43,6 +43,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
       onClick={downloadPdfReport} 
       variant="outline" 
       size="sm"
+      type="button" // Explicitly set type to button to avoid form submission behavior
     >
       <Download className="mr-2 h-4 w-4" /> Download Report
     </Button>

@@ -51,6 +51,7 @@ const ScoreCard: React.FC<ScoreProps> = ({
           onClick={downloadPdfReport} 
           variant="outline" 
           className="mt-4 md:mt-0"
+          type="button" // Explicitly set type to button to avoid form submission behavior
         >
           <Download className="mr-2 h-4 w-4" /> Download Report
         </Button>
