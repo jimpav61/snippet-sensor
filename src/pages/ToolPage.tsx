@@ -1,9 +1,10 @@
+
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, BookOpen } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import PromptOptimizer from '@/components/tools/PromptOptimizer';
 import CustomSchemaGeneratorWrapper from '@/components/tools/CustomSchemaGeneratorWrapper';
 import AEOAnalyzer from '@/components/tools/AEOAnalyzer';
@@ -56,7 +57,14 @@ const toolsData = [
 
 const ToolPage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const tool = toolsData.find(tool => tool.slug === slug);
+
+  // Handle back navigation manually to avoid JSON.parse issues
+  const handleBackClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate('/aeo/learning/tools');
+  };
 
   // Improved tool component rendering with error boundary pattern
   const renderToolComponent = () => {
@@ -83,6 +91,9 @@ const ToolPage = () => {
         <div className="text-center p-8 bg-red-50 rounded-lg">
           <h3 className="text-lg font-semibold text-red-600">Something went wrong</h3>
           <p className="text-gray-700">There was an error loading this tool. Please try again later.</p>
+          <Button onClick={handleBackClick} className="mt-4">
+            Back to Tools
+          </Button>
         </div>
       );
     }
@@ -95,8 +106,8 @@ const ToolPage = () => {
         <main className="flex-grow flex items-center justify-center">
           <div className="text-center">
             <h1 className="heading-lg mb-4">Tool Not Found</h1>
-            <Button asChild>
-              <Link to="/aeo/learning/tools">Back to Tools</Link>
+            <Button onClick={() => navigate('/aeo/learning/tools')}>
+              Back to Tools
             </Button>
           </div>
         </main>
@@ -112,11 +123,13 @@ const ToolPage = () => {
       <main className="flex-grow">
         <div className="max-w-5xl mx-auto px-4 py-12">
           <div className="mb-8">
-            <Button variant="ghost" className="p-0 hover:bg-transparent mb-4" asChild>
-              <Link to="/aeo/learning/tools">
-                <ChevronLeft className="h-5 w-5 mr-1" />
-                Back to Tools
-              </Link>
+            <Button 
+              variant="ghost" 
+              className="p-0 hover:bg-transparent mb-4"
+              onClick={handleBackClick}
+            >
+              <ChevronLeft className="h-5 w-5 mr-1" />
+              Back to Tools
             </Button>
             
             <div className="flex items-center gap-2 mb-4">
@@ -130,13 +143,14 @@ const ToolPage = () => {
             <p className="text-lg text-gray-700 mb-8">{tool?.description}</p>
             
             {tool?.relatedGuide && (
-              <Link 
-                to={`/aeo/learning/guide/${tool.relatedGuide}`} 
-                className="inline-flex items-center text-aeo-600 hover:text-aeo-700 mb-6"
+              <Button 
+                variant="link" 
+                className="inline-flex items-center text-aeo-600 hover:text-aeo-700 mb-6 p-0"
+                onClick={() => navigate(`/aeo/learning/guide/${tool.relatedGuide}`)}
               >
                 <BookOpen className="h-4 w-4 mr-2" />
                 View guide for this tool
-              </Link>
+              </Button>
             )}
           </div>
           

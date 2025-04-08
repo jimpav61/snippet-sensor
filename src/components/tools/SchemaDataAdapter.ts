@@ -62,10 +62,9 @@ export function initializeSchemaAdapter() {
   
   // Use window instead of global in browser environment
   if (typeof window !== 'undefined') {
-    // Override JSON.stringify to ensure all schema objects have image property
-    // This targets the specific points where SchemaGenerator might be using JSON
-    window.JSON = {
-      ...JSON,
+    // IMPORTANT: Don't override JSON methods completely as it breaks routing
+    // Instead, create a custom method that can be called explicitly
+    window.adaptSchemaJSON = {
       stringify: function(value: any, ...args: any[]) {
         return originalJSONStringify(deepAdaptSchema(value), ...args);
       }
@@ -73,4 +72,13 @@ export function initializeSchemaAdapter() {
   }
   
   console.log('Schema Data Adapter initialized');
+}
+
+// Type declaration for our custom JSON adapter
+declare global {
+  interface Window {
+    adaptSchemaJSON?: {
+      stringify: typeof JSON.stringify;
+    };
+  }
 }

@@ -10,13 +10,17 @@ import { patchSchemaObjects } from './SchemaGeneratorTypeFix';
  */
 const CustomSchemaGeneratorWrapper = () => {
   useEffect(() => {
-    // Initialize our adapter when the component mounts
-    initializeSchemaAdapter();
-    
-    // Also run the type patch for extra coverage
-    patchSchemaObjects();
-    
-    console.log('Schema adapter and type fixes initialized');
+    try {
+      // Initialize our adapter when the component mounts
+      initializeSchemaAdapter();
+      
+      // Also run the type patch for extra coverage
+      patchSchemaObjects();
+      
+      console.log('Schema adapter and type fixes initialized');
+    } catch (error) {
+      console.error('Error initializing schema adapters:', error);
+    }
   }, []);
 
   return <SchemaGenerator />;
