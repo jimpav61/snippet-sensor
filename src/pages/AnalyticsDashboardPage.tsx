@@ -4,10 +4,10 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { BarChart, Copy, Mail } from 'lucide-react';
+import { BarChart, Copy, Mail, CornerUpLeft } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { Link } from 'react-router-dom';
 
-// Updated Plausible tracking code template with more flexibility
 const getPlausibleTrackingCode = (domain: string) => `<!-- Plausible Analytics -->
 <script defer data-domain="${domain}" src="https://plausible.io/js/script.js"></script>
 <script>
@@ -24,7 +24,6 @@ const AnalyticsDashboardPage = () => {
   const [domain, setDomain] = useState('');
   const [copied, setCopied] = useState(false);
 
-  // Add Plausible script dynamically when the component mounts
   useEffect(() => {
     console.log('Analytics dashboard mounted');
     
@@ -42,13 +41,11 @@ const AnalyticsDashboardPage = () => {
     setCopied(true);
     toast.success('Plausible tracking code copied to clipboard!');
     
-    // Reset copied state after 3 seconds
     setTimeout(() => setCopied(false), 3000);
   };
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, you would validate and store the email
     if (email.includes('@') && email.includes('.')) {
       setAccessGranted(true);
       toast.success('Access granted! Welcome to your analytics dashboard.');
@@ -59,15 +56,17 @@ const AnalyticsDashboardPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome to Your Free Analytics Dashboard</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Gain insights into customer interactions, uncover trends, and improve your AI conversational experiences.
-        </p>
+      <div className="flex items-center justify-between mb-12">
+        <h1 className="text-4xl font-bold text-gray-900">Welcome to Your Free Analytics Dashboard</h1>
+        <Button variant="outline" asChild className="flex items-center gap-2">
+          <Link to="/">
+            <CornerUpLeft className="h-4 w-4" />
+            Back to Home
+          </Link>
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left column - Setup Instructions */}
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
@@ -138,7 +137,6 @@ const AnalyticsDashboardPage = () => {
           </Card>
         </div>
 
-        {/* Right column - Dashboard or Email Access */}
         <div className="lg:col-span-2">
           {accessGranted ? (
             <Card>
