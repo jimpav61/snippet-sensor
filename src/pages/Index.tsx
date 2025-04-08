@@ -12,7 +12,7 @@ const Index = () => {
       
       <main className="flex-grow">
         {/* Hero Section - Completely redesigned */}
-        <section className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-900 via-purple-900 to-aeo-700 text-white relative overflow-hidden">
+        <section className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-aeo-900 via-aeo-700 to-aeo-500 text-white relative overflow-hidden">
           <div className="absolute inset-0 z-0 opacity-30">
             <div className="absolute right-0 top-0 w-full h-full max-w-4xl">
               <div className="w-full h-full bg-blue-400 rounded-full blur-3xl opacity-20 transform -translate-x-1/4 -translate-y-1/4"></div>
@@ -26,21 +26,21 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="animate-fade-in">
                 <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
-                  AI-Powered Solutions for a <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-400">Digital Future</span>
+                  AI-Powered Solutions for a <span className="text-transparent bg-clip-text bg-gradient-to-r from-aeo-300 to-aeo-500">Digital Future</span>
                 </h1>
                 <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-2xl">
                   Unlock the potential of AI for your business with ChatSites.ai - where innovative solutions meet real-world challenges.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <Button asChild size="lg" className="bg-white text-indigo-900 hover:bg-gray-100">
+                  <Button asChild size="lg" className="bg-white text-aeo-600 hover:bg-gray-100">
                     <Link to="/aeo">Explore Solutions <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
                   <Button 
                     asChild 
                     variant="outline" 
                     size="lg" 
-                    className="border-white/50 text-white bg-white/10 hover:bg-white/20 font-semibold"
+                    className="border-white/50 text-white bg-aeo-900/10 hover:bg-aeo-900/20 font-semibold"
                   >
                     <Link to="/aeo/learning">Learning Center</Link>
                   </Button>
