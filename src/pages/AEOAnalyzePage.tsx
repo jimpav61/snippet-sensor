@@ -40,6 +40,9 @@ const AEOAnalyzePage = () => {
         setAnalysisSource(content.substring(0, 50) + (content.length > 50 ? '...' : ''));
       }
       
+      console.log('Starting analysis for content type:', contentType);
+      console.log('Content length:', content.length);
+      
       // Call Supabase Edge Function for analysis
       const { data, error } = await supabase.functions.invoke('analyze-content', {
         body: {

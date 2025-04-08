@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,9 +11,10 @@ import { toast } from 'sonner';
 
 interface AnalyzeFormProps {
   onAnalysisComplete: (content: string, contentType: string) => void;
+  isProcessing?: boolean; // Added isProcessing as an optional prop
 }
 
-const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
+const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete, isProcessing = false }) => {
   const [activeTab, setActiveTab] = useState('url');
   const [url, setUrl] = useState('');
   const [content, setContent] = useState('');
@@ -70,6 +72,9 @@ const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
       toast.error('Failed to prepare content for analysis. Please try again.');
     }
   };
+
+  // Use the external isProcessing prop or the local isAnalyzing state
+  const isLoading = isProcessing || isAnalyzing;
 
   return (
     <div className="aeo-card p-6 md:p-8">
@@ -170,9 +175,9 @@ const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
             <Button 
               type="submit" 
               className="w-full bg-aeo hover:bg-aeo-600"
-              disabled={isAnalyzing}
+              disabled={isLoading}
             >
-              {isAnalyzing ? 'Analyzing...' : 'Analyze Content'} {!isAnalyzing && <ArrowRight className="ml-2 h-4 w-4" />}
+              {isLoading ? 'Analyzing...' : 'Analyze Content'} {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
             </Button>
           </div>
         </form>
