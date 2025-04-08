@@ -19,6 +19,12 @@ const AEOAnalyzePage = () => {
     structuredData: 70,
     finalScore: 74,
   });
+  // Add initial recommendations state
+  const [recommendations, setRecommendations] = useState<string[]>([
+    "Improve snippet optimization by including clear answers to common questions.",
+    "Enhance structured data to provide clear signals to AI systems.",
+    "Expand topic coverage to address related subtopics and questions."
+  ]);
   
   const handleAnalysisComplete = (analysisScores: typeof scores) => {
     setScores(analysisScores);
@@ -52,7 +58,7 @@ const AEOAnalyzePage = () => {
                 onDownloadReport={handleDownloadReport}
               />
               
-              <RecommendationsCard />
+              <RecommendationsCard recommendations={recommendations} />
               
               <div className="text-center mt-6">
                 <Button 
