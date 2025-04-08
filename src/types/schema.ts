@@ -1,4 +1,3 @@
-
 // Explicit type definitions for the Schema Generator
 // This file defines all Schema.org types used in the application
 
@@ -170,10 +169,11 @@ export interface AggregateRating extends SchemaBaseType {
   image?: string | ImageObject;
 }
 
-// Adding a specific type that matches the error pattern
-export interface SchemaTextType extends SchemaBaseType {
+// Add a specific type to match the error pattern
+export interface SchemaTextType {
   "@type": string;
   name: string;
   text: string;
   image?: string | ImageObject;
+  [key: string]: any; // Allow additional properties
 }

@@ -1,31 +1,35 @@
 
-// This declaration file augments the types used in SchemaGenerator.tsx
-// to ensure the TypeScript compiler doesn't throw errors for the 'image' property
+// This file provides global augmentation for Schema.org types to ensure
+// TypeScript recognizes all properties used in SchemaGenerator.tsx
 
+// Define a base interface that includes all common properties
 interface SchemaBaseType {
   "@type": string;
   name?: string;
   text?: string;
-  // Add the image property that's causing the error
   image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
   [key: string]: any; // Allow any additional properties
 }
 
-// Ensure this gets applied globally
+// Ensure the interface with name and text properties explicitly includes image
+interface SchemaTextObject {
+  "@type": string;
+  name: string;
+  text: string;
+  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
+  [key: string]: any; // Allow any additional properties
+}
+
+// Apply these interfaces globally
 declare global {
+  // Add the specific type that's causing the error in SchemaGenerator.tsx
+  interface SchemaTextType extends SchemaTextObject {}
+  
+  // Add the base type for all schema objects
   interface SchemaBaseType {
     "@type": string;
     name?: string;
     text?: string;
-    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
-    [key: string]: any; // Allow any additional properties
-  }
-  
-  // Add a specific interface for the type of object causing errors
-  interface SchemaTextType {
-    "@type": string;
-    name: string;
-    text: string;
     image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
     [key: string]: any;
   }
