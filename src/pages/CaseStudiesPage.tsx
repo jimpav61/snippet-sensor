@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ResourceCategorySection from '@/components/learning-center/ResourceCategorySection';
+import ResourceCard from '@/components/learning-center/ResourceCard';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -57,23 +58,15 @@ const CaseStudiesPage = () => {
             <h2 className="text-2xl font-bold mb-6 text-gray-900">Featured Success Stories</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredCaseStudies.map((study, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-                  <div className="p-6">
-                    <span className="inline-block px-3 py-1 text-xs font-medium bg-aeo-50 text-aeo-600 rounded-full mb-4">
-                      {study.category}
-                    </span>
-                    <h3 className="text-lg font-semibold mb-2">{study.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{study.description}</p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-500">{study.readTime}</span>
-                      <Button asChild variant="ghost" size="sm" className="text-aeo-600 hover:text-aeo-700 p-0">
-                        <Link to={`/aeo/learning/case-study/${study.slug}`}>
-                          Read Case Study
-                        </Link>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                <ResourceCard
+                  key={study.slug || index}
+                  title={study.title}
+                  description={study.description}
+                  category={study.category}
+                  readTime={study.readTime}
+                  slug={study.slug}
+                  type="case-study"
+                />
               ))}
             </div>
           </div>
@@ -84,7 +77,6 @@ const CaseStudiesPage = () => {
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 text-gray-900">Browse by Industry</h2>
             
-            {/* Using our ResourceCategorySection component for each industry */}
             {industrySections.map((section, index) => (
               <ResourceCategorySection
                 key={index}
