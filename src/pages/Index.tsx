@@ -40,7 +40,7 @@ const Index = () => {
                     asChild 
                     variant="outline" 
                     size="lg" 
-                    className="border-white text-white hover:bg-white/20 font-semibold"
+                    className="border-white/50 text-white bg-white/10 hover:bg-white/20 font-semibold"
                   >
                     <Link to="/aeo/learning">Learning Center</Link>
                   </Button>
