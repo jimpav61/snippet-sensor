@@ -24,7 +24,7 @@ const ResourceCategorySection: React.FC<ResourceCategorySectionProps> = ({
   return (
     <div className="mb-12">
       <h3 className="text-xl font-semibold mb-6 text-gray-800">{title}</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {resources.map((resource, index) => (
           <ResourceCard
             key={resource.slug || index}
