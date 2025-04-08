@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import ResourceCard from '@/components/learning-center/ResourceCard';
+import ResourceCategorySection from '@/components/learning-center/ResourceCategorySection';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -27,6 +27,12 @@ const CaseStudiesPage = () => {
 
   // Get featured case studies
   const featuredCaseStudies = caseStudiesData.slice(0, 3);
+  
+  // Create a featured section object that matches the format expected by ResourceCategorySection
+  const featuredSection = {
+    title: "Featured Success Stories",
+    resources: featuredCaseStudies
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -54,20 +60,11 @@ const CaseStudiesPage = () => {
         {/* Featured Case Studies */}
         <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Featured Success Stories</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredCaseStudies.map((study, index) => (
-                <ResourceCard
-                  key={study.slug || index}
-                  title={study.title}
-                  description={study.description}
-                  category={study.category}
-                  readTime={study.readTime}
-                  slug={study.slug}
-                  type="case-study"
-                />
-              ))}
-            </div>
+            <ResourceCategorySection
+              title={featuredSection.title}
+              resources={featuredSection.resources}
+              type="case-study"
+            />
           </div>
         </section>
         
@@ -77,22 +74,12 @@ const CaseStudiesPage = () => {
             <h2 className="text-2xl font-bold mb-6 text-gray-900">Browse by Industry</h2>
             
             {industrySections.map((section, index) => (
-              <div key={index} className="mb-12">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">{section.title}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {section.resources.map((resource, idx) => (
-                    <ResourceCard
-                      key={resource.slug || idx}
-                      title={resource.title}
-                      description={resource.description}
-                      category={resource.category}
-                      readTime={resource.readTime}
-                      slug={resource.slug}
-                      type="case-study"
-                    />
-                  ))}
-                </div>
-              </div>
+              <ResourceCategorySection
+                key={index}
+                title={section.title}
+                resources={section.resources}
+                type="case-study"
+              />
             ))}
           </div>
         </section>
