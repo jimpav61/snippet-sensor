@@ -1,3 +1,4 @@
+
 // Global type augmentation for Schema.org types
 // This file ensures all Schema.org related types properly include the image property
 

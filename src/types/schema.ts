@@ -6,7 +6,7 @@ export interface BaseSchema {
   "@type": string;
   name: string;
   text: string;
-  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; };
+  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
 }
 
 export interface BlogPostingSchema extends BaseSchema {
@@ -49,9 +49,9 @@ export interface ArticleSchema extends BaseSchema {
 export type SchemaType = BlogPostingSchema | ProductSchema | ArticleSchema;
 
 // Helper function to create a schema with proper context
-export function createSchemaWithContext<T extends BaseSchema>(schema: T): WithContext<T> {
+export function createSchemaWithContext<T extends BaseSchema>(schema: T): WithContext<any> {
   return {
     "@context": "https://schema.org",
     ...schema
-  } as WithContext<T>;
+  };
 }
