@@ -4,8 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { ArrowRight, BarChart3, Zap, Search } from 'lucide-react';
-import AnalyticsDashboardPromo from '@/components/home/AnalyticsDashboardPromo';
+import { ArrowRight, Bot, BarChart3, Zap, Users, Lightbulb, BarChart } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -13,226 +12,266 @@ const Index = () => {
       <Header />
       
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-br from-slate-50 to-white">
-          <div className="absolute inset-0 z-0 opacity-20">
-            <div className="absolute inset-0 bg-white"></div>
-            <div className="absolute right-0 bottom-0 w-full h-full max-w-4xl">
-              <div className="w-full h-full bg-aeo-50 rounded-full blur-3xl opacity-30 transform translate-x-1/3 translate-y-1/3"></div>
+        {/* Hero Section - Completely redesigned */}
+        <section className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-indigo-900 via-purple-900 to-aeo-700 text-white relative overflow-hidden">
+          <div className="absolute inset-0 z-0 opacity-30">
+            <div className="absolute right-0 top-0 w-full h-full max-w-4xl">
+              <div className="w-full h-full bg-blue-400 rounded-full blur-3xl opacity-20 transform -translate-x-1/4 -translate-y-1/4"></div>
+            </div>
+            <div className="absolute left-0 bottom-0 w-full h-full max-w-4xl">
+              <div className="w-full h-full bg-purple-400 rounded-full blur-3xl opacity-20 transform translate-x-1/4 translate-y-1/4"></div>
             </div>
           </div>
           
           <div className="relative z-10 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="animate-fade-in">
-                <h1 className="heading-xl mb-6 text-gray-900">
-                  <span className="text-aeo font-bold block">Stay Visible</span> in the AI-Driven 
-                  <span className="relative">
-                    <span className="relative z-10">Search Revolution</span>
-                    <span className="absolute bottom-2 left-0 w-full h-3 bg-aeo-100 -z-10 transform -rotate-1"></span>
-                  </span>
+                <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                  AI-Powered Solutions for a <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-pink-400">Digital Future</span>
                 </h1>
-                <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl">
-                  In a world where <span className="font-semibold">60% of searches</span> end without clicks, 
-                  traditional SEO isn't enough. ChatSites.ai helps you optimize for AI engines 
-                  so your content stands out exactly where your audience is looking.
+                <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-2xl">
+                  Unlock the potential of AI for your business with ChatSites.ai - where innovative solutions meet real-world challenges.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <Button asChild size="lg" className="bg-aeo hover:bg-aeo-600">
-                    <Link to="/aeo/analyze">Get Your Free AEO Score <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                  <Button asChild size="lg" className="bg-white text-indigo-900 hover:bg-gray-100">
+                    <Link to="/aeo">Explore Solutions <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg">
-                    <Link to="/aeo">Explore Our Solutions</Link>
+                  <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+                    <Link to="/aeo/learning">Learning Center</Link>
                   </Button>
                 </div>
                 
                 <div className="flex flex-wrap gap-6 mt-8">
                   <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-green-50">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 13L9 17L19 7" stroke="#22C55E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm">
+                      <Bot className="h-5 w-5 text-white" />
                     </div>
-                    <span className="text-gray-700">AI-Optimized Content</span>
+                    <span className="text-white/90">AI-First Solutions</span>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-50">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 13L9 17L19 7" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm">
+                      <BarChart3 className="h-5 w-5 text-white" />
                     </div>
-                    <span className="text-gray-700">Data-Driven Insights</span>
+                    <span className="text-white/90">Data Analytics</span>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-purple-50">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 13L9 17L19 7" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm">
+                      <Zap className="h-5 w-5 text-white" />
                     </div>
-                    <span className="text-gray-700">Actionable Recommendations</span>
+                    <span className="text-white/90">Fast Implementation</span>
                   </div>
                 </div>
               </div>
               
-              <div className="relative">
-                <div className="aeo-card p-8 shadow-xl">
-                  <div className="flex items-center mb-6">
-                    <div className="h-14 w-14 rounded-full bg-aeo-50 flex items-center justify-center text-aeo-500">
-                      <Search className="h-7 w-7" />
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="font-semibold text-2xl">AI Search Results</h3>
-                      <p className="text-gray-500">See how your content performs with AI engines</p>
-                    </div>
-                  </div>
-                  
-                  <div className="p-6 rounded-lg bg-gray-50 border border-gray-100 mb-6">
-                    <p className="text-gray-800 text-lg">
-                      <span className="font-semibold">AI Engine Optimization</span> helps businesses 
-                      adapt to AI-driven search by structuring content for AI comprehension, optimizing 
-                      for featured snippets, and ensuring visibility in an evolving search landscape.
-                    </p>
-                    <div className="mt-4 flex items-center text-sm text-gray-500">
-                      <span className="text-aeo-500 font-medium">AEO Score: 94/100</span>
-                      <span className="mx-2">•</span>
-                      <span>Top-tier snippet potential</span>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 rounded-lg border border-gray-100 bg-white">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-500">Relevance</span>
-                        <span className="text-sm font-medium">96%</span>
-                      </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2">
-                        <div className="bg-aeo-500 h-2 rounded-full" style={{ width: '96%' }}></div>
-                      </div>
-                    </div>
-                    <div className="p-4 rounded-lg border border-gray-100 bg-white">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-500">Searchability</span>
-                        <span className="text-sm font-medium">92%</span>
-                      </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2">
-                        <div className="bg-aeo-500 h-2 rounded-full" style={{ width: '92%' }}></div>
-                      </div>
-                    </div>
-                  </div>
+              <div className="relative hidden lg:block">
+                <div className="relative z-10 rounded-lg overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <img 
+                    src="https://placehold.co/800x600/3730a3/ffffff?text=AI+Platform" 
+                    alt="AI Platform Dashboard"
+                    className="w-full h-auto"
+                  />
                 </div>
-                
-                <div className="absolute -right-6 -bottom-6 h-24 w-24 rounded-xl aeo-gradient transform rotate-6 opacity-80 blur-sm -z-10"></div>
-                <div className="absolute -left-4 -top-4 h-16 w-16 rounded-xl bg-gray-200 transform -rotate-12 opacity-60 blur-sm -z-10"></div>
+                <div className="absolute -z-10 -bottom-10 -right-10 w-64 h-64 bg-pink-500 rounded-full opacity-20 blur-3xl"></div>
+                <div className="absolute -z-10 -top-10 -left-10 w-48 h-48 bg-blue-500 rounded-full opacity-20 blur-3xl"></div>
               </div>
             </div>
           </div>
         </section>
         
-        {/* Features Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        {/* What We Offer Section - New */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="heading-lg mb-4 text-gray-900">Why <span className="text-aeo">AI Engine Optimization</span> Matters Now</h2>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Our Platform Solutions</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                The search landscape is evolving. Is your content strategy keeping up?
+                ChatSites.ai provides a comprehensive suite of AI-powered solutions designed to transform your digital presence.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="aeo-card p-8 flex flex-col items-center text-center transform transition-all duration-300 hover:scale-105">
-                <div className="h-16 w-16 rounded-lg bg-aeo-50 flex items-center justify-center text-aeo mb-6">
-                  <Search className="h-8 w-8" />
+              <div className="bg-white rounded-xl shadow-md p-8 hover:shadow-lg transition-shadow">
+                <div className="h-14 w-14 rounded-full bg-aeo-50 flex items-center justify-center text-aeo mb-6">
+                  <BarChart className="h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">Beyond Traditional SEO</h3>
+                <h3 className="text-xl font-semibold mb-3">AI Analytics Dashboard</h3>
+                <p className="text-gray-600 mb-4">
+                  Gain valuable insights from your data with our comprehensive analytics solution.
+                </p>
+                <Link to="/analytics-dashboard" className="text-aeo-600 font-medium flex items-center hover:underline">
+                  Learn more <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+              
+              <div className="bg-gradient-to-br from-aeo-500 to-aeo-700 rounded-xl shadow-md p-8 text-white hover:shadow-lg transition-shadow">
+                <div className="h-14 w-14 rounded-full bg-white/20 flex items-center justify-center mb-6">
+                  <Zap className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">AI Engine Optimization</h3>
+                <p className="text-white/90 mb-4">
+                  Optimize your content for AI-driven search with our specialized AEO services.
+                </p>
+                <Link to="/aeo" className="text-white font-medium flex items-center hover:underline">
+                  Learn more <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-md p-8 hover:shadow-lg transition-shadow">
+                <div className="h-14 w-14 rounded-full bg-aeo-50 flex items-center justify-center text-aeo mb-6">
+                  <Lightbulb className="h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">AI Learning Center</h3>
+                <p className="text-gray-600 mb-4">
+                  Access resources, guides and tools to enhance your AI implementation strategy.
+                </p>
+                <Link to="/aeo/learning" className="text-aeo-600 font-medium flex items-center hover:underline">
+                  Learn more <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        {/* Why Choose Us Section - New */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Why Choose ChatSites.ai</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Partner with the leader in AI solutions and stay ahead in an ever-evolving digital landscape.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="text-2xl font-bold text-aeo-600 mb-2">01</div>
+                <h3 className="text-xl font-semibold mb-2">Cutting-Edge Technology</h3>
                 <p className="text-gray-600">
-                  AI-powered search results deliver direct answers, bypassing traditional 
-                  organic listings and reducing clickthrough to your website.
+                  Our solutions leverage the latest advancements in artificial intelligence and machine learning.
                 </p>
               </div>
               
-              <div className="aeo-card p-8 flex flex-col items-center text-center transform transition-all duration-300 hover:scale-105">
-                <div className="h-16 w-16 rounded-lg bg-aeo-50 flex items-center justify-center text-aeo mb-6">
-                  <Zap className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">AI-Ready Content</h3>
+              <div className="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="text-2xl font-bold text-aeo-600 mb-2">02</div>
+                <h3 className="text-xl font-semibold mb-2">Proven Results</h3>
                 <p className="text-gray-600">
-                  Structure your content to be easily understood by AI systems, ensuring your 
-                  brand's voice is heard in this new era of search.
+                  Our clients experience tangible improvements in engagement, visibility, and conversion rates.
                 </p>
               </div>
               
-              <div className="aeo-card p-8 flex flex-col items-center text-center transform transition-all duration-300 hover:scale-105">
-                <div className="h-16 w-16 rounded-lg bg-aeo-50 flex items-center justify-center text-aeo mb-6">
-                  <BarChart3 className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Data-Driven Strategy</h3>
+              <div className="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="text-2xl font-bold text-aeo-600 mb-2">03</div>
+                <h3 className="text-xl font-semibold mb-2">Expert Support</h3>
                 <p className="text-gray-600">
-                  Gain insights into how AI interprets your content and make targeted 
-                  improvements with measurable results.
+                  Our team of AI specialists is dedicated to helping you maximize the value of our solutions.
+                </p>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow">
+                <div className="text-2xl font-bold text-aeo-600 mb-2">04</div>
+                <h3 className="text-xl font-semibold mb-2">Future-Proof Solutions</h3>
+                <p className="text-gray-600">
+                  Stay ahead of the curve with solutions designed to adapt to emerging AI technologies.
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+        
+        {/* Success Stories Section - New */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Success Stories</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                See how businesses like yours are thriving with our AI solutions.
+              </p>
+            </div>
             
-            <div className="mt-16 text-center">
-              <Button asChild size="lg" className="bg-aeo hover:bg-aeo-600">
-                <Link to="/aeo/analyze">Get Your Free AEO Score <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center mb-4">
+                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                    <Users className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">TechCorp Inc.</h3>
+                    <p className="text-sm text-gray-500">Technology</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  "ChatSites.ai transformed our approach to customer engagement. Our AI visibility improved by 87% in just 3 months."
+                </p>
+                <Link to="/aeo/learning/case-studies" className="text-aeo-600 font-medium text-sm hover:underline">
+                  Read the case study
+                </Link>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center mb-4">
+                  <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center mr-4">
+                    <Users className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">GreenLeaf Marketing</h3>
+                    <p className="text-sm text-gray-500">Marketing Agency</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  "The analytics dashboard gave us insights we never knew existed. We've seen a 32% increase in conversion rates."
+                </p>
+                <Link to="/aeo/learning/case-studies" className="text-aeo-600 font-medium text-sm hover:underline">
+                  Read the case study
+                </Link>
+              </div>
+              
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center mb-4">
+                  <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                    <Users className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Retail Evolution</h3>
+                    <p className="text-sm text-gray-500">E-commerce</p>
+                  </div>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  "AEO has become a critical part of our content strategy. Our products now appear in 46% more AI-generated responses."
+                </p>
+                <Link to="/aeo/learning/case-studies" className="text-aeo-600 font-medium text-sm hover:underline">
+                  Read the case study
+                </Link>
+              </div>
+            </div>
+            
+            <div className="text-center mt-10">
+              <Button asChild variant="outline" size="lg" className="border-aeo-500 text-aeo-600 hover:bg-aeo-50">
+                <Link to="/aeo/learning/case-studies">View All Case Studies</Link>
               </Button>
             </div>
           </div>
         </section>
         
-        {/* Statistics Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="aeo-card p-8 text-center">
-                <div className="text-4xl font-bold text-aeo mb-2">60%</div>
-                <p className="text-gray-600">of Google searches end without clicks due to AI-generated answers</p>
-              </div>
-              
-              <div className="aeo-card p-8 text-center">
-                <div className="text-4xl font-bold text-aeo mb-2">78%</div>
-                <p className="text-gray-600">of businesses are unprepared for AI-first search strategies</p>
-              </div>
-              
-              <div className="aeo-card p-8 text-center">
-                <div className="text-4xl font-bold text-aeo mb-2">3.2x</div>
-                <p className="text-gray-600">higher engagement for AI-optimized content</p>
-              </div>
-              
-              <div className="aeo-card p-8 text-center">
-                <div className="text-4xl font-bold text-aeo mb-2">91%</div>
-                <p className="text-gray-600">of users trust content featured in AI snippets</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Analytics Dashboard Promo */}
-        <AnalyticsDashboardPromo />
-        
-        {/* CTA Section */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 aeo-gradient">
+        {/* CTA Section - Redesigned */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-aeo-600 to-indigo-900 text-white">
           <div className="max-w-5xl mx-auto text-center">
-            <h2 className="heading-lg mb-6 text-white">Ready to Thrive in the AI Search Era?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Start Your AI Journey Today</h2>
             <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-              Join forward-thinking businesses that are already adapting to the future of search. 
-              Get your free AEO score today and take the first step.
+              Begin with our free AEO assessment and discover how ChatSites.ai can transform your digital presence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6">
+              <Button asChild size="lg" variant="secondary" className="text-lg">
                 <Link to="/aeo/analyze">Get Your Free AEO Score <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
               <Button 
                 asChild
                 size="lg" 
                 variant="outline" 
-                className="bg-transparent text-white border-white hover:bg-white/10 text-lg px-8 py-6"
+                className="bg-transparent text-white border-white hover:bg-white/10 text-lg"
               >
-                <Link to="/aeo/contact">Schedule a Consultation</Link>
+                <Link to="/aeo/contact">Schedule a Demo</Link>
               </Button>
             </div>
           </div>
