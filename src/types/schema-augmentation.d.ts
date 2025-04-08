@@ -13,11 +13,6 @@ interface SchemaBaseType {
 
 // Apply these interfaces globally
 declare global {
-  // Force TypeScript to accept 'image' on any schema object
-  interface Record<K extends string | number | symbol, T> {
-    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
-  }
-  
   // Add a specific interface for the exact shape causing the error
   interface SchemaTextType {
     "@type": string;

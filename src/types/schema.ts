@@ -1,12 +1,12 @@
 
-import { Thing, WithContext, ImageObject, Article, Product } from 'schema-dts';
+import { WithContext } from 'schema-dts';
 
-// Base schema with common properties
-export interface BaseSchema extends Partial<Thing> {
+// Define our own base schema interface without extending schema-dts types
+export interface BaseSchema {
   "@type": string;
   name: string;
   text: string;
-  image?: string | ImageObject;
+  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; };
 }
 
 export interface BlogPostingSchema extends BaseSchema {
@@ -53,5 +53,5 @@ export function createSchemaWithContext<T extends BaseSchema>(schema: T): WithCo
   return {
     "@context": "https://schema.org",
     ...schema
-  };
+  } as WithContext<T>;
 }

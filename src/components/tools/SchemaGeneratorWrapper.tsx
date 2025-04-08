@@ -5,19 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { toast } from "sonner";
 
-// Load schema-dts types to ensure type compatibility
-const patchSchemaTypes = () => {
-  // This is a runtime solution to handle the TypeScript build issue
-  console.log("Initializing schema-dts types before loading SchemaGenerator");
+// Initialize schema types compatibility layer
+const initializeSchemaTypes = () => {
+  console.log("Initializing schema types before loading SchemaGenerator");
   
-  // Create a global augmentation for schemas at runtime
+  // Ensure global type definitions are available at runtime
   if (typeof window !== 'undefined') {
     window.__SCHEMA_TYPES_INITIALIZED__ = true;
   }
 };
 
-// Initialize types before loading
-patchSchemaTypes();
+// Initialize types before loading the component
+initializeSchemaTypes();
 
 // Use lazy loading for the SchemaGenerator component
 const LazySchemaGenerator = lazy(() => import('./SchemaGenerator')
@@ -76,7 +75,7 @@ const SchemaGeneratorWrapper = () => {
     }
     
     // Log additional details to help diagnose the issue
-    console.info("Schema type error detected. Using schema-dts library for improved type safety.");
+    console.info("Schema type error detected. Schema definitions have been updated for better compatibility.");
     
     // Prevent the error from bubbling up and crashing the app
     return true;
