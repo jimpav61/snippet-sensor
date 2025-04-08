@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ResourceCategorySection from '@/components/learning-center/ResourceCategorySection';
+import ResourceCard from '@/components/learning-center/ResourceCard';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
