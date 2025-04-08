@@ -11,6 +11,7 @@ import { useAEOAnalysis } from '@/hooks/useAEOAnalysis';
 
 const AnalysisContainer: React.FC = () => {
   const [analysisTab, setAnalysisTab] = useState('input');
+  const [currentContentType, setCurrentContentType] = useState('content');
   
   const {
     isAnalyzing,
@@ -28,6 +29,7 @@ const AnalysisContainer: React.FC = () => {
   const inputState = useInputState({
     onSubmit: async (contentToAnalyze, contentType, contentSource) => {
       setAnalysisTab('loading');
+      setCurrentContentType(contentType);
       const success = await analyzeContent(contentToAnalyze, contentType, contentSource);
       if (success) {
         setAnalysisTab('results');
@@ -90,6 +92,7 @@ const AnalysisContainer: React.FC = () => {
             analysisSource={analyzedContent}
             originalContent={originalContent}
             detailedView={detailedView}
+            contentType={currentContentType}
           />
         </TabsContent>
       </Tabs>

@@ -23,6 +23,7 @@ interface ResultsViewProps {
   analysisSource?: string;
   originalContent?: string;
   detailedView?: boolean;
+  contentType?: string;
 }
 
 const ResultsView: React.FC<ResultsViewProps> = ({ 
@@ -33,7 +34,8 @@ const ResultsView: React.FC<ResultsViewProps> = ({
   resetAnalysis,
   analysisSource = 'Content analysis',
   originalContent,
-  detailedView = false
+  detailedView = false,
+  contentType = 'content'
 }) => {
   return (
     <div className="space-y-6">
@@ -46,6 +48,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({
           originalContent={originalContent}
           analysisSource={analysisSource}
           handleDownloadReport={handleDownloadReport}
+          contentType={contentType}
         />
       </div>
       
@@ -54,7 +57,11 @@ const ResultsView: React.FC<ResultsViewProps> = ({
         <ContentSource analysisSource={analysisSource} />
 
         {/* Score List with optional detailed explanations */}
-        <ScoreList scores={scores} detailedView={detailedView} />
+        <ScoreList 
+          scores={scores} 
+          detailedView={detailedView}
+          contentType={contentType} 
+        />
       </div>
       
       <Separator className="my-4" />

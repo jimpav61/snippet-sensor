@@ -11,27 +11,32 @@ interface ScoreListProps {
     structuredData: number;
   };
   detailedView: boolean;
+  contentType?: string;
 }
 
-const ScoreList: React.FC<ScoreListProps> = ({ scores, detailedView }) => {
+const ScoreList: React.FC<ScoreListProps> = ({ 
+  scores, 
+  detailedView,
+  contentType = 'content'
+}) => {
   // Get score descriptions based on values
   const getScoreDescription = (type: string, score: number) => {
     if (type === 'keywordRelevance') {
-      return score >= 80 
-        ? "Good keyword usage with relevant terms and phrases." 
-        : "Improve keyword usage with more relevant terms.";
+      if (score >= 80) return "Good keyword usage with comprehensive topic coverage.";
+      if (score >= 60) return "Adequate keyword usage, but could improve semantic relevance.";
+      return "Limited keyword relevance. Consider expanding your topic coverage.";
     } else if (type === 'readability') {
-      return score >= 80 
-        ? "Your content is easy to read and well-structured." 
-        : "Content could be more readable with better structure.";
+      if (score >= 80) return "Your content is easy to read with excellent structure.";
+      if (score >= 60) return "Readability is acceptable but could be improved.";
+      return "Content is difficult to read. Consider simplifying.";
     } else if (type === 'snippetOptimization') {
-      return score >= 80 
-        ? "Well-optimized for AI-generated snippets." 
-        : "Needs improvement to be featured in AI-generated snippets.";
+      if (score >= 80) return "Well-optimized for AI-generated snippets and featured results.";
+      if (score >= 60) return "Partially optimized for AI snippets, but needs improvement.";
+      return "Poor snippet optimization. Restructure for better AI visibility.";
     } else if (type === 'structuredData') {
-      return score >= 80 
-        ? "Good structured data implementation." 
-        : "Add more structured data to help AI systems.";
+      if (score >= 80) return "Excellent structured data implementation for AI comprehension.";
+      if (score >= 60) return "Basic structured data present, but could be more comprehensive.";
+      return "Minimal structured data. Add more signals for AI systems.";
     }
     return "Score needs improvement.";
   };
@@ -45,7 +50,11 @@ const ScoreList: React.FC<ScoreListProps> = ({ scores, detailedView }) => {
       />
       
       {detailedView && (
-        <DetailedExplanation type="keywordRelevance" score={scores.keywordRelevance} />
+        <DetailedExplanation 
+          type="keywordRelevance" 
+          score={scores.keywordRelevance} 
+          contentType={contentType}
+        />
       )}
       
       <ScoreItem 
@@ -55,7 +64,11 @@ const ScoreList: React.FC<ScoreListProps> = ({ scores, detailedView }) => {
       />
       
       {detailedView && (
-        <DetailedExplanation type="readability" score={scores.readability} />
+        <DetailedExplanation 
+          type="readability" 
+          score={scores.readability} 
+          contentType={contentType}
+        />
       )}
       
       <ScoreItem 
@@ -65,7 +78,11 @@ const ScoreList: React.FC<ScoreListProps> = ({ scores, detailedView }) => {
       />
       
       {detailedView && (
-        <DetailedExplanation type="snippetOptimization" score={scores.snippetOptimization} />
+        <DetailedExplanation 
+          type="snippetOptimization" 
+          score={scores.snippetOptimization}
+          contentType={contentType}
+        />
       )}
       
       <ScoreItem 
@@ -75,7 +92,11 @@ const ScoreList: React.FC<ScoreListProps> = ({ scores, detailedView }) => {
       />
       
       {detailedView && (
-        <DetailedExplanation type="structuredData" score={scores.structuredData} />
+        <DetailedExplanation 
+          type="structuredData" 
+          score={scores.structuredData}
+          contentType={contentType}
+        />
       )}
     </div>
   );

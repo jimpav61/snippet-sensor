@@ -100,7 +100,12 @@ export function addScoreBreakdownTable(doc: jsPDF, scores: ScoreData): number {
 /**
  * Adds the recommendations section to the PDF
  */
-export function addRecommendationsSection(doc: jsPDF, scores: ScoreData, startYPosition: number): number {
+export function addRecommendationsSection(
+  doc: jsPDF, 
+  scores: ScoreData, 
+  startYPosition: number,
+  contentType: string = 'content'
+): number {
   doc.setFontSize(16);
   doc.setTextColor(60);
   doc.text('Key Recommendations', 20, startYPosition + 20);
@@ -108,7 +113,7 @@ export function addRecommendationsSection(doc: jsPDF, scores: ScoreData, startYP
   doc.setFontSize(12);
   doc.setTextColor(80);
   
-  const recommendations = getRecommendations(scores);
+  const recommendations = getRecommendations(scores, contentType);
   let yPosition = startYPosition + 30;
   
   recommendations.forEach((recommendation, index) => {
@@ -131,7 +136,11 @@ export function addRecommendationsSection(doc: jsPDF, scores: ScoreData, startYP
 /**
  * Adds the detailed analysis section to the PDF
  */
-export function addDetailedAnalysisSection(doc: jsPDF, scores: ScoreData): void {
+export function addDetailedAnalysisSection(
+  doc: jsPDF, 
+  scores: ScoreData,
+  contentType: string = 'content'
+): void {
   doc.addPage();
   doc.setFontSize(16);
   doc.setTextColor(60);
@@ -174,7 +183,7 @@ export function addDetailedAnalysisSection(doc: jsPDF, scores: ScoreData): void 
     doc.text('Action Items:', 20, detailsYPosition);
     detailsYPosition += 8;
     
-    const actionItems = getActionItems(scoreType.key, score);
+    const actionItems = getActionItems(scoreType.key, score, contentType);
     actionItems.forEach(actionItem => {
       const bulletLines = doc.splitTextToSize(`• ${actionItem}`, 165);
       doc.setTextColor(80);

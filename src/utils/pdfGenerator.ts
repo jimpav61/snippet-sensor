@@ -21,7 +21,11 @@ interface ScoreData {
   finalScore: number;
 }
 
-export const generateAEOReport = (scores: ScoreData, source: string = 'Content analysis') => {
+export const generateAEOReport = (
+  scores: ScoreData, 
+  source: string = 'Content analysis',
+  contentType: string = 'content'
+) => {
   const doc = new jsPDF();
   const currentDate = format(new Date(), 'MMMM d, yyyy');
   
@@ -37,10 +41,10 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   const tableEndY = addScoreBreakdownTable(doc, scores);
   
   // Add recommendations
-  addRecommendationsSection(doc, scores, tableEndY);
+  addRecommendationsSection(doc, scores, tableEndY, contentType);
   
   // Always add detailed analysis section (regardless of UI state)
-  addDetailedAnalysisSection(doc, scores);
+  addDetailedAnalysisSection(doc, scores, contentType);
   
   // Add analyzed content on a new page if relevant
   if (formattedSource && formattedSource !== 'Content analysis') {

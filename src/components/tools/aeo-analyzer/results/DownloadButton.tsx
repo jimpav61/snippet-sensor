@@ -14,6 +14,7 @@ interface DownloadButtonProps {
   };
   originalContent?: string;
   analysisSource?: string;
+  contentType?: string;
   handleDownloadReport: () => void;
 }
 
@@ -21,6 +22,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   scores, 
   originalContent, 
   analysisSource = 'Content analysis',
+  contentType = 'content',
   handleDownloadReport 
 }) => {
   const downloadPdfReport = (e: React.MouseEvent) => {
@@ -28,7 +30,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
     
     try {
       // Generate and download PDF
-      const doc = generateAEOReport(scores, originalContent || analysisSource);
+      const doc = generateAEOReport(scores, originalContent || analysisSource, contentType);
       doc.save('aeo-analysis-report.pdf');
       
       // Call the handler to show toast notification
