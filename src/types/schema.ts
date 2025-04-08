@@ -1,12 +1,12 @@
 
 import { WithContext } from 'schema-dts';
 
-// Define our own base schema interface without extending schema-dts types
+// Define our own base schema interface with required image property
 export interface BaseSchema {
   "@type": string;
   name: string;
   text: string;
-  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
+  image: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
 }
 
 export interface BlogPostingSchema extends BaseSchema {

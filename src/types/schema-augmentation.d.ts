@@ -1,34 +1,24 @@
 
-// This file provides global augmentation for Schema.org types to ensure
-// TypeScript recognizes all properties used in SchemaGenerator.tsx
+// Global type augmentation for Schema.org types to ensure 'image' property existence
 
-// Define a base interface that includes all common properties
-interface SchemaBaseType {
+// Make sure all objects with these properties include the image property
+interface SchemaTextContent {
   "@type": string;
-  name?: string;
-  text?: string;
-  image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
-  [key: string]: any; // Allow any additional properties
+  name: string;
+  text: string;
+  image: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
 }
 
-// Apply these interfaces globally
+// Apply augmentation globally
 declare global {
-  // Add a specific interface for the exact shape causing the error
-  interface SchemaTextType {
-    "@type": string;
-    name: string;
-    text: string;
-    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
-  }
-  
-  // Make sure all objects with these properties will include the image property
-  interface TextContent {
-    "@type": string;
-    name: string;
-    text: string;
-    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; };
+  namespace SchemaOrg {
+    interface Thing {
+      "@type": string;
+      name?: string;
+      text?: string;
+      image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
+    }
   }
 }
 
-// Export an empty object to make this a module
 export {};

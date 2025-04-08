@@ -1,4 +1,6 @@
 
+import { BaseSchema } from '@/types/schema';
+
 /**
  * This adapter serves as a bridge between our schema data and the SchemaGenerator component.
  * It ensures all schema objects have the required properties before being passed to SchemaGenerator.
@@ -51,8 +53,7 @@ export function deepAdaptSchema(obj: any): any {
   return result;
 }
 
-// Patch the global Object.prototype to ensure all schema-like objects have image property
-// This is a runtime solution that doesn't rely on TypeScript types
+// Patching function to ensure all schema-like objects have image property
 export function initializeSchemaAdapter() {
   console.log('Initializing Schema Data Adapter');
   
@@ -61,16 +62,12 @@ export function initializeSchemaAdapter() {
   
   // Override JSON.stringify to ensure all schema objects have image property
   // This targets the specific points where SchemaGenerator might be using JSON
-  Object.defineProperty(global, 'JSON', {
-    value: {
-      ...JSON,
-      stringify: function(value: any, ...args: any[]) {
-        return originalJSONStringify(deepAdaptSchema(value), ...args);
-      }
-    },
-    writable: true,
-    configurable: true
-  });
+  (global as any).JSON = {
+    ...JSON,
+    stringify: function(value: any, ...args: any[]) {
+      return originalJSONStringify(deepAdaptSchema(value), ...args);
+    }
+  };
   
   console.log('Schema Data Adapter initialized');
 }
