@@ -1,7 +1,7 @@
 
 // Helper functions for managing saved prompts in local storage
 
-interface SavedPrompt {
+export interface SavedPrompt {
   id: string;
   name: string;
   originalPrompt: string;
