@@ -13,6 +13,7 @@ const AEOAnalyzePage = () => {
   const [activeTab, setActiveTab] = useState('url');
   const [url, setUrl] = useState('');
   const [showResults, setShowResults] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [scores, setScores] = useState({
     keywordRelevance: 78,
     readability: 85,
@@ -20,15 +21,25 @@ const AEOAnalyzePage = () => {
     structuredData: 70,
     finalScore: 74,
   });
-  // Add initial recommendations state
   const [recommendations, setRecommendations] = useState<string[]>([
     "Improve snippet optimization by including clear answers to common questions.",
     "Enhance structured data to provide clear signals to AI systems.",
     "Expand topic coverage to address related subtopics and questions."
   ]);
+  const [analysisSource, setAnalysisSource] = useState('');
   
   const handleAnalysisComplete = async (content: string, contentType: string) => {
     try {
+      setIsAnalyzing(true);
+      
+      // Save the analysis source (url or text snippet)
+      if (contentType === 'url') {
+        setAnalysisSource(content);
+      } else {
+        // For text content, use a preview (first 50 chars)
+        setAnalysisSource(content.substring(0, 50) + (content.length > 50 ? '...' : ''));
+      }
+      
       // Call Supabase Edge Function for analysis
       const { data, error } = await supabase.functions.invoke('analyze-content', {
         body: {
@@ -43,6 +54,9 @@ const AEOAnalyzePage = () => {
         return;
       }
       
+      console.log('Analysis results:', data);
+      
+      // Update state with analysis results
       setScores(data.scores);
       setRecommendations(data.recommendations);
       setShowResults(true);
@@ -50,6 +64,8 @@ const AEOAnalyzePage = () => {
     } catch (error) {
       console.error('Error analyzing content:', error);
       toast.error('Failed to analyze content. Please try again.');
+    } finally {
+      setIsAnalyzing(false);
     }
   };
   
@@ -71,12 +87,15 @@ const AEOAnalyzePage = () => {
           </div>
           
           {!showResults ? (
-            <AnalyzeForm onAnalysisComplete={handleAnalysisComplete} />
+            <AnalyzeForm 
+              onAnalysisComplete={handleAnalysisComplete} 
+              isProcessing={isAnalyzing} 
+            />
           ) : (
             <div className="space-y-6">
               <ScoreCard 
                 {...scores} 
-                analysisSource={activeTab === 'url' ? url : 'Content analysis'}
+                analysisSource={analysisSource}
                 onDownloadReport={handleDownloadReport}
               />
               
