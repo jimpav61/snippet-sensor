@@ -70,7 +70,7 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   doc.setTextColor(60);
   doc.text('Score Breakdown', 20, 105);
   
-  // Fix column width issues by reducing the first column width
+  // Fix column width issues by using auto-adjusting columns
   autoTable(doc, {
     startY: 110,
     head: [['Score Category', 'Score', 'Status']],
@@ -86,10 +86,12 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
       textColor: [255, 255, 255],
       fontStyle: 'bold' 
     },
+    // Auto-adjust column widths instead of using fixed widths
+    styles: { overflow: 'linebreak' },
     columnStyles: {
-      0: { cellWidth: 60 }, // Reduced from 80 to avoid width issues
-      1: { cellWidth: 40, halign: 'center' },
-      2: { cellWidth: 50, halign: 'center' }
+      0: { halign: 'left' },
+      1: { halign: 'center' },
+      2: { halign: 'center' }
     },
   });
   
@@ -107,6 +109,12 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   let yPosition = tableEndY + 30;
   
   recommendations.forEach((recommendation, index) => {
+    // Check if we need to add a new page for recommendations
+    if (yPosition > 260) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    
     doc.text(`${index + 1}. ${recommendation.title}`, 20, yPosition);
     doc.setTextColor(120);
     doc.text(recommendation.description, 20, yPosition + 8);
@@ -114,7 +122,7 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
     yPosition += 20;
   });
   
-  // Add user input section if available
+  // Add analyzed content on a new page
   if (source && source !== 'Content analysis') {
     doc.addPage();
     doc.setFontSize(16);

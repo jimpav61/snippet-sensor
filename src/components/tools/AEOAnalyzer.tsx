@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
@@ -18,6 +19,7 @@ const AEOAnalyzer = () => {
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [detailedView, setDetailedView] = useState(false);
   const [analyzedContent, setAnalyzedContent] = useState('');
+  const [originalContent, setOriginalContent] = useState('');
   const [scores, setScores] = useState({
     keywordRelevance: 78,
     readability: 85,
@@ -85,8 +87,17 @@ const AEOAnalyzer = () => {
     setAnalysisTab('loading');
     
     try {
+      // Store the original input (URL or content)
       const contentToAnalyze = activeTab === 'url' ? url : content;
-      setAnalyzedContent(contentToAnalyze);
+      setOriginalContent(contentToAnalyze);
+      
+      // Set the analyzed content description for display
+      if (activeTab === 'url') {
+        setAnalyzedContent(url);
+      } else {
+        // For text content, use a preview (first 100 chars)
+        setAnalyzedContent(content.substring(0, 100) + (content.length > 100 ? '...' : ''));
+      }
 
       const { data, error } = await supabase.functions.invoke('analyze-content', {
         body: {
@@ -111,15 +122,21 @@ const AEOAnalyzer = () => {
     } catch (error) {
       console.error('Error analyzing content:', error);
       toast.error('Failed to analyze content. Please try again.');
+      setAnalysisTab('input');
     } finally {
       setIsAnalyzing(false);
     }
   };
 
   const handleDownloadReport = () => {
-    const doc = generateAEOReport(scores, analyzedContent);
-    doc.save('aeo-analysis-report.pdf');
-    toast.success('AEO Report generated and downloaded');
+    try {
+      const doc = generateAEOReport(scores, originalContent || analyzedContent);
+      doc.save('aeo-analysis-report.pdf');
+      toast.success('AEO Report generated and downloaded');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error('Failed to generate PDF report');
+    }
   };
 
   const handleFullAnalysis = () => {
@@ -178,6 +195,7 @@ const AEOAnalyzer = () => {
             handleFullAnalysis={handleFullAnalysis}
             resetAnalysis={resetAnalysis}
             analysisSource={analyzedContent || (activeTab === 'url' ? url : 'Content analysis')}
+            originalContent={originalContent}
             detailedView={detailedView}
           />
         </TabsContent>

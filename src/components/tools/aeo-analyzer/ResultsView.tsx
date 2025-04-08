@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
@@ -18,6 +19,7 @@ interface ResultsViewProps {
   handleFullAnalysis: () => void;
   resetAnalysis: () => void;
   analysisSource?: string;
+  originalContent?: string;
   detailedView?: boolean;
 }
 
@@ -28,6 +30,7 @@ const ResultsView: React.FC<ResultsViewProps> = ({
   handleFullAnalysis, 
   resetAnalysis,
   analysisSource = 'Content analysis',
+  originalContent,
   detailedView = false
 }) => {
   // Get score descriptions based on values
@@ -66,12 +69,6 @@ const ResultsView: React.FC<ResultsViewProps> = ({
     return "";
   };
 
-  const downloadPdfReport = () => {
-    const doc = generateAEOReport(scores, analysisSource);
-    doc.save('aeo-analysis-report.pdf');
-    handleDownloadReport(); // Call the original handler to show toast notification
-  };
-
   // Get action items based on scores
   const getActionItems = (type: string, score: number) => {
     const actionItems = [];
@@ -95,6 +92,10 @@ const ResultsView: React.FC<ResultsViewProps> = ({
     }
     
     return actionItems;
+  };
+
+  const downloadPdfReport = () => {
+    handleDownloadReport();
   };
 
   return (

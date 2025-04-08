@@ -6,6 +6,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const GROQ_API_KEY = Deno.env.get('GROQ_API_KEY');
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -17,7 +19,8 @@ serve(async (req) => {
     // Log the incoming request
     console.log('Analyzing content:', { contentType, contentLength: content.length });
 
-    // Perform content analysis using the Groq API
+    // For now, we'll use simulated analysis while we integrate with Groq API
+    // In a production environment, this would call the Groq API
     const analysisResult = {
       scores: {
         keywordRelevance: Math.floor(Math.random() * 20) + 70, // 70-90 range
@@ -30,13 +33,16 @@ serve(async (req) => {
         "Enhance readability with better paragraph structure",
         "Add more structured data markup",
         "Optimize snippets with clear answers to common questions"
-      ]
+      ],
+      analyzedContent: content // Include the actual analyzed content
     };
 
     // Calculate final score as average
     analysisResult.scores.finalScore = Math.floor(
-      Object.values(analysisResult.scores).reduce((a, b) => a + b, 0) / 
-      Object.values(analysisResult.scores).length
+      Object.values(analysisResult.scores).reduce((a, b, index, array) => 
+        // Skip finalScore in calculation
+        index < array.length - 1 ? a + b : a, 0) / 
+      (Object.values(analysisResult.scores).length - 1)
     );
 
     console.log('Analysis completed:', analysisResult);
