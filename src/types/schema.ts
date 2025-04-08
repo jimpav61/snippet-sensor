@@ -1,3 +1,4 @@
+
 // Add or update the schema types to include image property
 export interface BaseSchema {
   "@type": string;
