@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, FileText } from 'lucide-react';
+import { FileText, BookOpen } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface ResourceCardProps {
@@ -57,51 +56,34 @@ const ResourceCard: React.FC<ResourceCardProps> = ({
     }
   };
 
-  const cardContent = (
-    <>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-xs font-medium text-aeo-500 bg-aeo-50 px-2 py-1 rounded-full">
+  return (
+    <div 
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer"
+      onClick={handleCardClick}
+    >
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-medium text-aeo-600 bg-aeo-50 px-2 py-1 rounded-full">
             {category}
           </span>
-          {getIcon()}
         </div>
-        <CardTitle className="text-lg font-semibold line-clamp-2">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground line-clamp-3 text-sm">{description}</p>
-      </CardContent>
-      <CardFooter className="text-xs text-muted-foreground pt-2 flex justify-between">
-        <span>{readTime}</span>
-        {relatedGuide && type === 'tool' && (
-          <Link 
-            to={`/aeo/learning/guide/${relatedGuide}`} 
-            className="text-aeo-600 hover:text-aeo-700 inline-flex items-center"
-            onClick={(e) => e.stopPropagation()} 
-          >
-            <BookOpen className="h-3 w-3 mr-1" />
-            <span>Guide</span>
-          </Link>
-        )}
-      </CardFooter>
-    </>
-  );
-
-  if (slug) {
-    return (
-      <Card 
-        className="h-full hover:shadow-lg transition-shadow duration-300 hover:border-aeo-200 cursor-pointer"
-        onClick={handleCardClick}
-      >
-        {cardContent}
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-      {cardContent}
-    </Card>
+        <h3 className="text-lg font-semibold mb-3 line-clamp-2">{title}</h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3">{description}</p>
+        <div className="flex justify-between items-center text-xs text-gray-500">
+          <span>{readTime}</span>
+          {relatedGuide && type === 'tool' && (
+            <Link 
+              to={`/aeo/learning/guide/${relatedGuide}`} 
+              className="text-aeo-600 hover:text-aeo-700 inline-flex items-center"
+              onClick={(e) => e.stopPropagation()} 
+            >
+              <BookOpen className="h-3 w-3 mr-1" />
+              <span>Guide</span>
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
