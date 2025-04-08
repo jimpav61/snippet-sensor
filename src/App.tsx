@@ -33,7 +33,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AEOServicePage />} />
+          <Route path="/" element={<Index />} />
           <Route path="/aeo" element={<AEOServicePage />} />
           <Route path="/aeo/analyze" element={<AEOAnalyzePage />} />
           <Route path="/aeo/admin" element={<AEOAdminPage />} />
