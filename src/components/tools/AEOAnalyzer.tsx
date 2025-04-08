@@ -18,6 +18,7 @@ const AEOAnalyzer = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisComplete, setAnalysisComplete] = useState(false);
   const [detailedView, setDetailedView] = useState(false);
+  const [analyzedContent, setAnalyzedContent] = useState('');
   const [scores, setScores] = useState({
     keywordRelevance: 78,
     readability: 85,
@@ -27,23 +28,29 @@ const AEOAnalyzer = () => {
   });
   const [recommendations, setRecommendations] = useState<string[]>([]);
 
-  // Function to fetch content from URL
+  // Function to fetch content from URL - now actually stores the content
   const fetchContentFromUrl = async (urlToFetch: string) => {
-    // Simulate fetching content from URL
-    return new Promise<string>((resolve) => {
-      // This is where you would normally make a request to the backend
-      // which would then scrape the URL and return the content
-      setTimeout(() => {
-        // For now, generate a dummy content based on the URL
-        const dummyContent = `This is a simulation of content from ${urlToFetch}. 
-        In a production environment, this would be the actual content fetched from the URL.
-        The content would then be analyzed for AI Engine Optimization.
-        Long-form content with proper structure tends to perform better in AI engines.
-        Key factors include keyword relevance, readability, snippet optimization, and structured data.`;
-        
-        resolve(dummyContent);
-      }, 1000);
-    });
+    try {
+      // In a real implementation, this would call a backend service to fetch the content
+      // For now, we'll just simulate it but store the actual URL
+      return new Promise<string>((resolve) => {
+        setTimeout(() => {
+          // For demo purposes, we'll return a simulated content string
+          // but we'll store the actual URL for the analysis
+          const dummyContent = `Content fetched from ${urlToFetch} for analysis.
+          This content would be processed for AI Engine Optimization factors
+          including keyword relevance, readability, snippet optimization, and structured data.`;
+          
+          // Store the URL as the analyzed content
+          setAnalyzedContent(urlToFetch);
+          resolve(dummyContent);
+        }, 1000);
+      });
+    } catch (error) {
+      console.error('Error fetching content:', error);
+      toast.error('Failed to fetch content from URL');
+      throw error;
+    }
   };
 
   // Function to analyze content using Groq API via Supabase Edge Function
@@ -91,8 +98,11 @@ const AEOAnalyzer = () => {
       // If URL is provided, fetch content from URL
       if (activeTab === 'url') {
         contentToAnalyze = await fetchContentFromUrl(url);
+        // URL is already stored in analyzedContent
       } else {
         contentToAnalyze = content;
+        // Store the content for display in the results
+        setAnalyzedContent(content.length > 150 ? content.substring(0, 150) + '...' : content);
       }
       
       // Use Supabase Edge Function for analysis
@@ -114,19 +124,19 @@ const AEOAnalyzer = () => {
   };
 
   const handleDownloadReport = () => {
-    // Generate and download the PDF report
+    // Generate and download the PDF report with the actual analyzed content
     const doc = generateAEOReport(
       scores,
-      activeTab === 'url' ? url : 'Content analysis'
+      analyzedContent || (activeTab === 'url' ? url : 'Content analysis')
     );
     doc.save('aeo-analysis-report.pdf');
     toast.success('AEO Report generated and downloaded');
   };
 
   const handleFullAnalysis = () => {
-    // Instead of redirecting, show the detailed view
-    setDetailedView(true);
-    toast.success('Showing detailed analysis');
+    // Toggle the detailed view state
+    setDetailedView(!detailedView);
+    toast.success(detailedView ? 'Hiding detailed analysis' : 'Showing detailed analysis');
   };
 
   const resetAnalysis = () => {
@@ -179,7 +189,7 @@ const AEOAnalyzer = () => {
             handleDownloadReport={handleDownloadReport}
             handleFullAnalysis={handleFullAnalysis}
             resetAnalysis={resetAnalysis}
-            analysisSource={activeTab === 'url' ? url : 'Content analysis'}
+            analysisSource={analyzedContent || (activeTab === 'url' ? url : 'Content analysis')}
             detailedView={detailedView}
           />
         </TabsContent>

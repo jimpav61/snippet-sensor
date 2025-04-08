@@ -70,13 +70,14 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   doc.setTextColor(60);
   doc.text('Score Breakdown', 20, 105);
   
+  // Fix column width issues by reducing the first column width
   autoTable(doc, {
     startY: 110,
     head: [['Score Category', 'Score', 'Status']],
     body: [
       ['Keyword Relevance', `${scores.keywordRelevance}/100`, getScoreStatus(scores.keywordRelevance)],
       ['Readability', `${scores.readability}/100`, getScoreStatus(scores.readability)],
-      ['Snippet Optimization', `${scores.snippetOptimization}/100`, getScoreStatus(scores.snippetOptimization)],
+      ['Snippet Opt.', `${scores.snippetOptimization}/100`, getScoreStatus(scores.snippetOptimization)],
       ['Structured Data', `${scores.structuredData}/100`, getScoreStatus(scores.structuredData)]
     ],
     theme: 'grid',
@@ -86,7 +87,7 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
       fontStyle: 'bold' 
     },
     columnStyles: {
-      0: { cellWidth: 80 },
+      0: { cellWidth: 60 }, // Reduced from 80 to avoid width issues
       1: { cellWidth: 40, halign: 'center' },
       2: { cellWidth: 50, halign: 'center' }
     },
@@ -112,6 +113,29 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
     doc.setTextColor(80);
     yPosition += 20;
   });
+  
+  // Add user input section if available
+  if (source && source !== 'Content analysis') {
+    doc.addPage();
+    doc.setFontSize(16);
+    doc.setTextColor(60);
+    doc.text('Analyzed Content', 20, 20);
+    
+    doc.setFontSize(11);
+    doc.setTextColor(80);
+    
+    // Format the input content for display
+    let content = source;
+    if (source.startsWith('http')) {
+      content = `URL: ${source}`;
+    } else if (source.length > 500) {
+      content = source.substring(0, 500) + '...';
+    }
+    
+    // Add the content as a text block with wrapping
+    const splitText = doc.splitTextToSize(content, 170);
+    doc.text(splitText, 20, 30);
+  }
   
   // Add footer
   const pageCount = doc.getNumberOfPages();
