@@ -13,6 +13,7 @@ interface ResultsViewProps {
     structuredData: number;
     finalScore: number;
   };
+  recommendations: string[];
   handleDownloadReport: () => void;
   handleFullAnalysis: () => void;
   resetAnalysis: () => void;
@@ -21,11 +22,34 @@ interface ResultsViewProps {
 
 const ResultsView: React.FC<ResultsViewProps> = ({ 
   scores, 
+  recommendations,
   handleDownloadReport, 
   handleFullAnalysis, 
   resetAnalysis,
   analysisSource = 'Content analysis'
 }) => {
+  // Get score descriptions based on values
+  const getScoreDescription = (type: string, score: number) => {
+    if (type === 'keywordRelevance') {
+      return score >= 80 
+        ? "Good keyword usage with relevant terms and phrases." 
+        : "Improve keyword usage with more relevant terms.";
+    } else if (type === 'readability') {
+      return score >= 80 
+        ? "Your content is easy to read and well-structured." 
+        : "Content could be more readable with better structure.";
+    } else if (type === 'snippetOptimization') {
+      return score >= 80 
+        ? "Well-optimized for AI-generated snippets." 
+        : "Needs improvement to be featured in AI-generated snippets.";
+    } else if (type === 'structuredData') {
+      return score >= 80 
+        ? "Good structured data implementation." 
+        : "Add more structured data to help AI systems.";
+    }
+    return "Score needs improvement.";
+  };
+
   const downloadPdfReport = () => {
     const doc = generateAEOReport(scores, analysisSource);
     doc.save('aeo-analysis-report.pdf');
@@ -50,7 +74,13 @@ const ResultsView: React.FC<ResultsViewProps> = ({
             </div>
           </div>
           <h3 className="text-xl font-semibold">Overall AEO Score</h3>
-          <p className="text-gray-600 mt-1">Your content is performing moderately well for AI engines.</p>
+          <p className="text-gray-600 mt-1">
+            {scores.finalScore >= 80 
+              ? "Your content is well-optimized for AI engines."
+              : scores.finalScore >= 60
+                ? "Your content is performing moderately well for AI engines."
+                : "Your content needs significant improvement for AI engines."}
+          </p>
         </div>
       </div>
       
@@ -70,25 +100,25 @@ const ResultsView: React.FC<ResultsViewProps> = ({
           <ScoreItem 
             label="Keyword Relevance"
             score={scores.keywordRelevance}
-            description="Good keyword usage, but could be more comprehensive."
+            description={getScoreDescription('keywordRelevance', scores.keywordRelevance)}
           />
           
           <ScoreItem 
             label="Readability"
             score={scores.readability}
-            description="Your content is easy to read and well-structured."
+            description={getScoreDescription('readability', scores.readability)}
           />
           
           <ScoreItem 
             label="Snippet Optimization"
             score={scores.snippetOptimization}
-            description="Needs improvement to be featured in AI-generated snippets."
+            description={getScoreDescription('snippetOptimization', scores.snippetOptimization)}
           />
           
           <ScoreItem 
             label="Structured Data"
             score={scores.structuredData}
-            description="Add more structured data to help AI systems."
+            description={getScoreDescription('structuredData', scores.structuredData)}
           />
         </div>
       </div>
@@ -96,28 +126,21 @@ const ResultsView: React.FC<ResultsViewProps> = ({
       <div className="pt-4 border-t">
         <h3 className="text-lg font-semibold mb-3">Key Recommendations</h3>
         <ul className="space-y-3">
-          <li className="flex">
-            <div className="flex-shrink-0 h-6 w-6 rounded-full bg-aeo-500 flex items-center justify-center text-white font-medium text-sm">
-              1
-            </div>
-            <div className="ml-3">
-              <p className="text-gray-800 font-medium">Improve snippet optimization</p>
-              <p className="text-gray-600 text-sm">
-                Include clear answers to common questions related to your topic.
-              </p>
-            </div>
-          </li>
-          <li className="flex">
-            <div className="flex-shrink-0 h-6 w-6 rounded-full bg-aeo-500 flex items-center justify-center text-white font-medium text-sm">
-              2
-            </div>
-            <div className="ml-3">
-              <p className="text-gray-800 font-medium">Enhance structured data</p>
-              <p className="text-gray-600 text-sm">
-                Implement Schema.org markup to provide clear signals to AI systems.
-              </p>
-            </div>
-          </li>
+          {recommendations.slice(0, 3).map((recommendation, index) => (
+            <li key={index} className="flex">
+              <div className="flex-shrink-0 h-6 w-6 rounded-full bg-aeo-500 flex items-center justify-center text-white font-medium text-sm">
+                {index + 1}
+              </div>
+              <div className="ml-3">
+                <p className="text-gray-800 font-medium">
+                  {recommendation.split(':')[0] || recommendation.substring(0, recommendation.indexOf(' ') > 30 ? 30 : recommendation.indexOf(' '))}
+                </p>
+                <p className="text-gray-600 text-sm">
+                  {recommendation.split(':')[1] || recommendation}
+                </p>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
       

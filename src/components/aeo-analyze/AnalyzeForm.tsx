@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { ArrowRight, Link2, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import { analyzeContent } from '@/utils/contentAnalyzer';
 
 interface AnalyzeFormProps {
   onAnalysisComplete: (scores: {
@@ -16,7 +17,7 @@ interface AnalyzeFormProps {
     snippetOptimization: number;
     structuredData: number;
     finalScore: number;
-  }) => void;
+  }, recommendations: string[]) => void;
 }
 
 const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
@@ -26,7 +27,26 @@ const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
   const [contentType, setContentType] = useState('blog');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const fetchContentFromUrl = async (urlToFetch: string): Promise<string> => {
+    // In a production environment, this would use a backend API to fetch content
+    // For now, we simulate the content based on the URL
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const dummyContent = `This is a simulation of content from ${urlToFetch}. 
+          In a production environment, this would be the actual content fetched from the URL.
+          The content would then be analyzed for AI Engine Optimization.
+          Long-form content with proper structure tends to perform better in AI engines.
+          Key factors include keyword relevance, readability, snippet optimization, and structured data.
+          ${urlToFetch.includes('blog') ? 'This appears to be a blog post about AI technology and its applications in modern business.' : ''}
+          ${urlToFetch.includes('product') ? 'This appears to be a product page for an AI-powered solution.' : ''}
+          ${urlToFetch.includes('service') ? 'This appears to be a service page offering AI optimization services.' : ''}`;
+        
+        resolve(dummyContent);
+      }, 1000);
+    });
+  };
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if ((activeTab === 'url' && !url) || (activeTab === 'content' && !content)) {
@@ -36,18 +56,29 @@ const AnalyzeForm: React.FC<AnalyzeFormProps> = ({ onAnalysisComplete }) => {
     
     setIsAnalyzing(true);
     
-    // Simulate API call with sample scores
-    setTimeout(() => {
+    try {
+      let contentToAnalyze = '';
+      
+      // If URL is provided, fetch content from URL
+      if (activeTab === 'url') {
+        toast.info('Fetching content from URL...');
+        contentToAnalyze = await fetchContentFromUrl(url);
+      } else {
+        contentToAnalyze = content;
+      }
+      
+      // Analyze the content
+      toast.info('Analyzing content...');
+      const { scores, recommendations } = await analyzeContent(contentToAnalyze, contentType);
+      
       setIsAnalyzing(false);
-      onAnalysisComplete({
-        keywordRelevance: 78,
-        readability: 85,
-        snippetOptimization: 62,
-        structuredData: 70,
-        finalScore: 74,
-      });
+      onAnalysisComplete(scores, recommendations);
       toast.success('Analysis completed successfully!');
-    }, 2500);
+    } catch (error) {
+      console.error('Error analyzing content:', error);
+      setIsAnalyzing(false);
+      toast.error('Failed to analyze content. Please try again.');
+    }
   };
 
   return (

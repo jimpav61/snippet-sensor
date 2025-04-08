@@ -3,29 +3,33 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
-const RecommendationsCard: React.FC = () => {
+interface RecommendationsCardProps {
+  recommendations: string[];
+}
+
+const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ recommendations }) => {
+  // Use the first 3 recommendations or default ones if none provided
+  const displayRecommendations = recommendations.length > 0 
+    ? recommendations.slice(0, 3) 
+    : [
+        "Improve snippet optimization by including clear answers to common questions.",
+        "Enhance structured data to provide clear signals to AI systems.",
+        "Expand topic coverage to address related subtopics and questions."
+      ];
+  
   return (
     <div className="aeo-card p-6 md:p-8">
       <h3 className="text-xl font-semibold mb-4">Key Recommendations</h3>
       
       <ul className="space-y-4">
-        <RecommendationItem 
-          number={1}
-          title="Improve snippet optimization"
-          description="Include clear, concise answers to common questions related to your topic. Format key information in lists and use descriptive subheadings."
-        />
-        
-        <RecommendationItem 
-          number={2}
-          title="Enhance structured data"
-          description="Implement Schema.org markup to provide clear signals to AI systems about your content's purpose and structure."
-        />
-        
-        <RecommendationItem 
-          number={3}
-          title="Expand topic coverage"
-          description="Address related subtopics and questions to provide comprehensive coverage that AI systems prefer."
-        />
+        {displayRecommendations.map((recommendation, index) => (
+          <RecommendationItem 
+            key={index}
+            number={index + 1}
+            title={recommendation.split(':')[0] || recommendation}
+            description={recommendation.split(':')[1] || recommendation}
+          />
+        ))}
       </ul>
       
       <Separator className="my-6" />

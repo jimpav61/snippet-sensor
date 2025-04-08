@@ -7,6 +7,7 @@ import InfoTabs from './aeo-analyzer/InfoTabs';
 import LoadingView from './aeo-analyzer/LoadingView';
 import ResultsView from './aeo-analyzer/ResultsView';
 import { Link } from 'react-router-dom';
+import { analyzeContent } from '@/utils/contentAnalyzer';
 
 const AEOAnalyzer = () => {
   const [activeTab, setActiveTab] = useState('url');
@@ -23,47 +24,9 @@ const AEOAnalyzer = () => {
     structuredData: 70,
     finalScore: 74,
   });
-
-  // Function to simulate real content analysis
-  // In a production environment, this would be replaced with an actual API call
-  const analyzeContent = async (contentToAnalyze: string, type: string) => {
-    // Simulate API call
-    return new Promise<{
-      keywordRelevance: number;
-      readability: number;
-      snippetOptimization: number;
-      structuredData: number;
-      finalScore: number;
-    }>((resolve) => {
-      // This is where you would normally make an API call to analyze the content
-      // For now, we'll generate some random-ish scores based on the content length
-      setTimeout(() => {
-        // Generate somewhat realistic scores based on content length
-        const contentLength = contentToAnalyze.length;
-        const base = Math.min(contentLength / 100, 85); // Cap at 85
-        
-        const keywordRelevance = Math.min(Math.floor(base + Math.random() * 15), 100);
-        const readability = Math.min(Math.floor(base - 5 + Math.random() * 20), 100);
-        const snippetOptimization = Math.min(Math.floor(base - 15 + Math.random() * 15), 100);
-        const structuredData = Math.min(Math.floor(base - 10 + Math.random() * 10), 100);
-        
-        const finalScore = Math.floor(
-          (keywordRelevance + readability + snippetOptimization + structuredData) / 4
-        );
-        
-        resolve({
-          keywordRelevance,
-          readability,
-          snippetOptimization,
-          structuredData,
-          finalScore,
-        });
-      }, 2500);
-    });
-  };
+  const [recommendations, setRecommendations] = useState<string[]>([]);
 
   // Function to fetch content from URL
-  // In a production environment, this would fetch the actual content
   const fetchContentFromUrl = async (urlToFetch: string) => {
     // Simulate fetching content from URL
     return new Promise<string>((resolve) => {
@@ -103,11 +66,12 @@ const AEOAnalyzer = () => {
         contentToAnalyze = content;
       }
       
-      // Analyze the content
+      // Analyze the content using our enhanced analyzer
       const analysisResults = await analyzeContent(contentToAnalyze, contentType);
       
       // Update scores with analysis results
-      setScores(analysisResults);
+      setScores(analysisResults.scores);
+      setRecommendations(analysisResults.recommendations);
       setIsAnalyzing(false);
       setAnalysisComplete(true);
       setAnalysisTab('results');
@@ -173,6 +137,7 @@ const AEOAnalyzer = () => {
         <TabsContent value="results">
           <ResultsView
             scores={scores}
+            recommendations={recommendations}
             handleDownloadReport={handleDownloadReport}
             handleFullAnalysis={handleFullAnalysis}
             resetAnalysis={resetAnalysis}
