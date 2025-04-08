@@ -9,58 +9,18 @@ import { Link } from 'react-router-dom';
 import { caseStudiesData } from '@/data/caseStudiesData';
 
 const CaseStudiesPage = () => {
-  // Group case studies by industry category
-  const groupedByIndustry = caseStudiesData.reduce((acc, caseStudy) => {
-    const { category } = caseStudy;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(caseStudy);
-    return acc;
-  }, {} as Record<string, typeof caseStudiesData>);
-
-  // Create industry sections with up to 4 different case studies per row
-  const industrySections = Object.entries(groupedByIndustry).map(([industry, studies]) => {
-    // Get all case studies from this industry plus others to fill the row if needed
-    let adjustedStudies = [...studies];
-    
-    // If we don't have 4 studies for this industry, add studies from other industries
-    if (adjustedStudies.length < 4) {
-      // Get studies from other industries to supplement
-      const otherStudies = caseStudiesData.filter(study => study.category !== industry);
-      
-      // Add them until we have 4 total, making sure not to duplicate
-      let i = 0;
-      while (adjustedStudies.length < 4 && i < otherStudies.length) {
-        const study = otherStudies[i];
-        // Check if this study is already in our adjusted list
-        if (!adjustedStudies.some(s => s.id === study.id)) {
-          adjustedStudies.push(study);
-        }
-        i++;
-      }
-    }
-    
-    // Limit to 4 studies per row
-    adjustedStudies = adjustedStudies.slice(0, 4);
-    
-    return {
-      title: `${industry} Industry`,
-      resources: adjustedStudies
-    };
-  });
-
   // Get featured case studies - always show 4 different ones
   // Take one from each industry if possible to show variety
-  const industryKeys = Object.keys(groupedByIndustry);
-  let featuredCaseStudies: typeof caseStudiesData = [];
+  const uniqueIndustries = [...new Set(caseStudiesData.map(study => study.category))];
+  let featuredCaseStudies = [];
   
   // Try to get one case study from each industry first
-  industryKeys.slice(0, 4).forEach(industry => {
-    if (groupedByIndustry[industry].length > 0) {
-      featuredCaseStudies.push(groupedByIndustry[industry][0]);
+  for (const industry of uniqueIndustries.slice(0, 4)) {
+    const study = caseStudiesData.find(s => s.category === industry);
+    if (study) {
+      featuredCaseStudies.push(study);
     }
-  });
+  }
   
   // If we still don't have 4, add more from remaining data without duplicating
   let remainingIndex = 0;
@@ -112,19 +72,23 @@ const CaseStudiesPage = () => {
           </div>
         </section>
         
-        {/* Case Studies by Industry */}
+        {/* All Case Studies in a single grid */}
         <section className="py-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Browse by Industry</h2>
-            
-            {industrySections.map((section, index) => (
-              <ResourceCategorySection
-                key={index}
-                title={section.title}
-                resources={section.resources}
-                type="case-study"
-              />
-            ))}
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">All Case Studies</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {caseStudiesData.map((study) => (
+                <ResourceCard
+                  key={study.slug}
+                  title={study.title}
+                  description={study.description}
+                  category={study.category}
+                  readTime={study.readTime}
+                  slug={study.slug}
+                  type="case-study"
+                />
+              ))}
+            </div>
           </div>
         </section>
       </main>
