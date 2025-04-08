@@ -105,7 +105,7 @@ const schemaFields: Record<SchemaType, SchemaField[]> = {
 const SimpleSchemaGenerator: React.FC = () => {
   const [schemaType, setSchemaType] = useState<SchemaType>('Article');
   const [formData, setFormData] = useState<Record<string, string>>({});
-  const [schema, setSchema] = useState<WithContext<Thing> | null>(null);
+  const [schema, setSchema] = useState<any>(null);
   const [copied, setCopied] = useState(false);
 
   const handleInputChange = (name: string, value: string) => {
@@ -114,7 +114,7 @@ const SimpleSchemaGenerator: React.FC = () => {
 
   const generateSchema = () => {
     try {
-      let generatedSchema: WithContext<Thing> = {
+      let generatedSchema: any = {
         '@context': 'https://schema.org',
         '@type': schemaType,
       };
@@ -455,7 +455,11 @@ ${JSON.stringify(schema, null, 2)}
       </Tabs>
       
       {/* Hidden JsonLd component for demonstration */}
-      {schema && <div style={{ display: 'none' }}><JsonLd<Thing> item={schema} /></div>}
+      {schema && (
+        <div style={{ display: 'none' }}>
+          <JsonLd<Thing> item={schema} />
+        </div>
+      )}
     </div>
   );
 };
