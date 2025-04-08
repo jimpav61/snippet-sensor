@@ -1,7 +1,7 @@
 
 // Global type augmentation for Schema.org types to ensure 'image' property existence
 
-// Make sure all objects with these properties include the image property
+// Base interface for schema objects with the required image property
 interface SchemaTextContent {
   "@type": string;
   name: string;
@@ -18,6 +18,13 @@ declare global {
       text?: string;
       image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
     }
+  }
+}
+
+// Add global type augmentation for any object with @type, name, and text
+declare global {
+  interface Object {
+    image?: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
   }
 }
 

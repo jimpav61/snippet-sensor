@@ -9,6 +9,13 @@ export interface BaseSchema {
   image: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
 }
 
+// Ensure TypeScript knows that objects with @type, name, text should have image
+declare global {
+  interface ObjectConstructor {
+    __hasSchemaImage?: boolean;
+  }
+}
+
 export interface BlogPostingSchema extends BaseSchema {
   "@type": "BlogPosting";
   headline: string;

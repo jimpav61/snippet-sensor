@@ -12,7 +12,7 @@ export function adaptSchemaData<T extends Record<string, any>>(data: T): T & { i
   const adaptedData = { ...data };
   
   // Ensure image property exists
-  if (!adaptedData.hasOwnProperty('image')) {
+  if (!('image' in adaptedData)) {
     adaptedData.image = null;
   }
   
@@ -39,7 +39,7 @@ export function deepAdaptSchema(obj: any): any {
   const result = { ...obj };
   
   // Add image property if this looks like a schema object (has @type, name, text)
-  if (result['@type'] && result.name && result.text && !result.hasOwnProperty('image')) {
+  if (result['@type'] && result.name && result.text && !('image' in result)) {
     result.image = null;
   }
   
