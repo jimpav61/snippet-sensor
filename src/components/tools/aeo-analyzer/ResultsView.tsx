@@ -89,13 +89,27 @@ const ResultsView: React.FC<ResultsViewProps> = ({
       actionItems.push("Implement Schema.org markup for your content type");
       actionItems.push("Include entity information for people, places, or organizations mentioned");
       actionItems.push("Add metadata for author, date, and content classification");
+    } else if (score >= 80) {
+      actionItems.push("Continue monitoring for AI engine updates and adjust content accordingly");
+      actionItems.push("Expand content with additional related topics to strengthen relevance");
     }
     
     return actionItems;
   };
 
-  const downloadPdfReport = () => {
-    handleDownloadReport();
+  const downloadPdfReport = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent page navigation/refresh
+    
+    try {
+      // Generate and download PDF
+      const doc = generateAEOReport(scores, originalContent || analysisSource);
+      doc.save('aeo-analysis-report.pdf');
+      
+      // Call the handler to show toast notification
+      handleDownloadReport();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
   };
 
   return (
@@ -221,21 +235,24 @@ const ResultsView: React.FC<ResultsViewProps> = ({
       <div>
         <h3 className="text-lg font-semibold mb-3">Key Recommendations</h3>
         <ul className="space-y-3">
-          {recommendations.map((recommendation, index) => (
-            <li key={index} className="flex">
-              <div className="flex-shrink-0 h-6 w-6 rounded-full bg-aeo-500 flex items-center justify-center text-white font-medium text-sm">
-                {index + 1}
-              </div>
-              <div className="ml-3">
-                <p className="text-gray-800 font-medium">
-                  {recommendation.split(':')[0] || recommendation.split(' ').slice(0, 5).join(' ')}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  {recommendation.split(':')[1] || ''}
-                </p>
-              </div>
-            </li>
-          ))}
+          {recommendations.map((recommendation, index) => {
+            // Parse recommendation string
+            const parts = recommendation.includes(':') 
+              ? recommendation.split(':') 
+              : [recommendation, ''];
+            
+            return (
+              <li key={index} className="flex">
+                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-aeo-500 flex items-center justify-center text-white font-medium text-sm">
+                  {index + 1}
+                </div>
+                <div className="ml-3">
+                  <p className="text-gray-800 font-medium">{parts[0].trim()}</p>
+                  {parts[1] && <p className="text-gray-600 text-sm">{parts[1].trim()}</p>}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
       

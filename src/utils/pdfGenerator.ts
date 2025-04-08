@@ -30,19 +30,29 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   
   // Format the source text to ensure it fits on the page
   let sourceText = '';
+  let formattedSource = '';
   
   // Check if the source is a URL and handle it specially
-  if (source.startsWith('http')) {
-    // For URLs, display the domain and truncate with ellipsis if needed
-    const urlObj = new URL(source);
-    const domain = urlObj.hostname;
-    const path = urlObj.pathname.length > 30 ? urlObj.pathname.substring(0, 30) + '...' : urlObj.pathname;
-    sourceText = `Analyzed URL: ${domain}${path}`;
-  } else {
+  if (source && source.startsWith('http')) {
+    try {
+      // For URLs, display the domain and truncate with ellipsis if needed
+      const urlObj = new URL(source);
+      const domain = urlObj.hostname;
+      const path = urlObj.pathname.length > 30 ? urlObj.pathname.substring(0, 30) + '...' : urlObj.pathname;
+      sourceText = `Analyzed URL: ${domain}${path}`;
+      formattedSource = source; // Keep the full URL for content page
+    } catch (e) {
+      // If invalid URL, just use as text
+      sourceText = `Analyzed content: ${source.substring(0, 70)}${source.length > 70 ? '...' : ''}`;
+      formattedSource = source;
+    }
+  } else if (source) {
     // For text content, truncate with ellipsis if too long
-    sourceText = source.length > 70 
-      ? `Analyzed text: ${source.substring(0, 70)}...` 
-      : `Analyzed content: ${source}`;
+    sourceText = `Analyzed content: ${source.substring(0, 70)}${source.length > 70 ? '...' : ''}`;
+    formattedSource = source;
+  } else {
+    sourceText = 'Content analysis';
+    formattedSource = 'Content analysis';
   }
   
   // Ensure the text fits within the page width
@@ -124,8 +134,68 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
     yPosition += 20;
   });
   
+  // Add detailed analysis section (always included regardless of UI state)
+  doc.addPage();
+  doc.setFontSize(16);
+  doc.setTextColor(60);
+  doc.text('Detailed Analysis', 20, 20);
+  
+  const scoreTypes = [
+    { key: 'keywordRelevance', label: 'Keyword Relevance' },
+    { key: 'readability', label: 'Readability' },
+    { key: 'snippetOptimization', label: 'Snippet Optimization' },
+    { key: 'structuredData', label: 'Structured Data' }
+  ];
+  
+  let detailsYPosition = 35;
+  
+  scoreTypes.forEach(scoreType => {
+    // Add section header
+    doc.setFontSize(14);
+    doc.setTextColor(60);
+    doc.text(scoreType.label, 20, detailsYPosition);
+    detailsYPosition += 10;
+    
+    // Add score
+    const score = scores[scoreType.key as keyof typeof scores] as number;
+    doc.setFontSize(12);
+    doc.setTextColor(246, 82, 40);
+    doc.text(`Score: ${score}/100 - ${getScoreStatus(score)}`, 20, detailsYPosition);
+    detailsYPosition += 10;
+    
+    // Add explanation
+    doc.setFontSize(11);
+    doc.setTextColor(80);
+    const explanation = getDetailedExplanation(scoreType.key);
+    const explanationLines = doc.splitTextToSize(explanation, 170);
+    doc.text(explanationLines, 20, detailsYPosition);
+    detailsYPosition += explanationLines.length * 6 + 8;
+    
+    // Add action items
+    doc.setFontSize(11);
+    doc.setTextColor(60);
+    doc.text('Action Items:', 20, detailsYPosition);
+    detailsYPosition += 8;
+    
+    const actionItems = getActionItems(scoreType.key, score);
+    actionItems.forEach(actionItem => {
+      const bulletLines = doc.splitTextToSize(`• ${actionItem}`, 165);
+      doc.setTextColor(80);
+      doc.text(bulletLines, 25, detailsYPosition);
+      detailsYPosition += bulletLines.length * 6 + 4;
+    });
+    
+    detailsYPosition += 8;
+    
+    // Check if we need a new page
+    if (detailsYPosition > 260 && scoreType.key !== 'structuredData') {
+      doc.addPage();
+      detailsYPosition = 20;
+    }
+  });
+  
   // Add analyzed content on a new page
-  if (source && source !== 'Content analysis') {
+  if (formattedSource && formattedSource !== 'Content analysis') {
     doc.addPage();
     doc.setFontSize(16);
     doc.setTextColor(60);
@@ -135,11 +205,11 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
     doc.setTextColor(80);
     
     // Format the input content for display
-    let content = source;
-    if (source.startsWith('http')) {
-      content = `URL: ${source}`;
-    } else if (source.length > 500) {
-      content = source.substring(0, 500) + '...';
+    let content = formattedSource;
+    if (formattedSource.startsWith('http')) {
+      content = `URL: ${formattedSource}`;
+    } else if (formattedSource.length > 500) {
+      content = formattedSource.substring(0, 500) + '...';
     }
     
     // Add the content as a text block with wrapping
@@ -206,4 +276,45 @@ function getRecommendations(scores: ScoreData): Array<{title: string, descriptio
   }
   
   return recommendations;
+}
+
+// Helper functions for detailed analysis
+function getDetailedExplanation(type: string): string {
+  if (type === 'keywordRelevance') {
+    return "Keyword relevance measures how well your content uses relevant terms and phrases related to your topic. AI engines analyze semantic relationships between words to understand the context and relevance of your content.";
+  } else if (type === 'readability') {
+    return "Readability evaluates how easy your content is to read and understand. Factors include sentence length, paragraph structure, and language complexity. Clear, well-structured content is favored by AI engines.";
+  } else if (type === 'snippetOptimization') {
+    return "Snippet optimization assesses how likely your content is to be featured in AI-generated snippets. This includes having clear answers to questions, concise information, and proper formatting.";
+  } else if (type === 'structuredData') {
+    return "Structured data helps AI systems understand your content by providing explicit signals about your content's meaning using formats like Schema.org markup.";
+  }
+  return "";
+}
+
+function getActionItems(type: string, score: number): string[] {
+  const actionItems = [];
+  
+  if (type === 'keywordRelevance' && score < 80) {
+    actionItems.push("Conduct keyword research to identify primary and related terms");
+    actionItems.push("Include semantically related phrases throughout your content");
+    actionItems.push("Use natural language patterns rather than keyword stuffing");
+  } else if (type === 'readability' && score < 80) {
+    actionItems.push("Break long paragraphs into shorter ones (3-4 sentences max)");
+    actionItems.push("Use more subheadings to organize content sections");
+    actionItems.push("Simplify complex sentences and reduce jargon");
+  } else if (type === 'snippetOptimization' && score < 80) {
+    actionItems.push("Format key information in lists or bullet points");
+    actionItems.push("Include direct answers to common questions in your content");
+    actionItems.push("Use descriptive subheadings in question format when appropriate");
+  } else if (type === 'structuredData' && score < 80) {
+    actionItems.push("Implement Schema.org markup for your content type");
+    actionItems.push("Include entity information for people, places, or organizations mentioned");
+    actionItems.push("Add metadata for author, date, and content classification");
+  } else if (score >= 80) {
+    actionItems.push("Continue monitoring for AI engine updates and adjust content accordingly");
+    actionItems.push("Expand content with additional related topics to strengthen relevance");
+  }
+  
+  return actionItems;
 }

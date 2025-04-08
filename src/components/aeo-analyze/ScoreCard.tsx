@@ -23,13 +23,19 @@ const ScoreCard: React.FC<ScoreProps> = ({
   analysisSource,
   onDownloadReport
 }) => {
-  const downloadPdfReport = () => {
-    const doc = generateAEOReport(
-      { keywordRelevance, readability, snippetOptimization, structuredData, finalScore },
-      analysisSource
-    );
-    doc.save('aeo-analysis-report.pdf');
-    onDownloadReport(); // Call the original handler to show toast notification
+  const downloadPdfReport = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent page navigation/refresh
+    
+    try {
+      const doc = generateAEOReport(
+        { keywordRelevance, readability, snippetOptimization, structuredData, finalScore },
+        analysisSource
+      );
+      doc.save('aeo-analysis-report.pdf');
+      onDownloadReport(); // Call the original handler to show toast notification
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
   };
 
   return (

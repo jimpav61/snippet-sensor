@@ -6,7 +6,6 @@ import InputForm from './aeo-analyzer/InputForm';
 import InfoTabs from './aeo-analyzer/InfoTabs';
 import LoadingView from './aeo-analyzer/LoadingView';
 import ResultsView from './aeo-analyzer/ResultsView';
-import { generateAEOReport } from '@/utils/pdfGenerator';
 import { supabase } from '@/integrations/supabase/client';
 
 const AEOAnalyzer = () => {
@@ -123,14 +122,9 @@ const AEOAnalyzer = () => {
   };
 
   const handleDownloadReport = () => {
-    try {
-      const doc = generateAEOReport(scores, originalContent || analyzedContent);
-      doc.save('aeo-analysis-report.pdf');
-      toast.success('AEO Report generated and downloaded');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      toast.error('Failed to generate PDF report');
-    }
+    // No PDF generation here - it's now handled directly in ResultsView
+    // to prevent page reset issues
+    toast.success('AEO Report generated and downloaded successfully');
   };
 
   const handleFullAnalysis = () => {
