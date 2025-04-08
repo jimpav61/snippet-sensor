@@ -49,6 +49,7 @@ export interface ArticleSchema extends BaseSchema {
 export type SchemaType = BlogPostingSchema | ProductSchema | ArticleSchema;
 
 // Helper function to create a schema with proper context
+// Using 'any' type to bypass schema-dts strict type checking
 export function createSchemaWithContext<T extends BaseSchema>(schema: T): WithContext<any> {
   return {
     "@context": "https://schema.org",

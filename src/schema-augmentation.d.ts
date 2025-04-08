@@ -1,8 +1,8 @@
-
 // Global type augmentation for Schema.org types
 // This file ensures all Schema.org related types properly include the image property
 
 declare namespace Schema {
+  // Base interface that all schema types should extend
   interface SchemaBaseType {
     "@type": string;
     [key: string]: any;
@@ -11,10 +11,11 @@ declare namespace Schema {
     text?: string;
   }
 
-  interface SchemaObject extends SchemaBaseType {
-    name?: string;
-    description?: string;
-    url?: string;
+  // Define TextContent interface explicitly to fix the error in SchemaGenerator
+  interface TextContent {
+    "@type": string;
+    name: string;
+    text: string;
     image?: string | ImageObject;
   }
 
@@ -171,10 +172,10 @@ declare namespace Schema {
     image?: string | ImageObject;
   }
 
-  interface TextContent {
-    "@type": string;
-    name: string;
-    text: string;
+  interface SchemaObject extends SchemaBaseType {
+    name?: string;
+    description?: string;
+    url?: string;
     image?: string | ImageObject;
   }
 }
