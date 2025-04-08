@@ -1,52 +1,27 @@
 
-// This file provides type fixes for the SchemaGenerator component
-import { BaseSchema } from '@/types/schema';
+// This file is kept as a placeholder but no longer used in the application.
+// The functionality has been replaced with react-schemaorg, which handles types properly.
 
-// Define the exact shape that's causing problems in SchemaGenerator
+// Empty placeholder for backward compatibility
 export interface TextContentWithImage {
   "@type": string;
   name: string;
   text: string;
-  image: string | { "@type": "ImageObject"; url: string; width?: number; height?: number; caption?: string; } | null;
+  image: any;
 }
 
-// Helper function to ensure objects have the image property for TypeScript
-export function ensureImageProperty<T extends { "@type": string; name: string; text: string; }>(obj: T): TextContentWithImage {
-  const result = { 
-    ...obj, 
-    image: ('image' in obj) ? (obj as any).image : null 
-  };
-  return result as TextContentWithImage;
+export function ensureImageProperty<T extends Record<string, any>>(obj: T): T {
+  return obj;
 }
 
-// Type assertion function that can be used in SchemaGenerator
-export function asTextContentWithImage(content: any): TextContentWithImage {
-  return content as TextContentWithImage;
+export function asTextContentWithImage(content: any): any {
+  return content;
 }
 
-// This is a utility function that can be used to create schema objects
-// with the image property explicitly included at runtime
-export function createSchemaObject(type: string, name: string, text: string, image: any = null): TextContentWithImage {
-  return {
-    "@type": type,
-    name,
-    text,
-    image
-  };
+export function createSchemaObject(type: string, name: string, text: string, image: any = null): any {
+  return { "@type": type, name, text, image };
 }
 
-// Runtime patch function that can be called to ensure all schema objects
-// in the application have the image property
 export function patchSchemaObjects() {
-  console.log('Schema objects patched to ensure image property exists');
-  
-  // Patch the global Object prototype to ensure schema objects have image property
-  // This is a runtime fix that helps with TypeScript checking
-  if (typeof window !== 'undefined') {
-    // Ensure the SchemaTextContent interface is respected at runtime
-    Object.defineProperty(Object.prototype, '__hasSchemaImage', {
-      value: true,
-      enumerable: false
-    });
-  }
+  console.log('Schema objects patching no longer required - using react-schemaorg instead');
 }

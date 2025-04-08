@@ -72,7 +72,7 @@ const ToolPage = () => {
       if (slug === 'prompt-optimizer') {
         return <PromptOptimizer />;
       } else if (slug === 'schema-generator') {
-        // Use our custom wrapper instead of the original SchemaGeneratorWrapper
+        // Use our custom wrapper with the new schema generator implementation
         return <CustomSchemaGeneratorWrapper />;
       } else if (slug === 'aeo-analyzer') {
         return <AEOAnalyzer />;
