@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { JsonLd } from 'react-schemaorg';
-import { Thing, WithContext } from 'schema-dts';
+import { Thing } from 'schema-dts';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
