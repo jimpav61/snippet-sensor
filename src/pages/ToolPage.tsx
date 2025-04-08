@@ -1,13 +1,14 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, BookOpen, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, BookOpen } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import PromptOptimizer from '@/components/tools/PromptOptimizer';
 import SchemaGeneratorWrapper from '@/components/tools/SchemaGeneratorWrapper';
 import AEOAnalyzer from '@/components/tools/AEOAnalyzer';
+import { patchSchemaObjects } from '@/components/tools/SchemaGeneratorTypeFix';
 
 // This helps to prevent the error in SchemaGenerator.tsx 
 // by properly handling the tool data and component rendering
@@ -58,6 +59,15 @@ const toolsData = [
 const ToolPage = () => {
   const { slug } = useParams();
   const tool = toolsData.find(tool => tool.slug === slug);
+
+  // Initialize schema type fix system when the page loads
+  useEffect(() => {
+    if (slug === 'schema-generator') {
+      console.info("Initializing schema types before loading SchemaGenerator");
+      // Apply runtime patches to ensure all schema objects have the image property
+      patchSchemaObjects();
+    }
+  }, [slug]);
 
   // Improved tool component rendering with error boundary pattern
   const renderToolComponent = () => {
