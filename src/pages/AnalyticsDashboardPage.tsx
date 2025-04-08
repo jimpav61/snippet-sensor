@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,9 +7,14 @@ import { toast } from 'sonner';
 import { BarChart, Copy, Mail } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-// Plausible tracking code (domain placeholder)
-const trackingCode = `<!-- Plausible Analytics -->
-<script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script>
+// Updated Plausible tracking code template with more flexibility
+const getPlausibleTrackingCode = (domain: string) => `<!-- Plausible Analytics -->
+<script defer data-domain="${domain}" src="https://plausible.io/js/script.js"></script>
+<script>
+  window.plausible = window.plausible || function() { 
+    (window.plausible.q = window.plausible.q || []).push(arguments) 
+  }
+</script>
 <!-- End Plausible Analytics -->`;
 
 const AnalyticsDashboardPage = () => {
@@ -18,27 +22,28 @@ const AnalyticsDashboardPage = () => {
   const [email, setEmail] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
   const [domain, setDomain] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // Add Plausible script dynamically when the component mounts
   useEffect(() => {
-    // This is for demonstration purposes only
-    // In a real implementation, this would be added server-side or during build
-    console.log('Plausible script would be loaded here in production');
+    console.log('Analytics dashboard mounted');
     
-    // Clean up function to remove the script when component unmounts
     return () => {
-      console.log('Plausible script would be removed here');
+      console.log('Analytics dashboard unmounted');
     };
   }, []);
 
   const handleCopyCode = () => {
-    // Replace the domain in the code with user's domain if provided
     const customizedCode = domain 
-      ? trackingCode.replace('yourdomain.com', domain) 
-      : trackingCode;
+      ? getPlausibleTrackingCode(domain) 
+      : getPlausibleTrackingCode('yourdomain.com');
       
     navigator.clipboard.writeText(customizedCode);
+    setCopied(true);
     toast.success('Plausible tracking code copied to clipboard!');
+    
+    // Reset copied state after 3 seconds
+    setTimeout(() => setCopied(false), 3000);
   };
 
   const handleEmailSubmit = (e: React.FormEvent) => {
@@ -88,16 +93,16 @@ const AnalyticsDashboardPage = () => {
               <div className="space-y-2">
                 <h3 className="font-medium text-gray-900">Step 2: Copy the tracking code</h3>
                 <div className="relative">
-                  <pre className="bg-gray-50 p-4 rounded-md text-sm overflow-x-auto border">
-                    {domain ? trackingCode.replace('yourdomain.com', domain) : trackingCode}
+                  <pre className={`bg-gray-50 p-4 rounded-md text-sm overflow-x-auto border ${domain ? 'border-green-500' : ''}`}>
+                    {domain ? getPlausibleTrackingCode(domain) : getPlausibleTrackingCode('yourdomain.com')}
                   </pre>
                   <Button 
                     size="sm" 
-                    variant="outline" 
+                    variant={copied ? "default" : "outline"} 
                     className="absolute top-2 right-2"
                     onClick={handleCopyCode}
                   >
-                    <Copy className="h-4 w-4" />
+                    {copied ? 'Copied!' : <Copy className="h-4 w-4" />}
                   </Button>
                 </div>
               </div>
