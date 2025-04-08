@@ -6,8 +6,8 @@ import InputForm from './aeo-analyzer/InputForm';
 import InfoTabs from './aeo-analyzer/InfoTabs';
 import LoadingView from './aeo-analyzer/LoadingView';
 import ResultsView from './aeo-analyzer/ResultsView';
-import { Link } from 'react-router-dom';
 import { analyzeContent } from '@/utils/contentAnalyzer';
+import { generateAEOReport } from '@/utils/pdfGenerator';
 
 const AEOAnalyzer = () => {
   const [activeTab, setActiveTab] = useState('url');
@@ -85,6 +85,12 @@ const AEOAnalyzer = () => {
   };
 
   const handleDownloadReport = () => {
+    // Generate and download the PDF report
+    const doc = generateAEOReport(
+      scores,
+      activeTab === 'url' ? url : 'Content analysis'
+    );
+    doc.save('aeo-analysis-report.pdf');
     toast.success('AEO Report generated and downloaded');
   };
 
