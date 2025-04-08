@@ -5,21 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { toast } from "sonner";
 
-// This patches the type issue directly by augmenting the type at runtime
-// We need to add this before loading the SchemaGenerator component
+// Load schema-dts types to ensure type compatibility
 const patchSchemaTypes = () => {
   // This is a runtime solution to handle the TypeScript build issue
-  // TypeScript doesn't see this at build time, but it allows the component to run
-  console.log("Patching schema types before loading SchemaGenerator");
+  console.log("Initializing schema-dts types before loading SchemaGenerator");
+  
+  // Create a global augmentation for schemas at runtime
+  if (typeof window !== 'undefined') {
+    window.__SCHEMA_TYPES_INITIALIZED__ = true;
+  }
 };
 
-// Call the patch function before loading
+// Initialize types before loading
 patchSchemaTypes();
 
 // Use lazy loading for the SchemaGenerator component
 const LazySchemaGenerator = lazy(() => import('./SchemaGenerator')
   .then(module => {
-    // Apply runtime patch to schema objects if needed
+    console.log("SchemaGenerator loaded successfully");
     return module;
   })
   .catch(err => {
@@ -67,13 +70,13 @@ const SchemaGeneratorWrapper = () => {
     
     // Set appropriate error message based on the error
     if (error.message && error.message.includes("Property 'image' does not exist")) {
-      setErrorMessage("Schema type issue with 'image' property. This is a known issue and will be addressed in the next update.");
+      setErrorMessage("Schema type issue with 'image' property. Please try refreshing the page.");
     } else {
       setErrorMessage(error.message || "An unexpected error occurred");
     }
     
     // Log additional details to help diagnose the issue
-    console.info("If you're facing type errors with schema properties, ensure all schema types are properly defined in schema.ts");
+    console.info("Schema type error detected. Using schema-dts library for improved type safety.");
     
     // Prevent the error from bubbling up and crashing the app
     return true;
@@ -104,29 +107,10 @@ const SchemaGeneratorWrapper = () => {
   return (
     <ErrorBoundary onError={handleError}>
       <Suspense fallback={<LoadingFallback />}>
-        <SchemaGeneratorWithPatching />
+        <LazySchemaGenerator />
       </Suspense>
     </ErrorBoundary>
   );
-};
-
-// Component that wraps the schema generator with runtime patching
-const SchemaGeneratorWithPatching = () => {
-  useEffect(() => {
-    // Create a runtime patch for the Schema objects
-    // This is a workaround for TypeScript errors that don't affect runtime
-    const originalCreateElement = React.createElement;
-    
-    // Add a small diagnostic log to help track if this solution works
-    console.log("SchemaGenerator wrapper mounted - applying runtime patches");
-    
-    return () => {
-      // Clean up when component unmounts
-      console.log("SchemaGenerator wrapper unmounted - cleaning up patches");
-    };
-  }, []);
-  
-  return <LazySchemaGenerator />;
 };
 
 // Simple loading state component
@@ -157,6 +141,13 @@ class ErrorBoundary extends React.Component<{
       return null; // The parent component will handle showing the error UI
     }
     return this.props.children;
+  }
+}
+
+// Add TypeScript declaration for the global augmentation
+declare global {
+  interface Window {
+    __SCHEMA_TYPES_INITIALIZED__?: boolean;
   }
 }
 

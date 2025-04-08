@@ -1,10 +1,12 @@
 
-// Add or update the schema types to include image property
-export interface BaseSchema {
+import { Thing, WithContext, ImageObject, Article, Product } from 'schema-dts';
+
+// Base schema with common properties
+export interface BaseSchema extends Partial<Thing> {
   "@type": string;
   name: string;
   text: string;
-  image?: string; // Added image property as optional
+  image?: string | ImageObject;
 }
 
 export interface BlogPostingSchema extends BaseSchema {
@@ -45,3 +47,11 @@ export interface ArticleSchema extends BaseSchema {
 }
 
 export type SchemaType = BlogPostingSchema | ProductSchema | ArticleSchema;
+
+// Helper function to create a schema with proper context
+export function createSchemaWithContext<T extends BaseSchema>(schema: T): WithContext<T> {
+  return {
+    "@context": "https://schema.org",
+    ...schema
+  };
+}
