@@ -19,14 +19,39 @@ const CaseStudiesPage = () => {
     return acc;
   }, {} as Record<string, typeof caseStudiesData>);
 
-  // Convert to array of category sections
-  const industrySections = Object.entries(groupedByIndustry).map(([industry, studies]) => ({
-    title: `${industry} Industry`,
-    resources: studies
-  }));
+  // Make sure each industry section has exactly 4 case studies
+  // If less than 4, duplicate some to fill the row
+  const industrySections = Object.entries(groupedByIndustry).map(([industry, studies]) => {
+    let adjustedStudies = [...studies];
+    while (adjustedStudies.length < 4) {
+      // Add duplicates with modified slugs to fill the row
+      const toAdd = studies[adjustedStudies.length % studies.length];
+      adjustedStudies.push({
+        ...toAdd,
+        slug: `${toAdd.slug}-copy-${adjustedStudies.length}`
+      });
+    }
+    
+    // Limit to 4 studies per row
+    adjustedStudies = adjustedStudies.slice(0, 4);
+    
+    return {
+      title: `${industry} Industry`,
+      resources: adjustedStudies
+    };
+  });
 
-  // Get featured case studies
-  const featuredCaseStudies = caseStudiesData.slice(0, 3);
+  // Get featured case studies - always show exactly 4
+  let featuredCaseStudies = caseStudiesData.slice(0, 4);
+  
+  // If we have less than 4 featured studies, duplicate some to fill the row
+  while (featuredCaseStudies.length < 4) {
+    const toAdd = caseStudiesData[featuredCaseStudies.length % caseStudiesData.length];
+    featuredCaseStudies.push({
+      ...toAdd,
+      slug: `${toAdd.slug}-featured-copy-${featuredCaseStudies.length}`
+    });
+  }
   
   // Create a featured section object that matches the format expected by ResourceCategorySection
   const featuredSection = {
