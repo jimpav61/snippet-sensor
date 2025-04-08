@@ -60,14 +60,17 @@ export function initializeSchemaAdapter() {
   // Store the original methods we need to patch
   const originalJSONStringify = JSON.stringify;
   
-  // Override JSON.stringify to ensure all schema objects have image property
-  // This targets the specific points where SchemaGenerator might be using JSON
-  (global as any).JSON = {
-    ...JSON,
-    stringify: function(value: any, ...args: any[]) {
-      return originalJSONStringify(deepAdaptSchema(value), ...args);
-    }
-  };
+  // Use window instead of global in browser environment
+  if (typeof window !== 'undefined') {
+    // Override JSON.stringify to ensure all schema objects have image property
+    // This targets the specific points where SchemaGenerator might be using JSON
+    window.JSON = {
+      ...JSON,
+      stringify: function(value: any, ...args: any[]) {
+        return originalJSONStringify(deepAdaptSchema(value), ...args);
+      }
+    };
+  }
   
   console.log('Schema Data Adapter initialized');
 }
