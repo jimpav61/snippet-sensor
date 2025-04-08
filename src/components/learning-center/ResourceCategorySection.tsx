@@ -7,7 +7,7 @@ interface Resource {
   description: string;
   category: string;
   readTime: string;
-  slug: string; // Making slug required instead of optional
+  slug: string;
 }
 
 interface ResourceCategorySectionProps {
@@ -27,7 +27,7 @@ const ResourceCategorySection: React.FC<ResourceCategorySectionProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {resources.map((resource, index) => (
           <ResourceCard
-            key={index}
+            key={resource.slug || index}
             title={resource.title}
             description={resource.description}
             category={resource.category}

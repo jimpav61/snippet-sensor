@@ -25,6 +25,9 @@ const CaseStudiesPage = () => {
     resources: studies
   }));
 
+  // Get featured case studies
+  const featuredCaseStudies = caseStudiesData.slice(0, 3);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -53,7 +56,7 @@ const CaseStudiesPage = () => {
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 text-gray-900">Featured Success Stories</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {caseStudiesData.slice(0, 3).map((study, index) => (
+              {featuredCaseStudies.map((study, index) => (
                 <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                   <div className="p-6">
                     <span className="inline-block px-3 py-1 text-xs font-medium bg-aeo-50 text-aeo-600 rounded-full mb-4">
@@ -80,6 +83,8 @@ const CaseStudiesPage = () => {
         <section className="py-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 text-gray-900">Browse by Industry</h2>
+            
+            {/* Using our ResourceCategorySection component for each industry */}
             {industrySections.map((section, index) => (
               <ResourceCategorySection
                 key={index}
