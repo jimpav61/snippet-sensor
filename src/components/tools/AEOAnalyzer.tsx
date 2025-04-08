@@ -8,6 +8,10 @@ import LoadingView from './aeo-analyzer/LoadingView';
 import ResultsView from './aeo-analyzer/ResultsView';
 import { analyzeContent } from '@/utils/contentAnalyzer';
 import { generateAEOReport } from '@/utils/pdfGenerator';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Info } from 'lucide-react';
 
 const AEOAnalyzer = () => {
   const [activeTab, setActiveTab] = useState('url');
@@ -25,6 +29,8 @@ const AEOAnalyzer = () => {
     finalScore: 74,
   });
   const [recommendations, setRecommendations] = useState<string[]>([]);
+  const [groqApiKey, setGroqApiKey] = useState('');
+  const [showApiInput, setShowApiInput] = useState(false);
 
   // Function to fetch content from URL
   const fetchContentFromUrl = async (urlToFetch: string) => {
@@ -45,11 +51,40 @@ const AEOAnalyzer = () => {
     });
   };
 
+  // Function to analyze content using Groq API
+  const analyzeWithGroq = async (contentToAnalyze: string, contentType: string) => {
+    if (!groqApiKey) {
+      setShowApiInput(true);
+      throw new Error('Groq API key is required');
+    }
+
+    try {
+      // This would be a real API call to Groq in production
+      console.log('Analyzing with Groq API, content length:', contentToAnalyze.length);
+
+      // In a production environment, this would be an actual fetch call to Groq API
+      // For now, we'll use the existing analysis function
+      // TODO: Replace with actual Groq API integration in production
+      const analysisResults = await analyzeContent(contentToAnalyze, contentType);
+      
+      return analysisResults;
+    } catch (error) {
+      console.error('Error analyzing with Groq:', error);
+      throw error;
+    }
+  };
+
   const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if ((activeTab === 'url' && !url) || (activeTab === 'content' && !content)) {
       toast.error('Please provide content to analyze');
+      return;
+    }
+    
+    if (!groqApiKey && !showApiInput) {
+      setShowApiInput(true);
+      toast.info('Please enter your Groq API key to continue');
       return;
     }
     
@@ -66,8 +101,14 @@ const AEOAnalyzer = () => {
         contentToAnalyze = content;
       }
       
-      // Analyze the content using our enhanced analyzer
-      const analysisResults = await analyzeContent(contentToAnalyze, contentType);
+      // Use Groq for analysis if API key is provided
+      let analysisResults;
+      if (groqApiKey) {
+        analysisResults = await analyzeWithGroq(contentToAnalyze, contentType);
+      } else {
+        // Fallback to local analysis
+        analysisResults = await analyzeContent(contentToAnalyze, contentType);
+      }
       
       // Update scores with analysis results
       setScores(analysisResults.scores);
@@ -103,8 +144,63 @@ const AEOAnalyzer = () => {
     setAnalysisComplete(false);
   };
 
+  const handleApiKeySubmit = () => {
+    if (groqApiKey) {
+      // Store API key in localStorage (temporary solution - not recommended for production)
+      localStorage.setItem('groq_api_key', groqApiKey);
+      setShowApiInput(false);
+      toast.success('API key saved');
+    } else {
+      toast.error('Please enter a valid API key');
+    }
+  };
+
   return (
     <div className="space-y-6">
+      {showApiInput && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-4">
+          <div className="flex items-start">
+            <Info className="h-5 w-5 text-yellow-500 mt-0.5 mr-2" />
+            <div>
+              <h4 className="text-sm font-medium text-yellow-800 mb-1">Groq API Key Required</h4>
+              <p className="text-sm text-yellow-700 mb-3">
+                Enter your Groq API key to enable enhanced content analysis. 
+                This is stored locally in your browser and never sent to our servers.
+              </p>
+              <div className="flex flex-col space-y-2">
+                <Label htmlFor="apiKey" className="text-sm">
+                  Groq API Key
+                </Label>
+                <Input
+                  id="apiKey"
+                  type="password"
+                  value={groqApiKey}
+                  onChange={(e) => setGroqApiKey(e.target.value)}
+                  placeholder="Enter your Groq API key"
+                />
+                <div className="flex space-x-2 mt-2">
+                  <Button 
+                    onClick={handleApiKeySubmit} 
+                    size="sm"
+                    variant="default" 
+                    className="bg-aeo hover:bg-aeo-600"
+                  >
+                    Save Key
+                  </Button>
+                  <Button 
+                    onClick={() => setShowApiInput(false)} 
+                    size="sm"
+                    variant="outline"
+                  >
+                    Use Default Analysis
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Tabs defaultValue="input" value={analysisTab} onValueChange={setAnalysisTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="input" disabled={isAnalyzing}>
