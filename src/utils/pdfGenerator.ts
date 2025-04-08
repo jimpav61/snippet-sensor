@@ -23,7 +23,33 @@ export const generateAEOReport = (scores: ScoreData, source: string = 'Content a
   doc.setFontSize(12);
   doc.setTextColor(100);
   doc.text(`Generated on: ${currentDate}`, 105, 30, { align: 'center' });
-  doc.text(`Analyzed content: ${source}`, 105, 38, { align: 'center' });
+  
+  // Add analyzed content information
+  doc.setFontSize(11);
+  doc.setTextColor(80);
+  
+  // Format the source text to ensure it fits on the page
+  const maxLineWidth = 170; // Maximum width available for text on the page
+  let sourceText = `Analyzed content: ${source}`;
+  
+  // Check if the source text is too long and truncate it if needed
+  if (doc.getTextWidth(sourceText) > maxLineWidth) {
+    // If source is a URL, display as much as possible
+    if (source.startsWith('http')) {
+      const urlParts = source.split('/');
+      const domain = urlParts[2] || 'website';
+      sourceText = `Analyzed URL: ${domain}/...`;
+    } else {
+      // For text content, truncate with ellipsis
+      let truncatedSource = source;
+      while (doc.getTextWidth(`Analyzed text: ${truncatedSource}...`) > maxLineWidth && truncatedSource.length > 10) {
+        truncatedSource = truncatedSource.substring(0, truncatedSource.length - 5);
+      }
+      sourceText = `Analyzed text: ${truncatedSource}...`;
+    }
+  }
+  
+  doc.text(sourceText, 105, 38, { align: 'center' });
   
   // Add overall score section
   doc.setFillColor(246, 246, 246);
