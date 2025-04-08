@@ -19,17 +19,26 @@ const CaseStudiesPage = () => {
     return acc;
   }, {} as Record<string, typeof caseStudiesData>);
 
-  // Make sure each industry section has exactly 4 case studies
-  // If less than 4, duplicate some to fill the row
+  // Create industry sections with up to 4 different case studies per row
   const industrySections = Object.entries(groupedByIndustry).map(([industry, studies]) => {
+    // Get all case studies from this industry plus others to fill the row if needed
     let adjustedStudies = [...studies];
-    while (adjustedStudies.length < 4) {
-      // Add duplicates with modified slugs to fill the row
-      const toAdd = studies[adjustedStudies.length % studies.length];
-      adjustedStudies.push({
-        ...toAdd,
-        slug: `${toAdd.slug}-copy-${adjustedStudies.length}`
-      });
+    
+    // If we don't have 4 studies for this industry, add studies from other industries
+    if (adjustedStudies.length < 4) {
+      // Get studies from other industries to supplement
+      const otherStudies = caseStudiesData.filter(study => study.category !== industry);
+      
+      // Add them until we have 4 total, making sure not to duplicate
+      let i = 0;
+      while (adjustedStudies.length < 4 && i < otherStudies.length) {
+        const study = otherStudies[i];
+        // Check if this study is already in our adjusted list
+        if (!adjustedStudies.some(s => s.id === study.id)) {
+          adjustedStudies.push(study);
+        }
+        i++;
+      }
     }
     
     // Limit to 4 studies per row
@@ -41,16 +50,26 @@ const CaseStudiesPage = () => {
     };
   });
 
-  // Get featured case studies - always show exactly 4
-  let featuredCaseStudies = caseStudiesData.slice(0, 4);
+  // Get featured case studies - always show 4 different ones
+  // Take one from each industry if possible to show variety
+  const industryKeys = Object.keys(groupedByIndustry);
+  let featuredCaseStudies: typeof caseStudiesData = [];
   
-  // If we have less than 4 featured studies, duplicate some to fill the row
-  while (featuredCaseStudies.length < 4) {
-    const toAdd = caseStudiesData[featuredCaseStudies.length % caseStudiesData.length];
-    featuredCaseStudies.push({
-      ...toAdd,
-      slug: `${toAdd.slug}-featured-copy-${featuredCaseStudies.length}`
-    });
+  // Try to get one case study from each industry first
+  industryKeys.slice(0, 4).forEach(industry => {
+    if (groupedByIndustry[industry].length > 0) {
+      featuredCaseStudies.push(groupedByIndustry[industry][0]);
+    }
+  });
+  
+  // If we still don't have 4, add more from remaining data without duplicating
+  let remainingIndex = 0;
+  while (featuredCaseStudies.length < 4 && remainingIndex < caseStudiesData.length) {
+    const study = caseStudiesData[remainingIndex];
+    if (!featuredCaseStudies.some(s => s.id === study.id)) {
+      featuredCaseStudies.push(study);
+    }
+    remainingIndex++;
   }
   
   // Create a featured section object that matches the format expected by ResourceCategorySection
