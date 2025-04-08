@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
@@ -24,18 +23,23 @@ const ScoreCard: React.FC<ScoreProps> = ({
   onDownloadReport
 }) => {
   const downloadPdfReport = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent page navigation/refresh
+    e.preventDefault();
+    e.stopPropagation();
     
     try {
-      const doc = generateAEOReport(
-        { keywordRelevance, readability, snippetOptimization, structuredData, finalScore },
-        analysisSource
-      );
-      doc.save('aeo-analysis-report.pdf');
-      onDownloadReport(); // Call the original handler to show toast notification
+      setTimeout(() => {
+        const doc = generateAEOReport(
+          { keywordRelevance, readability, snippetOptimization, structuredData, finalScore },
+          analysisSource
+        );
+        doc.save('aeo-analysis-report.pdf');
+        onDownloadReport();
+      }, 10);
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
+    
+    return false;
   };
 
   return (
@@ -51,7 +55,7 @@ const ScoreCard: React.FC<ScoreProps> = ({
           onClick={downloadPdfReport} 
           variant="outline" 
           className="mt-4 md:mt-0"
-          type="button" // Explicitly set type to button to avoid form submission behavior
+          type="button"
         >
           <Download className="mr-2 h-4 w-4" /> Download Report
         </Button>

@@ -26,18 +26,25 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   handleDownloadReport 
 }) => {
   const downloadPdfReport = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent page navigation/refresh
+    // Prevent any default actions and stop event propagation
+    e.preventDefault();
+    e.stopPropagation();
     
     try {
-      // Generate and download PDF
-      const doc = generateAEOReport(scores, originalContent || analysisSource, contentType);
-      doc.save('aeo-analysis-report.pdf');
-      
-      // Call the handler to show toast notification
-      handleDownloadReport();
+      // Generate and download PDF in an isolated context
+      setTimeout(() => {
+        const doc = generateAEOReport(scores, originalContent || analysisSource, contentType);
+        doc.save('aeo-analysis-report.pdf');
+        
+        // Call the handler to show toast notification
+        handleDownloadReport();
+      }, 10);
     } catch (error) {
       console.error('Error generating PDF:', error);
     }
+    
+    // Return false to ensure no additional events are triggered
+    return false;
   };
 
   return (
