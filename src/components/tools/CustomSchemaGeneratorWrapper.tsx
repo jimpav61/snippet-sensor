@@ -3,8 +3,8 @@ import React from 'react';
 import SimpleSchemaGenerator from './SimpleSchemaGenerator';
 
 /**
- * This wrapper component provides the new schema generator that uses react-schemaorg
- * instead of the previous implementation that had compatibility issues.
+ * This wrapper component provides the schema generator that generates
+ * structured data for better AI understanding of content.
  */
 const CustomSchemaGeneratorWrapper = () => {
   return <SimpleSchemaGenerator />;
