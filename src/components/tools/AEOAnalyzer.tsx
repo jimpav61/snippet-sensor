@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
@@ -28,20 +27,14 @@ const AEOAnalyzer = () => {
   });
   const [recommendations, setRecommendations] = useState<string[]>([]);
 
-  // Function to fetch content from URL - now actually stores the content
   const fetchContentFromUrl = async (urlToFetch: string) => {
     try {
-      // In a real implementation, this would call a backend service to fetch the content
-      // For now, we'll just simulate it but store the actual URL
       return new Promise<string>((resolve) => {
         setTimeout(() => {
-          // For demo purposes, we'll return a simulated content string
-          // but we'll store the actual URL for the analysis
           const dummyContent = `Content fetched from ${urlToFetch} for analysis.
           This content would be processed for AI Engine Optimization factors
           including keyword relevance, readability, snippet optimization, and structured data.`;
           
-          // Store the URL as the analyzed content
           setAnalyzedContent(urlToFetch);
           resolve(dummyContent);
         }, 1000);
@@ -53,7 +46,6 @@ const AEOAnalyzer = () => {
     }
   };
 
-  // Function to analyze content using Groq API via Supabase Edge Function
   const analyzeWithGroq = async (contentToAnalyze: string, contentType: string) => {
     try {
       console.log('Calling Supabase Edge Function for analysis');
@@ -93,48 +85,44 @@ const AEOAnalyzer = () => {
     setAnalysisTab('loading');
     
     try {
-      let contentToAnalyze = '';
-      
-      // If URL is provided, fetch content from URL
-      if (activeTab === 'url') {
-        contentToAnalyze = await fetchContentFromUrl(url);
-        // URL is already stored in analyzedContent
-      } else {
-        contentToAnalyze = content;
-        // Store the content for display in the results
-        setAnalyzedContent(content.length > 150 ? content.substring(0, 150) + '...' : content);
+      const contentToAnalyze = activeTab === 'url' ? url : content;
+      setAnalyzedContent(contentToAnalyze);
+
+      const { data, error } = await supabase.functions.invoke('analyze-content', {
+        body: {
+          content: contentToAnalyze,
+          contentType: contentType
+        }
+      });
+
+      if (error) {
+        throw new Error(error.message);
       }
-      
-      // Use Supabase Edge Function for analysis
-      const analysisResults = await analyzeWithGroq(contentToAnalyze, contentType);
-      
-      // Update scores with analysis results
-      setScores(analysisResults.scores);
-      setRecommendations(analysisResults.recommendations);
-      setIsAnalyzing(false);
+
+      if (!data || !data.scores) {
+        throw new Error('Invalid response from analysis');
+      }
+
+      setScores(data.scores);
+      setRecommendations(data.recommendations || []);
       setAnalysisComplete(true);
       setAnalysisTab('results');
       toast.success('Analysis completed!');
     } catch (error) {
       console.error('Error analyzing content:', error);
       toast.error('Failed to analyze content. Please try again.');
+    } finally {
       setIsAnalyzing(false);
-      setAnalysisTab('input');
     }
   };
 
   const handleDownloadReport = () => {
-    // Generate and download the PDF report with the actual analyzed content
-    const doc = generateAEOReport(
-      scores,
-      analyzedContent || (activeTab === 'url' ? url : 'Content analysis')
-    );
+    const doc = generateAEOReport(scores, analyzedContent);
     doc.save('aeo-analysis-report.pdf');
     toast.success('AEO Report generated and downloaded');
   };
 
   const handleFullAnalysis = () => {
-    // Toggle the detailed view state
     setDetailedView(!detailedView);
     toast.success(detailedView ? 'Hiding detailed analysis' : 'Showing detailed analysis');
   };
