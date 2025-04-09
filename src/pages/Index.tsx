@@ -4,10 +4,8 @@ import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { ArrowRight, Bot, BarChart3, Zap, Users, Lightbulb, BarChart } from 'lucide-react';
-
 const Index = () => {
-  return (
-    <div className="min-h-screen flex flex-col">
+  return <div className="min-h-screen flex flex-col">
       <Header />
       
       <main className="flex-grow">
@@ -36,12 +34,7 @@ const Index = () => {
                   <Button asChild size="lg" className="bg-white text-aeo-600 hover:bg-gray-100">
                     <Link to="/aeo">Explore Solutions <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
-                  <Button 
-                    asChild 
-                    variant="outline" 
-                    size="lg" 
-                    className="border-white/50 text-white bg-aeo-900/10 hover:bg-aeo-900/20 font-semibold"
-                  >
+                  <Button asChild variant="outline" size="lg" className="border-white/50 text-white bg-aeo-900/10 hover:bg-aeo-900/20 font-semibold">
                     <Link to="/aeo/learning">Learning Center</Link>
                   </Button>
                 </div>
@@ -72,11 +65,7 @@ const Index = () => {
               
               <div className="relative hidden lg:block">
                 <div className="relative z-10 rounded-lg overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-300">
-                  <img 
-                    src="https://placehold.co/800x600/3730a3/ffffff?text=AI+Platform" 
-                    alt="AI Platform Dashboard"
-                    className="w-full h-auto"
-                  />
+                  <img alt="AI Platform Dashboard" className="w-full h-auto" src="/lovable-uploads/cb29f1b3-9228-4c64-af45-cb7d8a4cd5fa.png" />
                 </div>
                 <div className="absolute -z-10 -bottom-10 -right-10 w-64 h-64 bg-pink-500 rounded-full opacity-20 blur-3xl"></div>
                 <div className="absolute -z-10 -top-10 -left-10 w-48 h-48 bg-blue-500 rounded-full opacity-20 blur-3xl"></div>
@@ -269,12 +258,7 @@ const Index = () => {
               <Button asChild size="lg" variant="secondary" className="text-lg">
                 <Link to="/aeo/analyze">Get Your Free AEO Score <ArrowRight className="ml-2 h-5 w-5" /></Link>
               </Button>
-              <Button 
-                asChild
-                size="lg" 
-                variant="outline" 
-                className="bg-transparent text-white border-white hover:bg-white/10 text-lg"
-              >
+              <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 text-lg">
                 <Link to="/aeo/contact">Schedule a Demo</Link>
               </Button>
             </div>
@@ -283,8 +267,6 @@ const Index = () => {
       </main>
       
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
