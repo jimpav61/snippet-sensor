@@ -74,7 +74,7 @@ const AnalyticsDashboardPromo = () => {
             <div className="relative">
               <div className="rounded-lg overflow-hidden shadow-xl border border-gray-200">
                 <img 
-                  src="https://placehold.co/800x500/f65228/ffffff?text=Analytics+Dashboard+Preview" 
+                  src="/uploaded-image.png" 
                   alt="Analytics Dashboard Preview" 
                   className="w-full h-auto"
                 />
