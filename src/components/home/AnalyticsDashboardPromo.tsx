@@ -74,7 +74,7 @@ const AnalyticsDashboardPromo = () => {
             <div className="relative">
               <div className="rounded-lg overflow-hidden shadow-xl border border-gray-200">
                 <img 
-                  src="/uploaded-image.png" 
+                  src="/lovable-uploads/ae71c667-e69b-414e-a840-61baf21401e3.png" 
                   alt="Analytics Dashboard Preview" 
                   className="w-full h-auto"
                 />
@@ -91,3 +91,4 @@ const AnalyticsDashboardPromo = () => {
 };
 
 export default AnalyticsDashboardPromo;
+
